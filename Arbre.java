@@ -66,8 +66,6 @@ public class Arbre {
                     System.out.println(data[0] + " n'est pas un entier");
                 }
 
-                System.out.println(data.length + "  ::: " +  idbase + "::::" + data[9]);
-
                 idEmplacement = data[7];
 
                 libelleFrancais = data[8];
