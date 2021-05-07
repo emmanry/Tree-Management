@@ -53,12 +53,8 @@ public class Arbre {
                 System.out.println("[FileReader] Le fichier à " + csvFilePath + " ne contient pas le bon nombre de colonnes.");
             }
 
-            System.out.println(data.length);
-
             // Créer un Arbre pour chaque ligne du fichier
             while ((line = bufferedReader.readLine()) != null) {
-
-                System.out.println(data.length);
 
                 // Récupère les données de la ligne
                 data = line.split(";", -1);
@@ -101,12 +97,12 @@ public class Arbre {
                     remarquable = true;
                 }
 
-                data = data[16].split(",", -1);
+                String[] dataCoord = data[16].split(",", -1);
                 try {
-                    geoPoint2D = new Point2D.Double(Double.parseDouble(data[0]), Double.parseDouble(data[1]));
+                    geoPoint2D = new Point2D.Double(Double.parseDouble(dataCoord[0]), Double.parseDouble(dataCoord[1]));
                 }
                 catch(NumberFormatException e){
-                    System.out.println("bb n'est pas un double");
+                    System.out.println("aaaa n'est pas un double");
                 }
 
                 Arbre arbre = new Arbre(idbase, idEmplacement, libelleFrancais, genre, espece, circonference, hauteur, stadeDeDeveloppement, remarquable, geoPoint2D.getX(), geoPoint2D.getY());
@@ -136,10 +132,11 @@ public class Arbre {
 
     public static void main (String[] args){
 
-        CreateArbre("C:\\Users\\emman\\OneDrive\\Bureau\\S6\\Java\\Projet\\les-arbres.csv");
+        CreateArbre("C:\\Users\\emman\\OneDrive\\Bureau\\S6\\Java\\Projet\\test-arbres.csv");
         //System.out.println(dicoArbre.values());
-        System.out.println(dicoArbre.get(153421));
+        System.out.println(dicoArbre.get(1));
 
     }
 
 }
+
