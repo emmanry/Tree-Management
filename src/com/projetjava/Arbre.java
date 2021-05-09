@@ -1,6 +1,7 @@
 package com.projetjava;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class Arbre {
         dicoArbre.put(idBase, this);
     }
 
-    public static void CreateArbre(String path) {
+    public static void createArbre(String path, Municipalite municipalite) {
         String idEmplacement, libelleFrancais, genre, espece, stadeDeDeveloppement;
         double circonference = 0, hauteur = 0;
         int idbase = 0;
@@ -64,8 +65,6 @@ public class Arbre {
                 catch(NumberFormatException e){
                     System.out.println(data[0] + " n'est pas un entier");
                 }
-
-                System.out.println(data.length + "  ::: " +  idbase + "::::" + data[9]);
 
                 idEmplacement = data[7];
 
@@ -108,6 +107,8 @@ public class Arbre {
 
                 Arbre arbre = new Arbre(idbase, idEmplacement, libelleFrancais, genre, espece, circonference, hauteur, stadeDeDeveloppement, remarquable, geoPoint2D.getX(), geoPoint2D.getY());
 
+                municipalite.addArbre(arbre);
+
             }
         }
         catch(IOException e){
@@ -131,11 +132,13 @@ public class Arbre {
     }
 
     public static void main (String[] args){
-
-        CreateArbre("C:\\Users\\emman\\OneDrive\\Bureau\\S6\\Java\\Projet\\les-arbres.csv");
-        //System.out.println(dicoArbre.values());
+        ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
+        Municipalite paris = new Municipalite("Paris", serviceParis);
+        createArbre("C:\\Users\\emman\\OneDrive\\Bureau\\S6\\Java\\Projet\\les-arbres.csv", paris);
+        System.out.println(dicoArbre.values());
         System.out.println(dicoArbre.get(270435));
-
+        System.out.println(paris.getListeArbre().size());
+        System.out.println(paris.toString());
     }
 
 }
