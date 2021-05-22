@@ -1,6 +1,7 @@
 package com.projetjava;
 
 import java.awt.geom.Point2D;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
@@ -41,8 +42,9 @@ public class Arbre {
         Point2D geoPoint2D = null;
 
         String csvFilePath = path;
-        try (BufferedReader bufferedReader = Files.newBufferedReader(Paths.get(csvFilePath), StandardCharsets.ISO_8859_1)) {
-
+        //try (BufferedReader bufferedReader = Files.newBufferedReader(Paths.get(csvFilePath), StandardCharsets.ISO_8859_1)) {
+        try{
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(csvFilePath));
             // Lire la première ligne
             String line = bufferedReader.readLine();
 
@@ -58,7 +60,9 @@ public class Arbre {
 
                 // Récupère les données de la ligne
                 data = line.split(";", -1);
-
+                if(data.length != 17){
+                    continue;
+                }
                 try {
                     idbase = Integer.parseInt(data[0]);
                 }
@@ -113,6 +117,7 @@ public class Arbre {
         }
         catch(IOException e){
             System.out.println(e);
+            System.out.println("issou");
         }
     }
 
@@ -134,7 +139,7 @@ public class Arbre {
     public static void main (String[] args){
         ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
         Municipalite paris = new Municipalite("Paris", serviceParis);
-        createArbre("C:\\Users\\emman\\OneDrive\\Bureau\\S6\\Java\\Projet\\les-arbres.csv", paris);
+        createArbre("data/les-arbres.csv", paris);
         System.out.println(dicoArbre.values());
         System.out.println(dicoArbre.get(270435));
         System.out.println(paris.getListeArbre().size());
