@@ -43,6 +43,10 @@ public class Arbre {
         return this.circonferenceEnCm;
     }
 
+    public double getHauteurEnM(){
+        return this.hauteurEnM;
+    }
+
     public static void createArbre(String path, Municipalite municipalite) {
         String idEmplacement, libelleFrancais, genre, espece, stadeDeDeveloppement;
         double circonference = 0, hauteur = 0;
