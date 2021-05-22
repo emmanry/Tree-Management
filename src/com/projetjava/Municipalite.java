@@ -1,6 +1,7 @@
 package com.projetjava;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,9 +34,23 @@ public class Municipalite {
         return (ArrayList<Arbre>) this.listeArbre.clone();
     }
 
+    public HashMap<Integer, List<Arbre>> getDicoArbresNominesParAn(){
+        return this.dicoArbresNominesParAn;
+    }
+
     public void addArbre(Arbre arbre){
         listeArbre.add(arbre);
         serviceMairie.notifier(ActionArbre.PLANTATION,arbre);
+    }
+
+    public void rendreRemarquable(Arbre arbre, int jour, int mois, int annee){
+        if(arbre.getRemarquable()){
+            System.err.println("Attention ! L'arbre " + arbre.getIdArbre() + " est déjà remarquable");
+        }
+        else{
+            arbre.setRemarquable(true);
+            arbre.setDateRemarquable(jour, mois, annee);
+        }
     }
 
     public void removeArbre(Arbre arbre){

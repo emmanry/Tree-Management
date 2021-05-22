@@ -3,6 +3,8 @@ package com.projetjava;
 import com.projetjava.notification.Notifiable;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class Association implements Notifiable {
@@ -12,9 +14,10 @@ public class Association implements Notifiable {
     private ExerciceBudgetaire exerciceBudgetaire;
     private ArrayList<Membre> listeMembres = new ArrayList<>();
     private List<Classification> listeClassifications = new ArrayList<>();
+    private HashMap<Arbre, Membre> dicoVisitesEnAttente = new HashMap<>();
 
-    public Association(){
-
+    public Association(Municipalite municipalite){
+        this.municipalite = municipalite;
     }
 
     public ArrayList<Membre> getListeMembres(){
@@ -23,6 +26,14 @@ public class Association implements Notifiable {
 
     public List<Classification> getListeClassifications(){
         return this.listeClassifications;
+    }
+
+    public HashMap<Arbre, Membre> getDicoVisitesEnAttente(){
+        return this.dicoVisitesEnAttente;
+    }
+
+    public void addVisitesEnAttente(Arbre arbre, Membre membre){
+        this.dicoVisitesEnAttente.put(arbre, membre);
     }
 
     public void addListeMembres(Membre membre){
@@ -35,11 +46,11 @@ public class Association implements Notifiable {
             }
         }
         else {
-            if(membre instanceof Membre){
-                this.listeMembres.add(membre);
-            }
-            else if(membre instanceof President){
+            if(membre instanceof President){
                 System.err.println("L'association a déjà un président");
+            }
+            else if(membre instanceof Membre){
+                this.listeMembres.add(membre);
             }
         }
     }
@@ -51,8 +62,22 @@ public class Association implements Notifiable {
     public void envoyerListArbresNomines(int annee){
         Classification classification = new Classification(this, annee);
         this.addListeClassifications(classification);
+        classification.nomination();
         municipalite.recevoirListArbresNomines(classification.getAnnee(), classification.getListArbresNomines());
     }
+
+    public boolean verificationVisite(Arbre arbre){
+        return (this.dicoVisitesEnAttente.containsKey(arbre) && arbre.getRemarquable());
+    }
+
+    /* A FINIR
+    public String getHistoriqueArbresVisites(){
+        StringBuilder sb = new StringBuilder();
+        String s;
+        sb.append("");
+        ArbreVisite.getDicoArbresVisites().forEach(  );
+    }
+     */
 
     @Override
     public void notifier(ActionArbre action, Arbre arbre) {

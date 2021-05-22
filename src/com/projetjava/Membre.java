@@ -52,19 +52,29 @@ public class Membre extends Personne{
         }
     }
 
-    public static void main(String[] args){
-        Association assoc = new Association();
-        Membre membre = new Membre("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
-        ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
-        Municipalite paris = new Municipalite("Paris", serviceParis);
-        Arbre.createArbre("C:\\Users\\emman\\OneDrive\\Bureau\\S6\\Java\\Projet\\les-arbres.csv", paris);
+    public void demandeVisiteArbre(Arbre arbre){
+        if(!this.association.verificationVisite(arbre)){
+            System.err.println("La visite n'est pas autorisée");
+        }
+        else{
+            this.association.addVisitesEnAttente(arbre, this);
+        }
+    }
 
-        Arbre a = Arbre.getDicoArbre().get(214468);
-        Arbre b = Arbre.getDicoArbre().get(298184);
-
-        membre.vote(a, a, a, a, a, b, b, a, a, a, a, a, b, b, b, b);
-        membre.getListArbresVotes();
-
+    // todo exception pour la cohérence des dates
+    // todo défraiement de la visite
+    public void visiteArbre(Arbre arbre, int annee, int mois, int jour, String contenu){
+        if(this.association.getDicoVisitesEnAttente().get(arbre) == this){
+            this.association.getDicoVisitesEnAttente().remove(arbre);
+            if(ArbreVisite.getDicoArbresVisites().containsKey(arbre)){
+                ArbreVisite.getDicoArbresVisites().put((ArbreVisite) arbre, ((ArbreVisite) arbre).getListeCompteRendus().get(((ArbreVisite) arbre).getListeCompteRendus().size()).getDateRapport());
+            }
+            else{
+                ArbreVisite arbreVisite = new ArbreVisite(arbre.getIdArbre(), arbre.getAdresseAcces(), arbre.getNomFrancais(), arbre.getGenre(), arbre.getEspece(),
+                        arbre.getCirconferenceEnCm(), arbre.getHauteurEnM(), arbre.getStadeDeveloppement(), arbre.getRemarquable(), arbre.getDateRemarquable(),
+                        arbre.getCoordonnees().getX(), arbre.getCoordonnees().getY(), contenu, annee, mois, jour, this.association, this);
+            }
+        }
     }
 
 }

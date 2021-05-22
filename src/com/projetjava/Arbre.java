@@ -41,7 +41,27 @@ public class Arbre {
     }
 
     public int getIdArbre() {
-        return idArbre;
+        return this.idArbre;
+    }
+
+    public String getAdresseAcces(){
+        return this.adresseAcces;
+    }
+
+    public String getNomFrancais(){
+        return this.nomFrancais;
+    }
+
+    public String getGenre(){
+        return this.genre;
+    }
+
+    public String getEspece(){
+        return this.espece;
+    }
+
+    public String getStadeDeveloppement(){
+        return this.stadeDeveloppement;
     }
 
     public double getCirconferenceEnCm(){
@@ -50,6 +70,26 @@ public class Arbre {
 
     public double getHauteurEnM(){
         return this.hauteurEnM;
+    }
+
+    public boolean getRemarquable(){
+        return this.remarquable;
+    }
+
+    public Date getDateRemarquable(){
+        return this.dateRemarquable;
+    }
+
+    public Point2D getCoordonnees(){
+        return this.coordonnees;
+    }
+
+    public void setDateRemarquable(int jour, int mois, int annee){
+        this.dateRemarquable = new Date(annee - 1900, mois, jour);
+    }
+
+    public void setRemarquable(boolean bool){
+        this.remarquable = bool;
     }
 
     public static void createArbre(String path, Municipalite municipalite) {

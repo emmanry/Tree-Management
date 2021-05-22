@@ -95,34 +95,9 @@ public class Classification {
             }
         }
         if(this.listArbresNomines.size() > 5){
-            this.listArbresNomines = this.listArbresNomines.subList(0, 4);
+            this.listArbresNomines = this.listArbresNomines.subList(0, 5);
         }
     }
 
-    public static void main(String[] args){
-
-        Association assoc = new Association();
-        Membre membre = new Membre("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
-        Membre membre2 = new Membre("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
-
-        ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
-        Municipalite paris = new Municipalite("Paris", serviceParis);
-        Arbre.createArbre("C:\\Users\\emman\\OneDrive\\Bureau\\S6\\Java\\Projet\\les-arbres.csv", paris);
-
-        
-        // test de la classification
-        Arbre a = Arbre.getDicoArbre().get(2003166);
-        Arbre b = Arbre.getDicoArbre().get(298184); // cir = 105
-        Arbre c = Arbre.getDicoArbre().get(280753); // cir = 60 ; h = 6
-        Arbre d = Arbre.getDicoArbre().get(214468); // cir = 60 ; h = 7
-
-        membre.vote(a, a, a, a, a, b, b, a, a, a, a, a, b, d, b, b);
-        membre2.vote(a, c);
-        //membre.getListArbresVotes();
-        Classification classification = new Classification(assoc, 2020);
-        classification.nomination();
-        //System.out.println(classification.dicoVotes.get(b));
-        System.out.println(classification.listArbresNomines);
-    }
 
 }

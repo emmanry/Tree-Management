@@ -9,11 +9,15 @@ public class CompteRendu {
     private Association associationRapport;
     private Membre membreRapport;
 
-    public CompteRendu(String contenu, int year, int month, int day, Association association, Membre membre){
+    public CompteRendu(String contenu, int annee, int mois, int jour, Association association, Membre membre){
         this.rapport = contenu;
-        this.dateRapport = new Date(year, month, day);
+        this.dateRapport = new Date(annee, mois, jour);
         this.associationRapport = association;
         this.membreRapport = membre;
+    }
+
+    public Date getDateRapport(){
+        return this.dateRapport;
     }
 
 }
