@@ -22,13 +22,33 @@ public class Municipalite {
         return this.serviceMairie;
     }
 
+    /**
+     * Renvoi un clone de la liste des arbres présent sur une municipalité
+     * @return ArrayList<Arbre>
+     */
     public ArrayList<Arbre> getListeArbre(){
-        return this.listeArbre;
+        return (ArrayList<Arbre>) this.listeArbre.clone();
     }
 
+
     public void addArbre(Arbre arbre){
-        this.listeArbre.add(arbre);
+        listeArbre.add(arbre);
+        serviceMairie.notifier(ActionArbre.PLANTATION,arbre);
     }
+
+    public void removeArbre(Arbre arbre){
+        listeArbre.remove(arbre);
+        serviceMairie.notifier(ActionArbre.ABATTAGE,arbre);
+    }
+
+    public void removeArbreById(int id){
+        Arbre arbre = listeArbre.stream().filter(a->(a.getIdArbre() == id)).findFirst().orElse(null);
+        if(arbre != null){
+            listeArbre.remove(arbre);
+            serviceMairie.notifier(ActionArbre.ABATTAGE,arbre);
+        }
+    }
+    //todo classification ?
 
     public String afficheListeArbre(){
         StringBuilder sb = new StringBuilder();

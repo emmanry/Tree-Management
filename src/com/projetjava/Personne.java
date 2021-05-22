@@ -1,6 +1,8 @@
 package com.projetjava;
 
-public class Personne {
+import com.projetjava.notification.Notifiable;
+
+public class Personne implements Notifiable {
 
     private String nom;
     private String prenom;
@@ -18,4 +20,9 @@ public class Personne {
         return this.prenom;
     }
 
+    @Override
+    public void notifier(ActionArbre action, Arbre arbre) {
+        //todo faire quelque chose
+        System.out.println(action.toString() + arbre);
+    }
 }

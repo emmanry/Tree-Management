@@ -1,8 +1,10 @@
 package com.projetjava;
 
+import com.projetjava.notification.Notifiable;
+
 import java.util.ArrayList;
 
-public class Association {
+public class Association implements Notifiable {
 
     private ServiceMairie serviceMairie;
     private ExerciceBudgetaire exerciceBudgetaire;
@@ -21,6 +23,19 @@ public class Association {
     }
 
 
+    @Override
+    public void notifier(ActionArbre action, Arbre arbre) {
+        //todo faire quelque chose
+        System.out.println(action.toString() + arbre);
+        switch (action){
+            case ABATTAGE:
+                break;
+            case PLANTATION:
+                break;
+            case CLASSIFICATION:
+                break;
+        }
+    }
 }
 /*(Service Mairie,ExerciceBudgetaire,Listes de classification (1 par année),liste des membres
         ,président,listes des ArbresVisité (et arbre prévu),liste rapport d'activité,liste des donateurs,montant du compte bancaire)*/
