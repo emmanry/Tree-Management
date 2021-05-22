@@ -1,12 +1,15 @@
 package com.projetjava;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Municipalite {
 
     private String nom;
     private ServiceMairie serviceMairie;
     private ArrayList<Arbre> listeArbre;
+    private HashMap<Integer, List<Arbre>> dicoArbresNominesParAn = new HashMap<Integer, List<Arbre>>();
 
     public Municipalite(String name, ServiceMairie serviceEspaceVert){
         this.listeArbre = new ArrayList<Arbre>();
@@ -23,13 +26,12 @@ public class Municipalite {
     }
 
     /**
-     * Renvoi un clone de la liste des arbres présent sur une municipalité
+     * Renvoie un clone de la liste des arbres présents sur une municipalité
      * @return ArrayList<Arbre>
      */
     public ArrayList<Arbre> getListeArbre(){
         return (ArrayList<Arbre>) this.listeArbre.clone();
     }
-
 
     public void addArbre(Arbre arbre){
         listeArbre.add(arbre);
@@ -48,7 +50,10 @@ public class Municipalite {
             serviceMairie.notifier(ActionArbre.ABATTAGE,arbre);
         }
     }
-    //todo classification ?
+
+    public void recevoirListArbresNomines(int annee, List<Arbre> listeArbresNomines){
+        dicoArbresNominesParAn.put(annee, listeArbresNomines);
+    }
 
     public String afficheListeArbre(){
         StringBuilder sb = new StringBuilder();

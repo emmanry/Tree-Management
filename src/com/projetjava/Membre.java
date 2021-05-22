@@ -18,7 +18,7 @@ public class Membre extends Personne{
         this.dateDerniereInscription = new Date(yearInscription-1900, monthInscription, dayInscription);
         this.adresse = adresseMembre;
 
-        this.association.setListeMembres(this);
+        this.association.addListeMembres(this);
     }
 
     public Date getDateDeNaissance(){

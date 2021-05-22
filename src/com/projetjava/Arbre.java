@@ -17,6 +17,7 @@ public class Arbre {
     private int idArbre;
     private boolean remarquable;
     private Point2D coordonnees;
+    // todo map à virer (utile pour voter)
     private static Map<Integer, Arbre> dicoArbre = new Hashtable<Integer,Arbre>();
     private Date dateRemarquable;
 
@@ -37,6 +38,10 @@ public class Arbre {
 
     public static Map<Integer, Arbre> getDicoArbre(){
         return dicoArbre;
+    }
+
+    public int getIdArbre() {
+        return idArbre;
     }
 
     public double getCirconferenceEnCm(){
@@ -159,9 +164,6 @@ public class Arbre {
                 ;
     }
 
-    public int getIdArbre() {
-        return idArbre;
-    }
 
     public static void main (String[] args){
         ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
