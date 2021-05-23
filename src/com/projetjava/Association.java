@@ -67,17 +67,39 @@ public class Association implements Notifiable {
     }
 
     public boolean verificationVisite(Arbre arbre){
-        return (this.dicoVisitesEnAttente.containsKey(arbre) && arbre.getRemarquable());
+        return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && arbre.getRemarquable());
     }
 
-    /* A FINIR
+    // A FINIR
     public String getHistoriqueArbresVisites(){
         StringBuilder sb = new StringBuilder();
         String s;
-        sb.append("");
-        ArbreVisite.getDicoArbresVisites().forEach(  );
+        sb.append("Enumération des arbres remarquables par ancienneté de leur dernière visite : \n");
+
+        HashMap<ArbreVisite, Date> dicoArbresVisitesCopie = new HashMap<>();
+        for (ArbreVisite arbreVisite : ArbreVisite.getDicoArbresVisites().keySet()){
+            dicoArbresVisitesCopie.put(arbreVisite, ArbreVisite.getDicoArbresVisites().get(arbreVisite));
+        }
+
+        while(!dicoArbresVisitesCopie.isEmpty()){
+            Date dateMin = new Date(Long.MAX_VALUE);
+            ArbreVisite arbreVisiteMin = null;
+            for (ArbreVisite arbreVisite : dicoArbresVisitesCopie.keySet()) {
+                if(arbreVisite.getDateDerniereVisite().before(dateMin)){
+                    dateMin = arbreVisite.getDateDerniereVisite();
+                    arbreVisiteMin = arbreVisite;
+                }
+            }
+
+            sb.append("L'arbre d'ID " + arbreVisiteMin.getIdArbre() + " a été visité pour la denière fois le " + arbreVisiteMin.getDateDerniereVisite() + "\n");
+            dicoArbresVisitesCopie.remove(arbreVisiteMin);
+            System.out.println(ArbreVisite.getDicoArbresVisites().values());
+
+        }
+        s = sb.toString();
+        return s;
     }
-     */
+
 
     @Override
     public void notifier(ActionArbre action, Arbre arbre) {

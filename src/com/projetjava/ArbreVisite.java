@@ -15,6 +15,7 @@ public class ArbreVisite extends Arbre{
         super( idBase, idAdresse, nomFr, genreA, especeA, circonference, hauteur, stadeDev, remarquableA, dateRemarquable, x, y);
         this.ecrireCompteRendu(contenu, annee, mois, jour, association, membre);
         dicoArbresVisites.put(this, this.listeCompteRendus.get(0).getDateRapport());
+        Arbre.getDicoArbre().put(this.getIdArbre(), this);
     }
 
     public List<CompteRendu> getListeCompteRendus(){
@@ -23,6 +24,10 @@ public class ArbreVisite extends Arbre{
 
     public static HashMap<ArbreVisite, Date> getDicoArbresVisites(){
         return dicoArbresVisites;
+    }
+
+    public Date getDateDerniereVisite(){
+        return this.listeCompteRendus.get(this.listeCompteRendus.size() - 1).getDateRapport();
     }
 
     public void ecrireCompteRendu(String contenu, int annee, int mois, int jour, Association association, Membre membre){

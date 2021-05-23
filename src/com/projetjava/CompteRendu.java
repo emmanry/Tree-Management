@@ -11,7 +11,7 @@ public class CompteRendu {
 
     public CompteRendu(String contenu, int annee, int mois, int jour, Association association, Membre membre){
         this.rapport = contenu;
-        this.dateRapport = new Date(annee, mois, jour);
+        this.dateRapport = new Date(annee - 1900, mois - 1, jour);
         this.associationRapport = association;
         this.membreRapport = membre;
     }

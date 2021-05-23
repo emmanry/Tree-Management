@@ -14,8 +14,8 @@ public class Membre extends Personne{
     public Membre(String lastname, String firstname, Association assoc, int yearNaissance, int monthNaissance, int dayNaissance, int yearInscription, int monthInscription, int dayInscription, String adresseMembre){
         super(lastname, firstname);
         this.association = assoc;
-        this.dateDeNaissance = new Date(yearNaissance-1900, monthNaissance, dayNaissance);
-        this.dateDerniereInscription = new Date(yearInscription-1900, monthInscription, dayInscription);
+        this.dateDeNaissance = new Date(yearNaissance-1900, monthNaissance - 1, dayNaissance);
+        this.dateDerniereInscription = new Date(yearInscription-1900, monthInscription - 1, dayInscription);
         this.adresse = adresseMembre;
 
         this.association.addListeMembres(this);
@@ -61,19 +61,29 @@ public class Membre extends Personne{
         }
     }
 
+    // listeArbre.stream().filter(a->(a.getIdArbre() == id)).findFirst().orElse(null);
+
     // todo exception pour la cohérence des dates
     // todo défraiement de la visite
     public void visiteArbre(Arbre arbre, int annee, int mois, int jour, String contenu){
         if(this.association.getDicoVisitesEnAttente().get(arbre) == this){
             this.association.getDicoVisitesEnAttente().remove(arbre);
-            if(ArbreVisite.getDicoArbresVisites().containsKey(arbre)){
-                ArbreVisite.getDicoArbresVisites().put((ArbreVisite) arbre, ((ArbreVisite) arbre).getListeCompteRendus().get(((ArbreVisite) arbre).getListeCompteRendus().size()).getDateRapport());
+            if(Arbre.getDicoArbre().get(arbre.getIdArbre()) instanceof ArbreVisite){
+                ArbreVisite arbreVisite = (ArbreVisite) Arbre.getDicoArbre().get(arbre.getIdArbre());
+                Date dateDerniereVisite = new Date(annee - 1900, mois - 1, jour);
+                ArbreVisite.getDicoArbresVisites().put(arbreVisite, dateDerniereVisite);
+                arbreVisite.ecrireCompteRendu(contenu, annee, mois, jour, this.association, this);
             }
             else{
+                System.out.println(Arbre.getDicoArbre().get(arbre.getIdArbre()).getClass().getSimpleName());
+
                 ArbreVisite arbreVisite = new ArbreVisite(arbre.getIdArbre(), arbre.getAdresseAcces(), arbre.getNomFrancais(), arbre.getGenre(), arbre.getEspece(),
                         arbre.getCirconferenceEnCm(), arbre.getHauteurEnM(), arbre.getStadeDeveloppement(), arbre.getRemarquable(), arbre.getDateRemarquable(),
                         arbre.getCoordonnees().getX(), arbre.getCoordonnees().getY(), contenu, annee, mois, jour, this.association, this);
             }
+        }
+        else{
+            System.err.println("Vous n'avez pas eu d'autorisation pour visiter cet arbre, envoyez nous une demandeVisiteArbre");
         }
     }
 

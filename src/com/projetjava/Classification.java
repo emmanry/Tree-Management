@@ -26,6 +26,7 @@ public class Classification {
         return this.listArbresNomines;
     }
 
+    // todo copie du dico erreur
     public void nomination(){
         List<Arbre> listVote;
         int nbVotes;
