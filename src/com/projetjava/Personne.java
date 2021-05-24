@@ -1,14 +1,17 @@
 package com.projetjava;
 
+import com.projetjava.don.Demandeur;
+import com.projetjava.don.Don;
+import com.projetjava.don.Donateur;
 import com.projetjava.notification.Notifiable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Personne implements Notifiable {
+public class Personne implements Notifiable, Donateur {
 
-    private String nom;
-    private String prenom;
+    protected String nom;
+    protected String prenom;
     private List<String> notifications = new ArrayList<>();
 
     public Personne(String lastname, String firstname){
@@ -37,5 +40,11 @@ public class Personne implements Notifiable {
         List<String> tmp = notifications;
         notifications = null;
         return tmp;
+    }
+
+    @Override
+    public void receiveDemandeDon(String message, Demandeur demandeur, RapportActivite rapport) {
+        //todo autre comportement ?
+        demandeur.receiveDon(new Don(15.f,this));
     }
 }

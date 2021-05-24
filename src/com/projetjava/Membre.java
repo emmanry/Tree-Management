@@ -10,6 +10,10 @@ public class Membre extends Personne{
     private String adresse;
     private Association association;
     private List<Arbre> listArbresVotes = new ArrayList<>();
+    private boolean cotise;
+    private int nbDefraiement;
+    private int id;
+    private static int indexId = 0;
 
     public Membre(String lastname, String firstname, Association assoc, int yearNaissance, int monthNaissance, int dayNaissance, int yearInscription, int monthInscription, int dayInscription, String adresseMembre){
         super(lastname, firstname);
@@ -17,8 +21,11 @@ public class Membre extends Personne{
         this.dateDeNaissance = new Date(yearNaissance-1900, monthNaissance, dayNaissance);
         this.dateDerniereInscription = new Date(yearInscription-1900, monthInscription, dayInscription);
         this.adresse = adresseMembre;
-
+        this.cotise = false;
+        this.nbDefraiement = 0;
         this.association.setListeMembres(this);
+        id = indexId;
+        indexId++;
     }
 
     public Date getDateDeNaissance(){
@@ -52,8 +59,49 @@ public class Membre extends Personne{
         }
     }
 
+    public void cotiser() {
+        if(!cotise){
+            cotise = true;
+            association.cotisationRecette();
+        }
+    }
+
+    public boolean hasCotiser(){
+        return cotise;
+    }
+
+    public void defraiement(){
+        if(association.demandeDefraiement(this)){
+            nbDefraiement++;
+        }
+    }
+
+    public int getNbDefraiement() {
+        return nbDefraiement;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Membre{" +
+                "Nom=" + nom +
+                "Prénom=" + prenom +
+                "dateDeNaissance=" + dateDeNaissance +
+                ", dateDerniereInscription=" + dateDerniereInscription +
+                ", adresse='" + adresse + '\'' +
+                ", association=" + association +
+                ", listArbresVotes=" + listArbresVotes +
+                ", cotise=" + cotise +
+                ", nbDefraiement=" + nbDefraiement +
+                ", id=" + id +
+                '}';
+    }
+
     public static void main(String[] args){
-        Association assoc = new Association();
+        Association assoc = new Association("nom");
         Membre membre = new Membre("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
         ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
         Municipalite paris = new Municipalite("Paris", serviceParis);

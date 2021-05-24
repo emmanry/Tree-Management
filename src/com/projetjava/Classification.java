@@ -10,7 +10,7 @@ public class Classification {
 
     private Association association;
     private int annee;
-    private HashMap<Arbre, Integer> dicoVotes = new HashMap<Arbre, Integer>();
+    private HashMap<Arbre, Integer> dicoVotes = new HashMap<>();
     private List<Arbre> listArbresNomines = new ArrayList<>();
 
     public Classification(Association assoc, int annee){
@@ -101,7 +101,7 @@ public class Classification {
 
     public static void main(String[] args){
 
-        Association assoc = new Association();
+        Association assoc = new Association("eazf");
         Membre membre = new Membre("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
         Membre membre2 = new Membre("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
 
@@ -109,7 +109,7 @@ public class Classification {
         Municipalite paris = new Municipalite("Paris", serviceParis);
         Arbre.createArbre("C:\\Users\\emman\\OneDrive\\Bureau\\S6\\Java\\Projet\\les-arbres.csv", paris);
 
-        
+
         // test de la classification
         Arbre a = Arbre.getDicoArbre().get(2003166);
         Arbre b = Arbre.getDicoArbre().get(298184); // cir = 105
