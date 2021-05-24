@@ -17,11 +17,10 @@ public class Arbre {
     private int idArbre;
     private boolean remarquable;
     private Point2D coordonnees;
-    // todo map à virer (utile pour voter)
     private static Map<Integer, Arbre> dicoArbre = new Hashtable<Integer,Arbre>();
-    private Date dateRemarquable;
+    private MyDate dateRemarquable;
 
-    public Arbre(int idBase, String idAdresse, String nomFr, String genreA, String especeA, double circonference, double hauteur, String stadeDev, boolean remarquableA, Date dateRemarquable, double x, double y){
+    public Arbre(int idBase, String idAdresse, String nomFr, String genreA, String especeA, double circonference, double hauteur, String stadeDev, boolean remarquableA, MyDate dateRemarquable, double x, double y){
         this.idArbre = idBase;
         this.genre = genreA;
         this.espece = especeA;
@@ -76,7 +75,7 @@ public class Arbre {
         return this.remarquable;
     }
 
-    public Date getDateRemarquable(){
+    public MyDate getDateRemarquable(){
         return this.dateRemarquable;
     }
 
@@ -85,7 +84,7 @@ public class Arbre {
     }
 
     public void setDateRemarquable(int jour, int mois, int annee){
-        this.dateRemarquable = new Date(annee - 1900, mois, jour);
+        this.dateRemarquable = new MyDate(annee, mois, jour);
     }
 
     public void setRemarquable(boolean bool){

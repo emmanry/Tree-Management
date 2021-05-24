@@ -1,10 +1,8 @@
 package com.projetjava;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 public class Classification {
 
@@ -18,6 +16,10 @@ public class Classification {
         this.annee = annee;
     }
 
+    public Association getAssociation(){
+        return this.association;
+    }
+
     public int getAnnee(){
         return this.annee;
     }
@@ -26,7 +28,10 @@ public class Classification {
         return this.listArbresNomines;
     }
 
-    // todo copie du dico erreur
+    public HashMap<Arbre, Integer> getDicoVotes(){
+        return this.dicoVotes;
+    }
+
     public void nomination(){
         List<Arbre> listVote;
         int nbVotes;
@@ -40,7 +45,11 @@ public class Classification {
             }
         }
 
-        HashMap<Arbre, Integer> dicoVotesCopie = dicoVotes;
+        // Faire une copie profonde du dicoVotes
+        HashMap<Arbre, Integer> dicoVotesCopie = new HashMap<>();
+        for (Arbre arbre : this.dicoVotes.keySet()){
+            dicoVotesCopie.put(arbre, this.dicoVotes.get(arbre));
+        }
 
         while (this.listArbresNomines.size() < 5 && !dicoVotesCopie.isEmpty()) {
             int valMax = 0;

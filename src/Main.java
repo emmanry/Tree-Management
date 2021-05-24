@@ -1,6 +1,5 @@
 import com.projetjava.*;
 
-import static com.projetjava.Arbre.createArbre;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,14 +8,13 @@ public class Main {
         Association assoc = new Association(paris);
         Arbre.createArbre("data/les-arbres.csv", paris);
 
-        President membre = new President("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
+        President membre = new President("NOURRY", "Emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
         Membre membre2 = new Membre("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
 
         Personne p = new Personne("q","p");
         serviceParis.addNotifier(p);
 
         paris.removeArbreById(282008);
-
 
         /**
          * Test de la classification des arbres votés
@@ -27,16 +25,18 @@ public class Main {
         Arbre d = Arbre.getDicoArbre().get(214468); // cir = 60 ; h = 7
         Arbre e = Arbre.getDicoArbre().get(149631); // cir = 180
         Arbre f = Arbre.getDicoArbre().get(204191); // cir = 80
-        /*
+
         membre.vote(a, b, a, a, a, b, d, b, b);
-        membre2.vote(a, c, e, f);*/
+        membre2.vote(a, c, e, f);
 
         /**
          * Transmission de la classification de l'association à la municipalité
-         *//*
+         */
+
+
         assoc.envoyerListArbresNomines(2020);
         System.out.println(paris.getDicoArbresNominesParAn().toString());
-        */
+
 
         Arbre g = Arbre.getDicoArbre().get(102837);
         Arbre h = Arbre.getDicoArbre().get(120299);
@@ -45,25 +45,17 @@ public class Main {
         //System.out.println(g.toString());
 
         membre.demandeVisiteArbre(g);
-        membre.visiteArbre(g, 2020, 11, 28, "Tres beau");
-        //System.out.println(ArbreVisite.getDicoArbresVisites().toString());
-        System.out.println(((ArbreVisite)Arbre.getDicoArbre().get(102837)).getListeCompteRendus());
+        membre.visiteArbre(g, 2018, 11, 28, "Tres beau");
         System.out.println(assoc.getHistoriqueArbresVisites());
 
-        System.out.println(Arbre.getDicoArbre().get(g.getIdArbre()) instanceof ArbreVisite);
-
         membre.demandeVisiteArbre(g);
-        membre.visiteArbre(g, 2021, 11, 28, "Tres beau");
-        //System.out.println(ArbreVisite.getDicoArbresVisites().toString());
-        System.out.println(((ArbreVisite)Arbre.getDicoArbre().get(102837)).getListeCompteRendus());
+        membre.visiteArbre(g, 2019, 11, 28, "Tres beau");
         System.out.println(assoc.getHistoriqueArbresVisites());
 
         membre.demandeVisiteArbre(h);
         membre.visiteArbre(h, 2020, 02, 28, "Tres beau");
-        //System.out.println(ArbreVisite.getDicoArbresVisites().toString());
-        System.out.println(((ArbreVisite)Arbre.getDicoArbre().get(120299)).getListeCompteRendus());
         System.out.println(assoc.getHistoriqueArbresVisites());
 
-        System.out.println(assoc.getHistoriqueArbresVisites());
+
     }
 }

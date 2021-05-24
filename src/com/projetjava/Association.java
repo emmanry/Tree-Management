@@ -2,10 +2,7 @@ package com.projetjava;
 
 import com.projetjava.notification.Notifiable;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Association implements Notifiable {
 
@@ -70,19 +67,20 @@ public class Association implements Notifiable {
         return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && arbre.getRemarquable());
     }
 
-    // A FINIR
     public String getHistoriqueArbresVisites(){
         StringBuilder sb = new StringBuilder();
         String s;
         sb.append("Enumération des arbres remarquables par ancienneté de leur dernière visite : \n");
 
-        HashMap<ArbreVisite, Date> dicoArbresVisitesCopie = new HashMap<>();
+        // Faire une copie profonde du dicoArbresVisites
+        HashMap<ArbreVisite, MyDate> dicoArbresVisitesCopie = new HashMap<>();
         for (ArbreVisite arbreVisite : ArbreVisite.getDicoArbresVisites().keySet()){
             dicoArbresVisitesCopie.put(arbreVisite, ArbreVisite.getDicoArbresVisites().get(arbreVisite));
         }
 
         while(!dicoArbresVisitesCopie.isEmpty()){
-            Date dateMin = new Date(Long.MAX_VALUE);
+            Calendar dateAujourdhui = Calendar.getInstance();
+            MyDate dateMin = new MyDate(dateAujourdhui.get(Calendar.YEAR), dateAujourdhui.get(Calendar.MONTH), dateAujourdhui.get(Calendar.DATE));
             ArbreVisite arbreVisiteMin = null;
             for (ArbreVisite arbreVisite : dicoArbresVisitesCopie.keySet()) {
                 if(arbreVisite.getDateDerniereVisite().before(dateMin)){
@@ -91,9 +89,9 @@ public class Association implements Notifiable {
                 }
             }
 
-            sb.append("L'arbre d'ID " + arbreVisiteMin.getIdArbre() + " a été visité pour la denière fois le " + arbreVisiteMin.getDateDerniereVisite() + "\n");
+            sb.append(arbreVisiteMin.getDateDerniereVisite() + " : " + " Arbre n° " + arbreVisiteMin.getIdArbre() + " visité par " +
+                    arbreVisiteMin.getMembreVisite().getNom() + " " + arbreVisiteMin.getMembreVisite().getPrenom() + "\n");
             dicoArbresVisitesCopie.remove(arbreVisiteMin);
-            System.out.println(ArbreVisite.getDicoArbresVisites().values());
 
         }
         s = sb.toString();

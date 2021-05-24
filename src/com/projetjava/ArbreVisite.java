@@ -8,10 +8,10 @@ import java.util.List;
 public class ArbreVisite extends Arbre{
 
     private List<CompteRendu> listeCompteRendus = new ArrayList<>();
-    private static HashMap<ArbreVisite, Date> dicoArbresVisites = new HashMap<>();
+    private static HashMap<ArbreVisite, MyDate> dicoArbresVisites = new HashMap<>();
 
     // todo un arbre visité doit etre remarquable
-    public ArbreVisite(int idBase, String idAdresse, String nomFr, String genreA, String especeA, double circonference, double hauteur, String stadeDev, boolean remarquableA, Date dateRemarquable, double x, double y, String contenu, int annee, int mois, int jour, Association association, Membre membre){
+    public ArbreVisite(int idBase, String idAdresse, String nomFr, String genreA, String especeA, double circonference, double hauteur, String stadeDev, boolean remarquableA, MyDate dateRemarquable, double x, double y, String contenu, int annee, int mois, int jour, Association association, Membre membre){
         super( idBase, idAdresse, nomFr, genreA, especeA, circonference, hauteur, stadeDev, remarquableA, dateRemarquable, x, y);
         this.ecrireCompteRendu(contenu, annee, mois, jour, association, membre);
         dicoArbresVisites.put(this, this.listeCompteRendus.get(0).getDateRapport());
@@ -22,11 +22,15 @@ public class ArbreVisite extends Arbre{
         return this.listeCompteRendus;
     }
 
-    public static HashMap<ArbreVisite, Date> getDicoArbresVisites(){
+    public Membre getMembreVisite(){
+        return this.listeCompteRendus.get(this.listeCompteRendus.size() - 1).getMembreRapport();
+    }
+
+    public static HashMap<ArbreVisite, MyDate> getDicoArbresVisites(){
         return dicoArbresVisites;
     }
 
-    public Date getDateDerniereVisite(){
+    public MyDate getDateDerniereVisite(){
         return this.listeCompteRendus.get(this.listeCompteRendus.size() - 1).getDateRapport();
     }
 

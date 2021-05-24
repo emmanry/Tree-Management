@@ -2,8 +2,8 @@ package com.projetjava;
 
 public class President extends Membre{
 
-    public President(String lastname, String firstname, Association assoc, int yearNaissance, int monthNaissance, int dayNaissance, int yearInscription, int monthInscription, int dayInscription, String adresseMembre){
-        super(lastname, firstname, assoc, yearNaissance, monthNaissance, dayNaissance, yearInscription, monthInscription, dayInscription, adresseMembre);
+    public President(String nom, String prenom, Association assoc, int anneeNaissance, int moisNaissance, int jourNaissance, int anneeInscription, int moisInscription, int jourInscription, String adresseMembre){
+        super(nom, prenom, assoc, anneeNaissance, moisNaissance, jourNaissance, anneeInscription, moisInscription, jourInscription, adresseMembre);
     }
 
 }

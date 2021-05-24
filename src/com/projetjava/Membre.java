@@ -1,31 +1,32 @@
 package com.projetjava;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class Membre extends Personne{
 
-    private Date dateDeNaissance, dateDerniereInscription;
+    private MyDate dateDeNaissance, dateDerniereInscription;
     private String adresse;
     private Association association;
     private List<Arbre> listArbresVotes = new ArrayList<>();
 
-    public Membre(String lastname, String firstname, Association assoc, int yearNaissance, int monthNaissance, int dayNaissance, int yearInscription, int monthInscription, int dayInscription, String adresseMembre){
-        super(lastname, firstname);
+    public Membre(String nom, String prenom, Association assoc, int anneeNaissance, int moisNaissance, int jourNaissance, int anneeInscription, int moisInscription, int jourInscription, String adresseMembre){
+        super(nom, prenom);
         this.association = assoc;
-        this.dateDeNaissance = new Date(yearNaissance-1900, monthNaissance - 1, dayNaissance);
-        this.dateDerniereInscription = new Date(yearInscription-1900, monthInscription - 1, dayInscription);
+        this.dateDeNaissance = new MyDate(anneeNaissance, moisNaissance, jourNaissance);
+        this.dateDerniereInscription = new MyDate(anneeInscription, moisInscription, jourInscription);
         this.adresse = adresseMembre;
 
         this.association.addListeMembres(this);
     }
 
-    public Date getDateDeNaissance(){
+    public MyDate getDateDeNaissance(){
         return this.dateDeNaissance;
     }
 
-    public Date getDateDerniereInscription(){
+    public MyDate getDateDerniereInscription(){
         return this.dateDerniereInscription;
     }
 
@@ -61,8 +62,6 @@ public class Membre extends Personne{
         }
     }
 
-    // listeArbre.stream().filter(a->(a.getIdArbre() == id)).findFirst().orElse(null);
-
     // todo exception pour la cohérence des dates
     // todo défraiement de la visite
     public void visiteArbre(Arbre arbre, int annee, int mois, int jour, String contenu){
@@ -70,15 +69,13 @@ public class Membre extends Personne{
             this.association.getDicoVisitesEnAttente().remove(arbre);
             if(Arbre.getDicoArbre().get(arbre.getIdArbre()) instanceof ArbreVisite){
                 ArbreVisite arbreVisite = (ArbreVisite) Arbre.getDicoArbre().get(arbre.getIdArbre());
-                Date dateDerniereVisite = new Date(annee - 1900, mois - 1, jour);
+                MyDate dateDerniereVisite = new MyDate(annee, mois, jour);
                 ArbreVisite.getDicoArbresVisites().put(arbreVisite, dateDerniereVisite);
                 arbreVisite.ecrireCompteRendu(contenu, annee, mois, jour, this.association, this);
             }
             else{
-                System.out.println(Arbre.getDicoArbre().get(arbre.getIdArbre()).getClass().getSimpleName());
-
                 ArbreVisite arbreVisite = new ArbreVisite(arbre.getIdArbre(), arbre.getAdresseAcces(), arbre.getNomFrancais(), arbre.getGenre(), arbre.getEspece(),
-                        arbre.getCirconferenceEnCm(), arbre.getHauteurEnM(), arbre.getStadeDeveloppement(), arbre.getRemarquable(), arbre.getDateRemarquable(),
+                        arbre.getCirconferenceEnCm(), arbre.getHauteurEnM(), arbre.getStadeDeveloppement(), true, arbre.getDateRemarquable(),
                         arbre.getCoordonnees().getX(), arbre.getCoordonnees().getY(), contenu, annee, mois, jour, this.association, this);
             }
         }
