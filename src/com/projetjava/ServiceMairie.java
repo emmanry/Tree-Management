@@ -1,11 +1,14 @@
 package com.projetjava;
 
+import com.projetjava.don.Demandeur;
+import com.projetjava.don.Don;
+import com.projetjava.don.Donateur;
 import com.projetjava.notification.Notifiable;
 import com.projetjava.notification.Notifieur;
 
 import java.util.ArrayList;
 
-public class ServiceMairie implements Notifieur {
+public class ServiceMairie implements Notifieur, Donateur {
 
     private String nom;
 
@@ -32,5 +35,11 @@ public class ServiceMairie implements Notifieur {
 
     public void removeNotifier(Notifiable notifiable){
         listEntite.remove(notifiable);
+    }
+
+    @Override
+    public void receiveDemandeDon(String message, Demandeur demandeur, RapportActivite rapport) {
+        //todo autre comportement ?
+        demandeur.receiveDon(new Don(500.f,this));
     }
 }

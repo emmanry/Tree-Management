@@ -17,6 +17,8 @@ public class Arbre {
     private int idArbre;
     private boolean remarquable;
     private Point2D coordonnees;
+
+    //todo virer à la fin
     private static Map<Integer, Arbre> dicoArbre = new Hashtable<Integer,Arbre>();
     private MyDate dateRemarquable;
 

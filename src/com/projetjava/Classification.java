@@ -8,7 +8,7 @@ public class Classification {
 
     private Association association;
     private int annee;
-    private HashMap<Arbre, Integer> dicoVotes = new HashMap<Arbre, Integer>();
+    private HashMap<Arbre, Integer> dicoVotes = new HashMap<>();
     private List<Arbre> listArbresNomines = new ArrayList<>();
 
     public Classification(Association assoc, int annee){

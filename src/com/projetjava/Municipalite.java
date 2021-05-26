@@ -13,7 +13,7 @@ public class Municipalite {
     private HashMap<Integer, List<Arbre>> dicoArbresNominesParAn = new HashMap<Integer, List<Arbre>>();
 
     public Municipalite(String name, ServiceMairie serviceEspaceVert){
-        this.listeArbre = new ArrayList<Arbre>();
+        this.listeArbre = new ArrayList<>();
         this.nom = name;
         this.serviceMairie = serviceEspaceVert;
     }
@@ -65,6 +65,7 @@ public class Municipalite {
             serviceMairie.notifier(ActionArbre.ABATTAGE,arbre);
         }
     }
+    //todo classification
 
     public void recevoirListArbresNomines(int annee, List<Arbre> listeArbresNomines){
         dicoArbresNominesParAn.put(annee, listeArbresNomines);
@@ -75,8 +76,7 @@ public class Municipalite {
         for(Arbre arbre : this.listeArbre){
             sb.append(arbre.toString());
         }
-        String s = sb.toString();
-        return s;
+        return sb.toString();
     }
 
     public String toString(){

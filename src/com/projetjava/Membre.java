@@ -11,6 +11,10 @@ public class Membre extends Personne{
     private String adresse;
     private Association association;
     private List<Arbre> listArbresVotes = new ArrayList<>();
+    private boolean cotise;
+    private int nbDefraiement;
+    private int id;
+    private static int indexId = 0;
 
     public Membre(String nom, String prenom, Association assoc, int anneeNaissance, int moisNaissance, int jourNaissance, int anneeInscription, int moisInscription, int jourInscription, String adresseMembre){
         super(nom, prenom);
@@ -20,6 +24,10 @@ public class Membre extends Personne{
         this.adresse = adresseMembre;
 
         this.association.addListeMembres(this);
+        this.cotise = false;
+        this.nbDefraiement = 0;
+        id = indexId;
+        indexId++;
     }
 
     public MyDate getDateDeNaissance(){
@@ -61,6 +69,56 @@ public class Membre extends Personne{
             this.association.addVisitesEnAttente(arbre, this);
         }
     }
+    public void cotiser() {
+        if(!cotise){
+            cotise = true;
+            association.cotisationRecette();
+        }
+    }
+
+    public boolean hasCotiser(){
+        return cotise;
+    }
+
+    public void defraiement(){
+        if(association.demandeDefraiement(this)){
+            nbDefraiement++;
+        }
+    }
+
+    public int getNbDefraiement() {
+        return nbDefraiement;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Membre{" +
+                "Nom=" + nom +
+                "Prénom=" + prenom +
+                "dateDeNaissance=" + dateDeNaissance +
+                ", dateDerniereInscription=" + dateDerniereInscription +
+                ", adresse='" + adresse + '\'' +
+                ", association=" + association +
+                ", listArbresVotes=" + listArbresVotes +
+                ", cotise=" + cotise +
+                ", nbDefraiement=" + nbDefraiement +
+                ", id=" + id +
+                '}';
+    }
+
+    public static void main(String[] args){
+        Association assoc = new Association("nom");
+        Membre membre = new Membre("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
+        ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
+        Municipalite paris = new Municipalite("Paris", serviceParis);
+        Arbre.createArbre("C:\\Users\\emman\\OneDrive\\Bureau\\S6\\Java\\Projet\\les-arbres.csv", paris);
+
+        Arbre a = Arbre.getDicoArbre().get(214468);
+        Arbre b = Arbre.getDicoArbre().get(298184);
 
     // todo exception pour la cohérence des dates
     // todo défraiement de la visite
