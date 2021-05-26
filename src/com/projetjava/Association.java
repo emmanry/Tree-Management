@@ -217,13 +217,6 @@ public class Association implements Notifiable, Donateur, Demandeur {
     public void setExerciceBudgetaire(ExerciceBudgetaire exerciceBudgetaire) {
         this.exerciceBudgetaire = exerciceBudgetaire;
     }
-    public ArrayList<Membre> getListeMembres(){
-        return listeMembres;
-    }
-
-    public void setListeMembres(Membre membre){
-        this.listeMembres.add(membre);
-    }
 
     public void cotisationRecette(){
         compteBancaire.depot(prixCotisation);

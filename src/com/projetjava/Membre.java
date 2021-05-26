@@ -110,18 +110,19 @@ public class Membre extends Personne{
                 '}';
     }
 
-    public static void main(String[] args){
-        Association assoc = new Association("nom");
+    public static void main(String[] args) {
+        /*Association assoc = new Association("nom");
         Membre membre = new Membre("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
         ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
         Municipalite paris = new Municipalite("Paris", serviceParis);
         Arbre.createArbre("C:\\Users\\emman\\OneDrive\\Bureau\\S6\\Java\\Projet\\les-arbres.csv", paris);
 
         Arbre a = Arbre.getDicoArbre().get(214468);
-        Arbre b = Arbre.getDicoArbre().get(298184);
+        Arbre b = Arbre.getDicoArbre().get(298184);*/
+
+    }
 
     // todo exception pour la cohérence des dates
-    // todo défraiement de la visite
     public void visiteArbre(Arbre arbre, int annee, int mois, int jour, String contenu){
         if(this.association.getDicoVisitesEnAttente().get(arbre) == this){
             this.association.getDicoVisitesEnAttente().remove(arbre);
@@ -130,6 +131,9 @@ public class Membre extends Personne{
                 MyDate dateDerniereVisite = new MyDate(annee, mois, jour);
                 ArbreVisite.getDicoArbresVisites().put(arbreVisite, dateDerniereVisite);
                 arbreVisite.ecrireCompteRendu(contenu, annee, mois, jour, this.association, this);
+                if(association.demandeDefraiement(this)){
+                    nbDefraiement++;
+                }
             }
             else{
                 ArbreVisite arbreVisite = new ArbreVisite(arbre.getIdArbre(), arbre.getAdresseAcces(), arbre.getNomFrancais(), arbre.getGenre(), arbre.getEspece(),
@@ -141,5 +145,4 @@ public class Membre extends Personne{
             System.err.println("Vous n'avez pas eu d'autorisation pour visiter cet arbre, envoyez nous une demandeVisiteArbre");
         }
     }
-
 }

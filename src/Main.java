@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
         Municipalite paris = new Municipalite("Paris", serviceParis);
-        Association assoc = new Association(paris);
+        Association assoc = new Association("asso",paris);
         Arbre.createArbre("data/les-arbres.csv", paris);
 
         President membre = new President("NOURRY", "Emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
@@ -59,11 +59,7 @@ public class Main {
 
 
 
-        Association assoc = new Association("nom");
         //test cotisation
-        Membre membre = new Membre("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
-        membre.cotiser();
-        Membre membre2 = new Membre("v", "v", assoc, 1999, 1, 22, 2018, 2, 22, "add");
 
         System.out.println(assoc.getCompteBancaire().getSolde());
 
