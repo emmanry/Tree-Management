@@ -89,7 +89,6 @@ public class Membre extends Personne{
     }
 
     // todo exception pour la cohérence des dates
-
     /**
      *  || Dernière étape d'une visite : la visite ||
      *  S'en suit la création d'un compte rendu daté et d'un défraiement
@@ -110,6 +109,9 @@ public class Membre extends Personne{
                 ArbreVisite arbreVisite = new ArbreVisite(arbre.getIdArbre(), arbre.getAdresseAcces(), arbre.getNomFrancais(), arbre.getGenre(), arbre.getEspece(),
                         arbre.getCirconferenceEnCm(), arbre.getHauteurEnM(), arbre.getStadeDeveloppement(), true, arbre.getDateRemarquable(),
                         arbre.getCoordonnees().getX(), arbre.getCoordonnees().getY(), contenu, annee, mois, jour, this.association, this);
+                if(this.association.demandeDefraiement(this)){
+                    this.nbDefraiement++;
+                }
             }
         }
         else{

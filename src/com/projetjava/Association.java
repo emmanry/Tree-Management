@@ -23,10 +23,10 @@ public class Association implements Notifiable, Donateur, Demandeur {
     private List<String> notifications = new ArrayList<>();
     private CompteBancaire compteBancaire;
     private List<Donateur> donateurs;
-    private double prixCotisation;
+    private final double prixCotisation;
     private String nom;
-    private int nbDefraiementAutorise;
-    private double montantDefraiement;
+    private final int nbDefraiementAutorise;
+    private final double montantDefraiement;
     RapportActivite lastRapportActivite;
 
     public Association(String nom,Municipalite municipalite){
