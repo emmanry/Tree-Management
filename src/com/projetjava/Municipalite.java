@@ -86,11 +86,4 @@ public class Municipalite {
                 ;
     }
 
-    public static void main(String[] args){
-        ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
-        Municipalite paris = new Municipalite("Paris", serviceParis);
-        System.out.println(paris.toString());
-
-    }
-
 }

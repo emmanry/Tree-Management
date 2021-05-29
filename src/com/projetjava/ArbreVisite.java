@@ -39,4 +39,6 @@ public class ArbreVisite extends Arbre{
         this.listeCompteRendus.add(compteRendu);
     }
 
+    //todo toString
+
 }

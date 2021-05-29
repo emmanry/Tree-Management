@@ -10,7 +10,7 @@ public class Membre extends Personne{
     private MyDate dateDeNaissance, dateDerniereInscription;
     private String adresse;
     private Association association;
-    private List<Arbre> listArbresVotes = new ArrayList<>();
+    private List<Arbre> listeArbresVotes = new ArrayList<>();
     private boolean cotise;
     private int nbDefraiement;
     private int id;
@@ -43,21 +43,21 @@ public class Membre extends Personne{
     }
 
     public List<Arbre> getListArbresVotes(){
-        return this.listArbresVotes;
+        return this.listeArbresVotes;
     }
 
     public void vote(Arbre...arbre){
 
         for (Arbre a : arbre) {
-            if (!this.listArbresVotes.contains(a)){
-                this.listArbresVotes.add(a);
+            if (!this.listeArbresVotes.contains(a)){
+                this.listeArbresVotes.add(a);
             }
             else{
                 System.err.println("Vous avez déjà voté pour " + a.toString());
             }
         }
-        if(this.listArbresVotes.size() > 5){
-            this.listArbresVotes = this.listArbresVotes.subList(this.listArbresVotes.size() - 5, this.listArbresVotes.size());
+        if(this.listeArbresVotes.size() > 5){
+            this.listeArbresVotes = this.listeArbresVotes.subList(this.listeArbresVotes.size() - 5, this.listeArbresVotes.size());
         }
     }
 
@@ -94,34 +94,6 @@ public class Membre extends Personne{
         return id;
     }
 
-    @Override
-    public String toString() {
-        return "Membre{" +
-                "Nom=" + nom +
-                "Prénom=" + prenom +
-                "dateDeNaissance=" + dateDeNaissance +
-                ", dateDerniereInscription=" + dateDerniereInscription +
-                ", adresse='" + adresse + '\'' +
-                ", association=" + association +
-                ", listArbresVotes=" + listArbresVotes +
-                ", cotise=" + cotise +
-                ", nbDefraiement=" + nbDefraiement +
-                ", id=" + id +
-                '}';
-    }
-
-    public static void main(String[] args) {
-        /*Association assoc = new Association("nom");
-        Membre membre = new Membre("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
-        ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
-        Municipalite paris = new Municipalite("Paris", serviceParis);
-        Arbre.createArbre("C:\\Users\\emman\\OneDrive\\Bureau\\S6\\Java\\Projet\\les-arbres.csv", paris);
-
-        Arbre a = Arbre.getDicoArbre().get(214468);
-        Arbre b = Arbre.getDicoArbre().get(298184);*/
-
-    }
-
     // todo exception pour la cohérence des dates
     public void visiteArbre(Arbre arbre, int annee, int mois, int jour, String contenu){
         if(this.association.getDicoVisitesEnAttente().get(arbre) == this){
@@ -145,4 +117,33 @@ public class Membre extends Personne{
             System.err.println("Vous n'avez pas eu d'autorisation pour visiter cet arbre, envoyez nous une demandeVisiteArbre");
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder idArbresVotes = new StringBuilder();
+        if(!this.listeArbresVotes.isEmpty()){
+            idArbresVotes.append("[ Liste des Arbres Votés.......");
+            for (Arbre arbre : this.listeArbresVotes) {
+                if(arbre == this.listeArbresVotes.get(this.listeArbresVotes.size())){
+                    idArbresVotes.append(arbre.getIdArbre());
+                }
+                else {
+                    idArbresVotes.append(arbre.getIdArbre() + " ; ");
+                }
+            }
+            idArbresVotes.append(" ] \n");
+        }
+        return "\n" +
+                "{ Membre......................."   + this.id                      + "\n" +
+                "[ Nom.........................."   + this.nom                     + " ] \n" +
+                "[ Prénom......................."   + this.prenom                  + " ] \n" +
+                "[ Date de Naissance............"   + this.dateDeNaissance         + " ] \n" +
+                "[ Date de dernière inscription."   + this.dateDerniereInscription + " ] \n" +
+                "[ Adresse......................"   + this.adresse                 + " ] \n" +
+                idArbresVotes.toString() +
+                "[ Cotisation..................."   + this.cotise + " ] \n" +
+                "[ Nombre de Défraiements......."   + this.nbDefraiement  + " ] \n} "
+                ;
+    }
+
 }

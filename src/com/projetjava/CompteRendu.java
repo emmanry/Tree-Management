@@ -24,4 +24,6 @@ public class CompteRendu {
         return this.membreRapport;
     }
 
+    //todo toString
+
 }

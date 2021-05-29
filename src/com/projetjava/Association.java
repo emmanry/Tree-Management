@@ -29,6 +29,8 @@ public class Association implements Notifiable, Donateur, Demandeur {
     private double montantDefraiement;
     RapportActivite lastRapportActivite;
 
+    /*(Service Mairie,listes des ArbresVisité (et arbre prévu),liste rapport d'activité)*/
+
     public Association(String nom,Municipalite municipalite){
         this.municipalite = municipalite;
         compteBancaire = new CompteBancaire(1000.f);
@@ -56,6 +58,10 @@ public class Association implements Notifiable, Donateur, Demandeur {
         this.dicoVisitesEnAttente.put(arbre, membre);
     }
 
+    /**
+     * Le premier membre ajouté à la listeMembres doit être un Président et
+     * les suivants doivent êtres des Membre
+     */
     public void addListeMembres(Membre membre){
         if(this.listeMembres.isEmpty()){
             if(membre instanceof President){
@@ -83,13 +89,16 @@ public class Association implements Notifiable, Donateur, Demandeur {
         Classification classification = new Classification(this, annee);
         this.addListeClassifications(classification);
         classification.nomination();
-        municipalite.recevoirListArbresNomines(classification.getAnnee(), classification.getListArbresNomines());
+        municipalite.recevoirListArbresNomines(classification.getAnnee(), classification.getListeArbresNomines());
     }
 
     public boolean verificationVisite(Arbre arbre){
         return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && arbre.getRemarquable());
     }
 
+    /**
+     * @return l'historique des ArbreVisite de la plus ancienne visite à la plus récente
+     */
     public String getHistoriqueArbresVisites(){
         StringBuilder sb = new StringBuilder();
         String s;
@@ -214,6 +223,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
         listeMembres.removeIf(membre1 -> membre.getId() == membre1.getId());
         //todo visite
     }
+
     public void setExerciceBudgetaire(ExerciceBudgetaire exerciceBudgetaire) {
         this.exerciceBudgetaire = exerciceBudgetaire;
     }
@@ -234,5 +244,3 @@ public class Association implements Notifiable, Donateur, Demandeur {
         return prixCotisation;
     }
 }
-/*(Service Mairie,ExerciceBudgetaire,Listes de classification (1 par année),liste des membres
-        ,président,listes des ArbresVisité (et arbre prévu),liste rapport d'activité,liste des donateurs,montant du compte bancaire)*/
