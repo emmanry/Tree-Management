@@ -38,25 +38,43 @@ public class Membre extends Personne{
         return this.adresse;
     }
 
-    public List<Arbre> getListArbresVotes(){
-        return this.listArbresVotes;
+    public List<Arbre> getListeArbresVotes(){
+        return this.listeArbresVotes;
     }
 
+    public int getNbDefraiement() {
+        return nbDefraiement;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    // todo inscription et désinscription volontaire
+
+    /**
+     * || Première étape de la classification : les votes ||
+     * Les membres votent pour 5 arbres maximums et tous différents
+     */
     public void vote(Arbre...arbre){
 
         for (Arbre a : arbre) {
-            if (!this.listArbresVotes.contains(a)){
-                this.listArbresVotes.add(a);
+            if (!this.listeArbresVotes.contains(a)){
+                this.listeArbresVotes.add(a);
             }
             else{
                 System.err.println("Vous avez déjà voté pour " + a.toString());
             }
         }
-        if(this.listArbresVotes.size() > 5){
-            this.listArbresVotes = this.listArbresVotes.subList(this.listArbresVotes.size() - 5, this.listArbresVotes.size());
+        if(this.listeArbresVotes.size() > 5){
+            this.listeArbresVotes = this.listeArbresVotes.subList(this.listeArbresVotes.size() - 5, this.listeArbresVotes.size());
         }
     }
 
+    /**
+     * || Première étape d'une visite : demande l'autorisation ||
+     * On fait appel à une vérification auprès de l'Association
+     */
     public void demandeVisiteArbre(Arbre arbre){
         if(!this.association.verificationVisite(arbre)){
             System.err.println("La visite n'est pas autorisée");
@@ -84,7 +102,12 @@ public class Membre extends Personne{
         return id;
     }
 
+
     // todo exception pour la cohérence des dates
+    /**
+     *  || Dernière étape d'une visite : la visite ||
+     *  S'en suit la création d'un compte rendu daté et d'un défraiement
+     */
     public void visiteArbre(Arbre arbre, int annee, int mois, int jour, String contenu){
         if(this.association.getDicoVisitesEnAttente().get(arbre) == this){
             this.association.getDicoVisitesEnAttente().remove(arbre);
@@ -93,11 +116,17 @@ public class Membre extends Personne{
                 MyDate dateDerniereVisite = new MyDate(annee, mois, jour);
                 ArbreVisite.getDicoArbresVisites().put(arbreVisite, dateDerniereVisite);
                 arbreVisite.ecrireCompteRendu(contenu, annee, mois, jour, this.association, this);
+                if(this.association.demandeDefraiement(this)){
+                    this.nbDefraiement++;
+                }
             }
             else{
                 ArbreVisite arbreVisite = new ArbreVisite(arbre.getIdArbre(), arbre.getAdresseAcces(), arbre.getNomFrancais(), arbre.getGenre(), arbre.getEspece(),
                         arbre.getCirconferenceEnCm(), arbre.getHauteurEnM(), arbre.getStadeDeveloppement(), true, arbre.getDateRemarquable(),
                         arbre.getCoordonnees().getX(), arbre.getCoordonnees().getY(), contenu, annee, mois, jour, this.association, this);
+                if(this.association.demandeDefraiement(this)){
+                    this.nbDefraiement++;
+                }
             }
             if(association.demandeDefraiement(this,arbre)){
                 nbDefraiement++;

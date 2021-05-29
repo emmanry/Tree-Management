@@ -17,11 +17,12 @@ public class Arbre {
     private int idArbre;
     private boolean remarquable;
     private Point2D coordonnees;
-
-    //todo virer à la fin
     private static Map<Integer, Arbre> dicoArbre = new Hashtable<Integer,Arbre>();
     private MyDate dateRemarquable;
 
+    /**
+     * dicoArbre permet de récuperer un arbre précis grâce à son idArbre qui est unique
+     */
     public Arbre(int idBase, String idAdresse, String nomFr, String genreA, String especeA, double circonference, double hauteur, String stadeDev, boolean remarquableA, MyDate dateRemarquable, double x, double y){
         this.idArbre = idBase;
         this.genre = genreA;
@@ -93,6 +94,10 @@ public class Arbre {
         this.remarquable = bool;
     }
 
+    /**
+     * A partir du path, cette méthode createArbre créer tous les arbres du fichier csv et
+     * les ajoute dans la listeArbre de la Municipalité précisée
+     */
     public static List<Arbre> createArbre(String path) {
         String idEmplacement, libelleFrancais, genre, espece, stadeDeDeveloppement;
         double circonference = 0, hauteur = 0;

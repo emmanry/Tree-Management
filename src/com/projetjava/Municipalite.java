@@ -59,6 +59,7 @@ public class Municipalite {
         serviceMairie.notifier(ActionArbre.ABATTAGE,arbre);
     }
 
+    // todo utiliser dico
     public void removeArbreById(int id){
         Arbre arbre = listeArbre.stream().filter(a->(a.getIdArbre() == id)).findFirst().orElse(null);
         if(arbre != null){
@@ -68,7 +69,11 @@ public class Municipalite {
     }
     //todo classification
 
-    public void recevoirListArbresNomines(int annee, List<Arbre> listeArbresNomines){
+    /**
+     * Méthode appelé dans envoyerListeArbresNomines(int année) d'Association
+     * On remplit le dicoArbresNominesParAn afin d'avoir un historique des arbres nominés par an
+     */
+    public void recevoirListeArbresNomines(int annee, List<Arbre> listeArbresNomines){
         dicoArbresNominesParAn.put(annee, listeArbresNomines);
     }
 

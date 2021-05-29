@@ -22,10 +22,10 @@ public class Association implements Notifiable, Donateur, Demandeur {
     private List<String> notifications = new ArrayList<>();
     private final CompteBancaire compteBancaire;
     private final List<Donateur> donateurs;
-    private double prixCotisation;
+    private final double prixCotisation;
     private String nom;
-    private int nbDefraiementAutorise;
-    private double montantDefraiement;
+    private final int nbDefraiementAutorise;
+    private final double montantDefraiement;
     RapportActivite lastRapportActivite;
 
     public Association(String nom,Municipalite municipalite){
@@ -54,10 +54,10 @@ public class Association implements Notifiable, Donateur, Demandeur {
         return this.dicoVisitesEnAttente;
     }
 
-    public void addVisitesEnAttente(Arbre arbre, Membre membre){
-        this.dicoVisitesEnAttente.put(arbre, membre);
-    }
-
+    /**
+     * Le premier membre ajouté à la listeMembres doit être un Président et
+     * les suivants doivent êtres des Membre
+     */
     public void addListeMembres(Membre membre){
         if(this.listeMembres.isEmpty()){
             if(membre instanceof President){
@@ -81,17 +81,31 @@ public class Association implements Notifiable, Donateur, Demandeur {
         this.listeClassifications.add(classification);
     }
 
-    public void envoyerListArbresNomines(int annee){
+    /**
+     * || Deuxième étape de la classification : Transmission de la ListeArbresNomines à la municipalité ||
+     */
+    public void envoyerListeArbresNomines(int annee){
         Classification classification = new Classification(this, annee);
         this.addListeClassifications(classification);
         classification.nomination();
-        municipalite.recevoirListArbresNomines(classification.getAnnee(), classification.getListArbresNomines());
+        municipalite.recevoirListeArbresNomines(classification.getAnnee(), classification.getListeArbresNomines());
     }
 
+    /**
+     * On vérifie que l'arbre est remarquable et qu'il n'a pas de visite de prévu
+     * @return boolean si la demande est autorisée ou non
+     */
     public boolean verificationVisite(Arbre arbre){
         return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && !arbre.getRemarquable());
     }
 
+    public void addVisitesEnAttente(Arbre arbre, Membre membre){
+        this.dicoVisitesEnAttente.put(arbre, membre);
+    }
+
+    /**
+     * @return l'historique des ArbreVisite de la plus ancienne visite à la plus récente
+     */
     public String getHistoriqueArbresVisites(){
         StringBuilder sb = new StringBuilder();
         String s;
@@ -221,6 +235,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
         //todo visite
     }
 
+
     public void removeMembreById(int id){
         listeMembres.removeIf(membre -> id == membre.getId());
         //todo visite
@@ -246,5 +261,3 @@ public class Association implements Notifiable, Donateur, Demandeur {
         return prixCotisation;
     }
 }
-/*(Service Mairie,ExerciceBudgetaire,Listes de classification (1 par année),liste des membres
-        ,président,listes des ArbresVisité (et arbre prévu),liste rapport d'activité,liste des donateurs,montant du compte bancaire)*/

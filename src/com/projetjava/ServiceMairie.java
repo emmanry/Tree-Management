@@ -12,11 +12,11 @@ public class ServiceMairie implements Notifieur, Donateur {
 
     private String nom;
 
-    private ArrayList<Notifiable> listEntite;
+    private ArrayList<Notifiable> listeEntite;
 
     public ServiceMairie(String name){
         this.nom = name;
-        listEntite = new ArrayList<>();
+        listeEntite = new ArrayList<>();
     }
 
     public String getNom(){
@@ -24,17 +24,17 @@ public class ServiceMairie implements Notifieur, Donateur {
     }
 
     public void notifier(ActionArbre actionArbre, Arbre arbre){
-        for (Notifiable notifiable: listEntite) {
+        for (Notifiable notifiable: listeEntite) {
             notifiable.notifier(actionArbre,arbre);
         }
     }
 
     public void addNotifier(Notifiable notifiable){
-        listEntite.add(notifiable);
+        listeEntite.add(notifiable);
     }
 
     public void removeNotifier(Notifiable notifiable){
-        listEntite.remove(notifiable);
+        listeEntite.remove(notifiable);
     }
 
     @Override

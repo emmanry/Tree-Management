@@ -9,7 +9,7 @@ public class Classification {
     private Association association;
     private int annee;
     private HashMap<Arbre, Integer> dicoVotes = new HashMap<>();
-    private List<Arbre> listArbresNomines = new ArrayList<>();
+    private List<Arbre> listeArbresNomines = new ArrayList<>();
 
     public Classification(Association assoc, int annee){
         this.association = assoc;
@@ -24,21 +24,25 @@ public class Classification {
         return this.annee;
     }
 
-    public List<Arbre> getListArbresNomines(){
-        return this.listArbresNomines;
+    public List<Arbre> getListeArbresNomines(){
+        return this.listeArbresNomines;
     }
 
     public HashMap<Arbre, Integer> getDicoVotes(){
         return this.dicoVotes;
     }
 
+    /**
+     * On remplit la listeArbresNomines des 5 Arbre les plus votés
+     * En cas d'égalité on priviligie les plus grandes circonférences puis les plus hauts
+     */
     public void nomination(){
-        List<Arbre> listVote;
+        List<Arbre> listeVote;
         int nbVotes;
         for (Membre membre : association.getListeMembres()) {
-            listVote = membre.getListArbresVotes();
+            listeVote = membre.getListeArbresVotes();
 
-            for (Arbre arbre : listVote) {
+            for (Arbre arbre : listeVote) {
                 this.dicoVotes.putIfAbsent(arbre, 0); // si un arbre n'a jamais été voté alors on l'ajoute dans le dico
                 nbVotes = this.dicoVotes.get(arbre);
                 this.dicoVotes.put(arbre, nbVotes + 1);
@@ -51,7 +55,7 @@ public class Classification {
             dicoVotesCopie.put(arbre, this.dicoVotes.get(arbre));
         }
 
-        while (this.listArbresNomines.size() < 5 && !dicoVotesCopie.isEmpty()) {
+        while (this.listeArbresNomines.size() < 5 && !dicoVotesCopie.isEmpty()) {
             int valMax = 0;
             List<Arbre> listArbresMax = new ArrayList<>();
             for (Arbre arbre : dicoVotesCopie.keySet()) {
@@ -100,12 +104,12 @@ public class Classification {
                 }
             }
             for (Arbre arbre : listArbresMax) {
-                this.listArbresNomines.add(arbre);
+                this.listeArbresNomines.add(arbre);
                 dicoVotesCopie.remove(arbre);
             }
         }
-        if(this.listArbresNomines.size() > 5){
-            this.listArbresNomines = this.listArbresNomines.subList(0, 5);
+        if(this.listeArbresNomines.size() > 5){
+            this.listeArbresNomines = this.listeArbresNomines.subList(0, 5);
         }
     }
 
