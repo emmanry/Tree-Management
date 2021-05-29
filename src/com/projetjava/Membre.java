@@ -70,6 +70,7 @@ public class Membre extends Personne{
                 System.err.println("Vous avez déjà voté pour " + a.toString());
             }
         }
+        // S'il y a plus de 5 arbres votés, on prend en compte seulement les 5 derniers
         if(this.listeArbresVotes.size() > 5){
             this.listeArbresVotes = this.listeArbresVotes.subList(this.listeArbresVotes.size() - 5, this.listeArbresVotes.size());
         }
@@ -80,7 +81,7 @@ public class Membre extends Personne{
      * On fait appel à une vérification auprès de l'Association
      */
     public void demandeVisiteArbre(Arbre arbre){
-        if(!this.association.verificationVisite(arbre)){
+        if(!this.association.verificationVisite(arbre, this)){
             System.err.println("La visite n'est pas autorisée");
         }
         else{
@@ -94,28 +95,31 @@ public class Membre extends Personne{
      *  S'en suit la création d'un compte rendu daté et d'un défraiement
      */
     public void visiteArbre(Arbre arbre, int annee, int mois, int jour, String contenu){
+        // On vérifie que la demande a été programmée et acceptée
         if(this.association.getDicoVisitesEnAttente().get(arbre) == this){
-            this.association.getDicoVisitesEnAttente().remove(arbre);
-            if(Arbre.getDicoArbre().get(arbre.getIdArbre()) instanceof ArbreVisite){
-                ArbreVisite arbreVisite = (ArbreVisite) Arbre.getDicoArbre().get(arbre.getIdArbre());
-                MyDate dateDerniereVisite = new MyDate(annee, mois, jour);
-                ArbreVisite.getDicoArbresVisites().put(arbreVisite, dateDerniereVisite);
-                arbreVisite.ecrireCompteRendu(contenu, annee, mois, jour, this.association, this);
-                if(this.association.demandeDefraiement(this)){
-                    this.nbDefraiement++;
+            if(this.association.demandeDefraiement(this)){
+                nbDefraiement++;
+                this.association.getDicoVisitesEnAttente().remove(arbre);
+                // Si l'arbre a déjà été visité, on met à jour son état
+                if(Arbre.getDicoArbre().get(arbre.getIdArbre()) instanceof ArbreVisite){
+                    ArbreVisite arbreVisite = (ArbreVisite) Arbre.getDicoArbre().get(arbre.getIdArbre());
+                    MyDate dateDerniereVisite = new MyDate(annee, mois, jour);
+                    ArbreVisite.getDicoArbresVisites().put(arbreVisite, dateDerniereVisite);
+                    arbreVisite.ecrireCompteRendu(contenu, annee, mois, jour, this.association, this);
+                }
+                // Sinon on le rend visité
+                else{
+                    ArbreVisite arbreVisite = new ArbreVisite(arbre.getIdArbre(), arbre.getAdresseAcces(), arbre.getNomFrancais(), arbre.getGenre(), arbre.getEspece(),
+                            arbre.getCirconferenceEnCm(), arbre.getHauteurEnM(), arbre.getStadeDeveloppement(), true, arbre.getDateRemarquable(),
+                            arbre.getCoordonnees().getX(), arbre.getCoordonnees().getY(), contenu, annee, mois, jour, this.association, this);
                 }
             }
-            else{
-                ArbreVisite arbreVisite = new ArbreVisite(arbre.getIdArbre(), arbre.getAdresseAcces(), arbre.getNomFrancais(), arbre.getGenre(), arbre.getEspece(),
-                        arbre.getCirconferenceEnCm(), arbre.getHauteurEnM(), arbre.getStadeDeveloppement(), true, arbre.getDateRemarquable(),
-                        arbre.getCoordonnees().getX(), arbre.getCoordonnees().getY(), contenu, annee, mois, jour, this.association, this);
-                if(this.association.demandeDefraiement(this)){
-                    this.nbDefraiement++;
-                }
+            else {
+                System.err.println("L'association ne peut pas encore financer votre visite. Attendez quelques temps.");
             }
         }
         else{
-            System.err.println("Vous n'avez pas eu d'autorisation pour visiter cet arbre, envoyez nous une demandeVisiteArbre");
+            System.err.println("Vous n'avez pas eu d'autorisation pour visiter cet arbre. Envoyez nous une demandeVisiteArbre.");
         }
     }
 

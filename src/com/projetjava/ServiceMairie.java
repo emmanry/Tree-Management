@@ -29,17 +29,17 @@ public class ServiceMairie implements Notifieur, Donateur {
         }
     }
 
-    public void addNotifier(Notifiable notifiable){
+    public void addNotifiable(Notifiable notifiable){
         listeEntite.add(notifiable);
     }
 
-    public void removeNotifier(Notifiable notifiable){
+    public void removeNotifiable(Notifiable notifiable){
         listeEntite.remove(notifiable);
     }
 
     @Override
-    public void receiveDemandeDon(String message, Demandeur demandeur, RapportActivite rapport) {
+    public void receiveDemandeDon(String message, Demandeur demandeur, double montant,RapportActivite rapport) {
         //todo autre comportement ?
-        demandeur.receiveDon(new Don(500.f,this));
+        demandeur.receiveDon(new Don(montant,this));
     }
 }

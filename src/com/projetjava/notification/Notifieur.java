@@ -9,7 +9,7 @@ import com.projetjava.Arbre;
 public interface Notifieur {
     public void notifier(ActionArbre actionArbre, Arbre arbre);
 
-    public void addNotifier(Notifiable notifiable);
+    public void addNotifiable(Notifiable notifiable);
 
-    public void removeNotifier(Notifiable notifiable);
+    public void removeNotifiable(Notifiable notifiable);
 }

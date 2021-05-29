@@ -44,7 +44,7 @@ public class ExerciceBudgetaire {
         }
         //déinscription des membres
         for(Membre membre:membres){
-            association.deinscription(membre);
+            association.desinscription(membre);
         }
 
         //todo classification
@@ -53,6 +53,6 @@ public class ExerciceBudgetaire {
         association.setLastRapportActivite(rapportActivite);
 
         //envoi des demandes subventions/don et réception des sommes
-        association.demandeDon(messageDemandeDon);
+        association.demandeDon(messageDemandeDon, 50);
     }
 }

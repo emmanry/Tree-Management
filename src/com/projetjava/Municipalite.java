@@ -39,10 +39,11 @@ public class Municipalite {
     }
 
     public void addArbre(Arbre arbre){
-        listeArbre.add(arbre);
-        serviceMairie.notifier(ActionArbre.PLANTATION,arbre);
+        this.listeArbre.add(arbre);
+        this.serviceMairie.notifier(ActionArbre.PLANTATION,arbre);
     }
 
+    //todo classification
     public void rendreRemarquable(Arbre arbre, int jour, int mois, int annee){
         if(arbre.getRemarquable()){
             System.err.println("Attention ! L'arbre " + arbre.getIdArbre() + " est déjà remarquable");
@@ -50,6 +51,7 @@ public class Municipalite {
         else{
             arbre.setRemarquable(true);
             arbre.setDateRemarquable(jour, mois, annee);
+            this.serviceMairie.notifier(ActionArbre.CLASSIFICATION, arbre);
         }
     }
 
@@ -58,18 +60,16 @@ public class Municipalite {
         serviceMairie.notifier(ActionArbre.ABATTAGE,arbre);
     }
 
-    // todo utiliser dico
     public void removeArbreById(int id){
-        Arbre arbre = listeArbre.stream().filter(a->(a.getIdArbre() == id)).findFirst().orElse(null);
+        Arbre arbre = Arbre.getDicoArbre().get(id);
         if(arbre != null){
             listeArbre.remove(arbre);
             serviceMairie.notifier(ActionArbre.ABATTAGE,arbre);
         }
     }
-    //todo classification
 
     /**
-     * Méthode appelé dans envoyerListeArbresNomines(int année) d'Association
+     * Méthode appelée dans envoyerListeArbresNomines(int annee) d'Association
      * On remplit le dicoArbresNominesParAn afin d'avoir un historique des arbres nominés par an
      */
     public void recevoirListeArbresNomines(int annee, List<Arbre> listeArbresNomines){

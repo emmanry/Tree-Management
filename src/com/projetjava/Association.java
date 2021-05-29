@@ -29,14 +29,14 @@ public class Association implements Notifiable, Donateur, Demandeur {
     private final double montantDefraiement;
     RapportActivite lastRapportActivite;
 
-    public Association(String nom,Municipalite municipalite){
+    public Association(String nom,Municipalite municipalite, double soldeinitial, double prixCotisation, int nbDefraiementAutorise, double montantDefraiement){
         this.municipalite = municipalite;
-        compteBancaire = new CompteBancaire(1000.f);
-        prixCotisation = 50.f;
+        compteBancaire = new CompteBancaire(soldeinitial);
+        this.prixCotisation = prixCotisation;
         donateurs = new ArrayList<>();
         this.nom = nom;
-        nbDefraiementAutorise = 5;
-        montantDefraiement= 30;
+        this.nbDefraiementAutorise = nbDefraiementAutorise;
+        this.montantDefraiement = montantDefraiement;
         exerciceBudgetaire = new ExerciceBudgetaire(this);
     }
 
@@ -54,7 +54,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
 
     /**
      * Le premier membre ajouté à la listeMembres doit être un Président et
-     * les suivants doivent êtres des Membre
+     * les suivants doivent être des Membre
      */
     public void addListeMembres(Membre membre){
         if(this.listeMembres.isEmpty()){
@@ -80,7 +80,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
     }
 
     /**
-     * || Deuxième étape de la classification : Transmission de la ListeArbresNomines à la municipalité ||
+     * || Dernière étape de la classification : Transmission de la ListeArbresNomines à la municipalité ||
      */
     public void envoyerListeArbresNomines(int annee){
         Classification classification = new Classification(this, annee);
@@ -90,17 +90,18 @@ public class Association implements Notifiable, Donateur, Demandeur {
     }
 
     /**
-     * On vérifie que l'arbre est remarquable et qu'il n'a pas de visite de prévu
+     * On vérifie que l'arbre est remarquable, qu'il n'a pas de visite de prévu et qu'il n'a pas dépassé le nombre de visites autorisées
      * @return boolean si la demande est autorisée ou non
      */
-    public boolean verificationVisite(Arbre arbre){
-        return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && arbre.getRemarquable());
+    public boolean verificationVisite(Arbre arbre, Membre membre){
+        return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && arbre.getRemarquable() && (membre.getNbDefraiement() < this.nbDefraiementAutorise));
     }
 
     public void addVisitesEnAttente(Arbre arbre, Membre membre){
         this.dicoVisitesEnAttente.put(arbre, membre);
     }
 
+    // todo ajouter les arbres jamais visités (mais remarquables)
     /**
      * @return l'historique des ArbreVisite de la plus ancienne visite à la plus récente
      */
@@ -115,6 +116,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
             dicoArbresVisitesCopie.put(arbreVisite, ArbreVisite.getDicoArbresVisites().get(arbreVisite));
         }
 
+        // Tri des arbres du dicoArbresVisites pour les classer de la plus ancienne à la plus récente visite
         while(!dicoArbresVisitesCopie.isEmpty()){
             Calendar dateAujourdhui = Calendar.getInstance();
             MyDate dateMin = new MyDate(dateAujourdhui.get(Calendar.YEAR), dateAujourdhui.get(Calendar.MONTH), dateAujourdhui.get(Calendar.DATE));
@@ -135,10 +137,16 @@ public class Association implements Notifiable, Donateur, Demandeur {
         return s;
     }
 
+    /**
+     * Permet directement aux Associations de s'incrire aux informations sur les arbres de la commune
+     */
+    public void inscriptionNotification(){
+        this.municipalite.getServiceMairie().addNotifiable(this);
+    }
 
     @Override
     public void notifier(ActionArbre action, Arbre arbre) {
-        notifications.add(action.toString() + arbre);
+        this.notifications.add(action.toString() + arbre);
         //todo retirer des listes de classification
         switch (action){
             case ABATTAGE:
@@ -148,21 +156,22 @@ public class Association implements Notifiable, Donateur, Demandeur {
         }
     }
 
+    // todo utilisée quand ?
     /**
      *
      * @return liste des notifications
      */
     public List<String> alertNotifications(){
-        List<String> tmp = notifications;
-        notifications = null;
+        List<String> tmp = this.notifications;
+        this.notifications = null;
         return tmp;
     }
 
     @Override
-    public void receiveDemandeDon(String message,Demandeur demandeur, RapportActivite rapport) {
+    public void receiveDemandeDon(String message,Demandeur demandeur, double montant, RapportActivite rapport) {
         //todo autre comportement ?
-        if(compteBancaire.retirer(50.f)){
-            rapport.getAssociation().receiveDon(new Don(50.f,this));
+        if(compteBancaire.retirer(montant)){
+            rapport.getAssociation().receiveDon(new Don(montant,this));
         }
     }
 
@@ -172,9 +181,9 @@ public class Association implements Notifiable, Donateur, Demandeur {
     }
 
     @Override
-    public void demandeDon(String message){
-        for (Donateur donateur:donateurs) {
-            donateur.receiveDemandeDon(message,this,lastRapportActivite);
+    public void demandeDon(String message, double valeur){
+        for (Donateur donateur : donateurs) {
+            donateur.receiveDemandeDon(message,this, valeur, lastRapportActivite);
         }
     }
 
@@ -212,19 +221,15 @@ public class Association implements Notifiable, Donateur, Demandeur {
     }
 
     public boolean demandeDefraiement(Membre membre) {
-        if(membre.getNbDefraiement() < nbDefraiementAutorise){
-            if(compteBancaire.retirer(montantDefraiement)){
-                exerciceBudgetaire.addDepense(new DefraiementVisite(montantDefraiement));
-                return true;
-            }else{
-                return false;
-            }
+        if(compteBancaire.retirer(montantDefraiement)){
+            exerciceBudgetaire.addDepense(new DefraiementVisite(montantDefraiement));
+            return true;
         }else{
             return false;
         }
     }
 
-    public void deinscription(Membre membre){
+    public void desinscription(Membre membre){
         listeMembres.removeIf(membre1 -> membre.getId() == membre1.getId());
         //todo visite
     }
@@ -245,6 +250,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
     public ExerciceBudgetaire getExerciceBudgetaire() {
         return exerciceBudgetaire;
     }
+
     public double getPrixCotisation() {
         return prixCotisation;
     }

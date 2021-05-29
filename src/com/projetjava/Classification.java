@@ -39,6 +39,7 @@ public class Classification {
     public void nomination(){
         List<Arbre> listeVote;
         int nbVotes;
+        // On compte les votes
         for (Membre membre : association.getListeMembres()) {
             listeVote = membre.getListeArbresVotes();
 
@@ -55,9 +56,11 @@ public class Classification {
             dicoVotesCopie.put(arbre, this.dicoVotes.get(arbre));
         }
 
+        // Tri des arbres les plus votés
         while (this.listeArbresNomines.size() < 5 && !dicoVotesCopie.isEmpty()) {
-            int valMax = 0;
+            int valMax = 0; // correspond au plus grand nombre de votes que l'on n'a pas encore traité
             List<Arbre> listArbresMax = new ArrayList<>();
+            // On garde les arbres qui ont le même nombre de votes valMax
             for (Arbre arbre : dicoVotesCopie.keySet()) {
                 if(valMax == dicoVotesCopie.get(arbre)){
                     listArbresMax.add(arbre);
@@ -69,14 +72,17 @@ public class Classification {
                 }
             }
 
+            // Si des arbres ont le même nombre de votes
             if(listArbresMax.size() > 1){
                 for(int i = 1; i < listArbresMax.size(); i++){
                     for(int j = 0; j < i; j++){
+                        // Tri par circonférence
                         if(listArbresMax.get(i).getCirconferenceEnCm() > listArbresMax.get(j).getCirconferenceEnCm()){
                             Arbre arbreJ = listArbresMax.get(j);
                             listArbresMax.set(j, listArbresMax.get(i));
                             listArbresMax.set(i, arbreJ);
                         }
+                        // S'ils ont la même circonférence, tri par hauteur
                         else if(listArbresMax.get(i).getCirconferenceEnCm() == listArbresMax.get(j).getCirconferenceEnCm()){
                             if(listArbresMax.get(i).getHauteurEnM() >= listArbresMax.get(j).getHauteurEnM()){
                                 Arbre arbreI = listArbresMax.get(i);
@@ -108,6 +114,7 @@ public class Classification {
                 dicoVotesCopie.remove(arbre);
             }
         }
+        // On garde les 5 premiers de la liste
         if(this.listeArbresNomines.size() > 5){
             this.listeArbresNomines = this.listeArbresNomines.subList(0, 5);
         }

@@ -43,9 +43,9 @@ public class Personne implements Notifiable, Donateur {
     }
 
     @Override
-    public void receiveDemandeDon(String message, Demandeur demandeur, RapportActivite rapport) {
+    public void receiveDemandeDon(String message, Demandeur demandeur, double montant,RapportActivite rapport) {
         //todo autre comportement ?
-        demandeur.receiveDon(new Don(15.f,this));
+        demandeur.receiveDon(new Don(montant,this));
     }
 
     public String toString(){

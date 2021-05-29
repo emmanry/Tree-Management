@@ -95,7 +95,7 @@ public class Arbre {
     }
 
     /**
-     * A partir du path, cette méthode createArbre créer tous les arbres du fichier csv et
+     * A partir du path, cette méthode createArbre crée tous les arbres du fichier csv et
      * les ajoute dans la listeArbre de la Municipalité précisée
      */
     public static void createArbre(String path, Municipalite municipalite) {
@@ -122,6 +122,7 @@ public class Arbre {
                 // Récupère les données de la ligne
                 data = line.split(";", -1);
 
+                // On vérifie que la ligne soit valide
                 if(data.length != 17){
                     continue;
                 }
@@ -208,17 +209,6 @@ public class Arbre {
                dateConnue.toString() +
                "[ Coordonnées................( " + this.coordonnees.getX() + ", " + this.coordonnees.getY() + " ) ] \n}"
                 ;
-    }
-
-
-    public static void main (String[] args){
-        ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
-        Municipalite paris = new Municipalite("Paris", serviceParis);
-        createArbre("data/les-arbres.csv", paris);
-        System.out.println(dicoArbre.values());
-        System.out.println(dicoArbre.get(102837));
-        //System.out.println(paris.getListeArbre().size());
-        System.out.println(paris.toString());
     }
 
 }

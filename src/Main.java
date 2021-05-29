@@ -6,14 +6,14 @@ public class Main {
     public static void main(String[] args) {
         ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
         Municipalite paris = new Municipalite("Paris", serviceParis);
-        Association assoc = new Association("asso",paris);
+        Association assoc = new Association("asso",paris, 1000, 50, 5, 30);
         Arbre.createArbre("data/les-arbres.csv", paris);
 
         President membre = new President("NOURRY", "Emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
         Membre membre2 = new Membre("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
 
         Personne p = new Personne("q","p");
-        serviceParis.addNotifier(p);
+        serviceParis.addNotifiable(p);
 
         paris.removeArbreById(282008);
 
@@ -74,7 +74,7 @@ public class Main {
 
         //test don
         assoc.addDonateur(p);
-        assoc.demandeDon("demande");
+        assoc.demandeDon("demande", 50);
         System.out.println(assoc.getCompteBancaire().getSolde());
 
         //test exercice budgétaire

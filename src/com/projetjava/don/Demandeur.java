@@ -4,7 +4,7 @@ import com.projetjava.RapportActivite;
 
 public interface Demandeur {
 
-    void demandeDon(String message);
+    void demandeDon(String message, double valeur);
 
     void addDonateur(Donateur donateur);
 
