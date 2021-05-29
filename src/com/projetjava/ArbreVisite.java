@@ -8,6 +8,7 @@ import java.util.List;
 public class ArbreVisite extends Arbre{
 
     private List<CompteRendu> listeCompteRendus = new ArrayList<>();
+
     private static HashMap<ArbreVisite, MyDate> dicoArbresVisites = new HashMap<>();
 
     // todo un arbre visité doit etre remarquable

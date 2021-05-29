@@ -1,9 +1,6 @@
 package com.projetjava;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Membre extends Personne{
 
@@ -11,8 +8,8 @@ public class Membre extends Personne{
     private String adresse;
     private Association association;
     private List<Arbre> listArbresVotes = new ArrayList<>();
-    private boolean cotise;
     private int nbDefraiement;
+    private final HashMap<Integer,Double> cotisations;
     private int id;
     private static int indexId = 0;
 
@@ -22,9 +19,8 @@ public class Membre extends Personne{
         this.dateDeNaissance = new MyDate(anneeNaissance, moisNaissance, jourNaissance);
         this.dateDerniereInscription = new MyDate(anneeInscription, moisInscription, jourInscription);
         this.adresse = adresseMembre;
-
+        cotisations = new HashMap<>();
         this.association.addListeMembres(this);
-        this.cotise = false;
         this.nbDefraiement = 0;
         id = indexId;
         indexId++;
@@ -69,21 +65,15 @@ public class Membre extends Personne{
             this.association.addVisitesEnAttente(arbre, this);
         }
     }
-    public void cotiser() {
-        if(!cotise){
-            cotise = true;
+    public void cotiser(int year) {
+        if(cotisations.get(year) == null){
             association.cotisationRecette();
+            cotisations.put(year,association.getPrixCotisation());
         }
     }
 
-    public boolean hasCotiser(){
-        return cotise;
-    }
-
-    public void defraiement(){
-        if(association.demandeDefraiement(this)){
-            nbDefraiement++;
-        }
+    public boolean hasCotiser(int year){
+        return (cotisations.get(year) != null);
     }
 
     public int getNbDefraiement() {
@@ -92,34 +82,6 @@ public class Membre extends Personne{
 
     public int getId() {
         return id;
-    }
-
-    @Override
-    public String toString() {
-        return "Membre{" +
-                "Nom=" + nom +
-                "Prénom=" + prenom +
-                "dateDeNaissance=" + dateDeNaissance +
-                ", dateDerniereInscription=" + dateDerniereInscription +
-                ", adresse='" + adresse + '\'' +
-                ", association=" + association +
-                ", listArbresVotes=" + listArbresVotes +
-                ", cotise=" + cotise +
-                ", nbDefraiement=" + nbDefraiement +
-                ", id=" + id +
-                '}';
-    }
-
-    public static void main(String[] args) {
-        /*Association assoc = new Association("nom");
-        Membre membre = new Membre("azerty", "emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
-        ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
-        Municipalite paris = new Municipalite("Paris", serviceParis);
-        Arbre.createArbre("C:\\Users\\emman\\OneDrive\\Bureau\\S6\\Java\\Projet\\les-arbres.csv", paris);
-
-        Arbre a = Arbre.getDicoArbre().get(214468);
-        Arbre b = Arbre.getDicoArbre().get(298184);*/
-
     }
 
     // todo exception pour la cohérence des dates
@@ -131,18 +93,40 @@ public class Membre extends Personne{
                 MyDate dateDerniereVisite = new MyDate(annee, mois, jour);
                 ArbreVisite.getDicoArbresVisites().put(arbreVisite, dateDerniereVisite);
                 arbreVisite.ecrireCompteRendu(contenu, annee, mois, jour, this.association, this);
-                if(association.demandeDefraiement(this)){
-                    nbDefraiement++;
-                }
             }
             else{
                 ArbreVisite arbreVisite = new ArbreVisite(arbre.getIdArbre(), arbre.getAdresseAcces(), arbre.getNomFrancais(), arbre.getGenre(), arbre.getEspece(),
                         arbre.getCirconferenceEnCm(), arbre.getHauteurEnM(), arbre.getStadeDeveloppement(), true, arbre.getDateRemarquable(),
                         arbre.getCoordonnees().getX(), arbre.getCoordonnees().getY(), contenu, annee, mois, jour, this.association, this);
             }
+            if(association.demandeDefraiement(this,arbre)){
+                nbDefraiement++;
+            }
         }
         else{
             System.err.println("Vous n'avez pas eu d'autorisation pour visiter cet arbre, envoyez nous une demandeVisiteArbre");
         }
+    }
+
+    public HashMap<Integer, Double> getCotisations() {
+        return cotisations;
+    }
+
+    public Association getAssociation() {
+        return association;
+    }
+
+    @Override
+    public String toString() {
+        return "Membre " +
+                "Nom=" + nom +
+                "Prénom=" + prenom +
+                "dateDeNaissance=" + dateDeNaissance +
+                ", dateDerniereInscription=" + dateDerniereInscription +
+                ", adresse='" + adresse + '\'' +
+                ", association=" + association.getNom() +
+                ", listArbresVotes=" + listArbresVotes +
+                ", nbDefraiement=" + nbDefraiement +
+                ", id=" + id;
     }
 }

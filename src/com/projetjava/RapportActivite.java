@@ -38,13 +38,13 @@ public class RapportActivite {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("Rapport Activité : \n");
-        stringBuilder.append(association);
+        stringBuilder.append(association.getNom());
         stringBuilder.append("\n");
         stringBuilder.append("Dépenses : \n");
         for (Depense depense:depenses) {
             stringBuilder.append(depense);
         }
-        stringBuilder.append("Recette : \n");
+        stringBuilder.append("\nRecette : \n");
         for (Don don:doneurs) {
             stringBuilder.append(don);
         }

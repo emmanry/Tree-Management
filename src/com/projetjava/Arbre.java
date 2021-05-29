@@ -93,11 +93,12 @@ public class Arbre {
         this.remarquable = bool;
     }
 
-    public static void createArbre(String path, Municipalite municipalite) {
+    public static List<Arbre> createArbre(String path) {
         String idEmplacement, libelleFrancais, genre, espece, stadeDeDeveloppement;
         double circonference = 0, hauteur = 0;
         int idbase = 0;
         Point2D geoPoint2D = null;
+        List<Arbre> arbres = new ArrayList<>();
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
 
@@ -169,13 +170,14 @@ public class Arbre {
 
                 Arbre arbre = new Arbre(idbase, idEmplacement, libelleFrancais, genre, espece, circonference, hauteur, stadeDeDeveloppement, remarquable, null, geoPoint2D.getX(), geoPoint2D.getY());
 
-                municipalite.addArbre(arbre);
+                arbres.add(arbre);
 
             }
         }
         catch(IOException e){
             System.out.println(e);
         }
+        return arbres;
     }
 
     public String toString(){
@@ -204,16 +206,4 @@ public class Arbre {
                "[ Coordonnées................( " + this.coordonnees.getX() + ", " + this.coordonnees.getY() + " ) ] \n}"
                 ;
     }
-
-
-    public static void main (String[] args){
-        ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
-        Municipalite paris = new Municipalite("Paris", serviceParis);
-        createArbre("data/les-arbres.csv", paris);
-        System.out.println(dicoArbre.values());
-        System.out.println(dicoArbre.get(102837));
-        //System.out.println(paris.getListeArbre().size());
-        System.out.println(paris.toString());
-    }
-
 }

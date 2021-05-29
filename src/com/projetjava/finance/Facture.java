@@ -1,13 +1,10 @@
 package com.projetjava.finance;
 
-import com.projetjava.finance.Depense;
-
 public class Facture extends Depense {
 
     private String creancier;
     private String description;
-
-
+    
     public Facture(String creancier, String description, double montant) {
         super(montant);
         this.creancier = creancier;
@@ -20,5 +17,13 @@ public class Facture extends Depense {
 
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public String toString() {
+        return "Facture " +
+                "montant= "+ montant+
+                " creancier=" + creancier + '\'' +
+                ", description=" + description + "\n";
     }
 }

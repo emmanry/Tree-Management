@@ -42,4 +42,15 @@ public class ServiceMairie implements Notifieur, Donateur {
         //todo autre comportement ?
         demandeur.receiveDon(new Don(500.f,this));
     }
+
+    public ArrayList<Association> getAssociation(){
+        ArrayList<Association> associations = new ArrayList<>();
+
+        for (Notifiable entity:listEntite) {
+            if(entity instanceof Association){
+                associations.add((Association) entity);
+            }
+        }
+        return associations;
+    }
 }

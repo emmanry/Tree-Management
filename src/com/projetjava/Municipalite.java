@@ -12,10 +12,11 @@ public class Municipalite {
     private ArrayList<Arbre> listeArbre;
     private HashMap<Integer, List<Arbre>> dicoArbresNominesParAn = new HashMap<Integer, List<Arbre>>();
 
-    public Municipalite(String name, ServiceMairie serviceEspaceVert){
+    public Municipalite(String name, ServiceMairie serviceEspaceVert,ArrayList<Arbre> arbres){
         this.listeArbre = new ArrayList<>();
         this.nom = name;
         this.serviceMairie = serviceEspaceVert;
+        this.listeArbre = arbres;
     }
 
     public String getNom(){
@@ -85,12 +86,4 @@ public class Municipalite {
                "[ a le service \"" + this.serviceMairie.getNom() + "\" ]\n}"
                 ;
     }
-
-    public static void main(String[] args){
-        ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
-        Municipalite paris = new Municipalite("Paris", serviceParis);
-        System.out.println(paris.toString());
-
-    }
-
 }

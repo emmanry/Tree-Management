@@ -15,14 +15,13 @@ import java.util.List;
 public class Association implements Notifiable, Donateur, Demandeur {
 
     private Municipalite municipalite;
-    private ServiceMairie serviceMairie;
     private ExerciceBudgetaire exerciceBudgetaire;
-    private ArrayList<Membre> listeMembres = new ArrayList<>();
-    private List<Classification> listeClassifications = new ArrayList<>();
+    private final ArrayList<Membre> listeMembres = new ArrayList<>();
+    private final List<Classification> listeClassifications = new ArrayList<>();
     private HashMap<Arbre, Membre> dicoVisitesEnAttente = new HashMap<>();
     private List<String> notifications = new ArrayList<>();
-    private CompteBancaire compteBancaire;
-    private List<Donateur> donateurs;
+    private final CompteBancaire compteBancaire;
+    private final List<Donateur> donateurs;
     private double prixCotisation;
     private String nom;
     private int nbDefraiementAutorise;
@@ -37,7 +36,10 @@ public class Association implements Notifiable, Donateur, Demandeur {
         this.nom = nom;
         nbDefraiementAutorise = 5;
         montantDefraiement= 30;
-        exerciceBudgetaire = new ExerciceBudgetaire(this);
+        Date date = new Date(System.currentTimeMillis());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        exerciceBudgetaire = new ExerciceBudgetaire(this,cal.get(Calendar.YEAR));
     }
 
     public ArrayList<Membre> getListeMembres(){
@@ -69,7 +71,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
             if(membre instanceof President){
                 System.err.println("L'association a déjà un président");
             }
-            else if(membre instanceof Membre){
+            else if(membre != null){
                 this.listeMembres.add(membre);
             }
         }
@@ -87,7 +89,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
     }
 
     public boolean verificationVisite(Arbre arbre){
-        return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && arbre.getRemarquable());
+        return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && !arbre.getRemarquable());
     }
 
     public String getHistoriqueArbresVisites(){
@@ -121,7 +123,6 @@ public class Association implements Notifiable, Donateur, Demandeur {
         return s;
     }
 
-
     @Override
     public void notifier(ActionArbre action, Arbre arbre) {
         notifications.add(action.toString() + arbre);
@@ -154,7 +155,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
 
     @Override
     public String getNom() {
-        return null;
+        return nom;
     }
 
     @Override
@@ -172,6 +173,11 @@ public class Association implements Notifiable, Donateur, Demandeur {
     @Override
     public void removeDonateur(Donateur donateur) {
         donateurs.remove(donateur);
+    }
+
+    @Override
+    public ArrayList<Donateur> getDonateur() {
+        return (ArrayList<Donateur>) donateurs;
     }
 
     @Override
@@ -197,10 +203,10 @@ public class Association implements Notifiable, Donateur, Demandeur {
         }
     }
 
-    public boolean demandeDefraiement(Membre membre) {
+    public boolean demandeDefraiement(Membre membre,Arbre a) {
         if(membre.getNbDefraiement() < nbDefraiementAutorise){
             if(compteBancaire.retirer(montantDefraiement)){
-                exerciceBudgetaire.addDepense(new DefraiementVisite(montantDefraiement));
+                exerciceBudgetaire.addDepense(new DefraiementVisite(montantDefraiement,a));
                 return true;
             }else{
                 return false;
@@ -210,10 +216,16 @@ public class Association implements Notifiable, Donateur, Demandeur {
         }
     }
 
-    public void deinscription(Membre membre){
+    public void removeMembre(Membre membre){
         listeMembres.removeIf(membre1 -> membre.getId() == membre1.getId());
         //todo visite
     }
+
+    public void removeMembreById(int id){
+        listeMembres.removeIf(membre -> id == membre.getId());
+        //todo visite
+    }
+
     public void setExerciceBudgetaire(ExerciceBudgetaire exerciceBudgetaire) {
         this.exerciceBudgetaire = exerciceBudgetaire;
     }
