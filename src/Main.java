@@ -35,7 +35,7 @@ public class Main {
          */
 
 
-        assoc.envoyerListArbresNomines(2020);
+        assoc.envoyerListeArbresNomines(2020);
         System.out.println(paris.getDicoArbresNominesParAn().toString());
 
 

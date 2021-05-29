@@ -47,4 +47,13 @@ public class Personne implements Notifiable, Donateur {
         //todo autre comportement ?
         demandeur.receiveDon(new Don(15.f,this));
     }
+
+    public String toString(){
+        return "\n" +
+                "{ Personne.........."                    + "\n" +
+                "[ Nom..............."   + this.nom       + " ] \n" +
+                "[ Prénom............"   + this.prenom    + " ) ] \n}"
+                ;
+    }
+
 }

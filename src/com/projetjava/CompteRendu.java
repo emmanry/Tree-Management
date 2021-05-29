@@ -24,6 +24,14 @@ public class CompteRendu {
         return this.membreRapport;
     }
 
-    //todo toString
+    public String toString(){
+        return "\n" +
+                "{ Compte Rendu..............."                             + "\n" +
+                "[ Contenu du Rapport........."   + this.rapport            + " ] \n" +
+                "[ Date du Rapport............"   + this.dateRapport        + " ] \n" +
+                "[ Association................"   + this.associationRapport + " ] \n" +
+                "[ Membre....................."   + this.membreRapport      + " ) ] \n}"
+                ;
+    }
 
 }

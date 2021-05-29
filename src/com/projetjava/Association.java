@@ -29,8 +29,6 @@ public class Association implements Notifiable, Donateur, Demandeur {
     private double montantDefraiement;
     RapportActivite lastRapportActivite;
 
-    /*(Service Mairie,listes des ArbresVisité (et arbre prévu),liste rapport d'activité)*/
-
     public Association(String nom,Municipalite municipalite){
         this.municipalite = municipalite;
         compteBancaire = new CompteBancaire(1000.f);
@@ -52,10 +50,6 @@ public class Association implements Notifiable, Donateur, Demandeur {
 
     public HashMap<Arbre, Membre> getDicoVisitesEnAttente(){
         return this.dicoVisitesEnAttente;
-    }
-
-    public void addVisitesEnAttente(Arbre arbre, Membre membre){
-        this.dicoVisitesEnAttente.put(arbre, membre);
     }
 
     /**
@@ -85,15 +79,26 @@ public class Association implements Notifiable, Donateur, Demandeur {
         this.listeClassifications.add(classification);
     }
 
-    public void envoyerListArbresNomines(int annee){
+    /**
+     * || Deuxième étape de la classification : Transmission de la ListeArbresNomines à la municipalité ||
+     */
+    public void envoyerListeArbresNomines(int annee){
         Classification classification = new Classification(this, annee);
         this.addListeClassifications(classification);
         classification.nomination();
-        municipalite.recevoirListArbresNomines(classification.getAnnee(), classification.getListeArbresNomines());
+        municipalite.recevoirListeArbresNomines(classification.getAnnee(), classification.getListeArbresNomines());
     }
 
+    /**
+     * On vérifie que l'arbre est remarquable et qu'il n'a pas de visite de prévu
+     * @return boolean si la demande est autorisée ou non
+     */
     public boolean verificationVisite(Arbre arbre){
         return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && arbre.getRemarquable());
+    }
+
+    public void addVisitesEnAttente(Arbre arbre, Membre membre){
+        this.dicoVisitesEnAttente.put(arbre, membre);
     }
 
     /**

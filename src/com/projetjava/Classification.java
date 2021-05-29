@@ -33,14 +33,14 @@ public class Classification {
     }
 
     /**
-     * Remplir la listeArbresNomines des 5 Arbre les plus votés
-     * en cas d'égalité on priviligie les plus grandes circonférences puis les plus hauts
+     * On remplit la listeArbresNomines des 5 Arbre les plus votés
+     * En cas d'égalité on priviligie les plus grandes circonférences puis les plus hauts
      */
     public void nomination(){
         List<Arbre> listeVote;
         int nbVotes;
         for (Membre membre : association.getListeMembres()) {
-            listeVote = membre.getListArbresVotes();
+            listeVote = membre.getListeArbresVotes();
 
             for (Arbre arbre : listeVote) {
                 this.dicoVotes.putIfAbsent(arbre, 0); // si un arbre n'a jamais été voté alors on l'ajoute dans le dico
