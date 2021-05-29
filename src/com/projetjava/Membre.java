@@ -7,7 +7,7 @@ public class Membre extends Personne{
     private MyDate dateDeNaissance, dateDerniereInscription;
     private String adresse;
     private Association association;
-    private List<Arbre> listArbresVotes = new ArrayList<>();
+    private List<Arbre> listeArbresVotes = new ArrayList<>();
     private int nbDefraiement;
     private final HashMap<Integer,Double> cotisations;
     private int id;
@@ -40,14 +40,6 @@ public class Membre extends Personne{
 
     public List<Arbre> getListeArbresVotes(){
         return this.listeArbresVotes;
-    }
-
-    public int getNbDefraiement() {
-        return nbDefraiement;
-    }
-
-    public int getId() {
-        return id;
     }
 
     // todo inscription et désinscription volontaire
@@ -116,17 +108,11 @@ public class Membre extends Personne{
                 MyDate dateDerniereVisite = new MyDate(annee, mois, jour);
                 ArbreVisite.getDicoArbresVisites().put(arbreVisite, dateDerniereVisite);
                 arbreVisite.ecrireCompteRendu(contenu, annee, mois, jour, this.association, this);
-                if(this.association.demandeDefraiement(this)){
-                    this.nbDefraiement++;
-                }
             }
             else{
                 ArbreVisite arbreVisite = new ArbreVisite(arbre.getIdArbre(), arbre.getAdresseAcces(), arbre.getNomFrancais(), arbre.getGenre(), arbre.getEspece(),
                         arbre.getCirconferenceEnCm(), arbre.getHauteurEnM(), arbre.getStadeDeveloppement(), true, arbre.getDateRemarquable(),
                         arbre.getCoordonnees().getX(), arbre.getCoordonnees().getY(), contenu, annee, mois, jour, this.association, this);
-                if(this.association.demandeDefraiement(this)){
-                    this.nbDefraiement++;
-                }
             }
             if(association.demandeDefraiement(this,arbre)){
                 nbDefraiement++;
@@ -154,7 +140,7 @@ public class Membre extends Personne{
                 ", dateDerniereInscription=" + dateDerniereInscription +
                 ", adresse='" + adresse + '\'' +
                 ", association=" + association.getNom() +
-                ", listArbresVotes=" + listArbresVotes +
+                ", listArbresVotes=" + listeArbresVotes +
                 ", nbDefraiement=" + nbDefraiement +
                 ", id=" + id;
     }

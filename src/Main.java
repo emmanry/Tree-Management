@@ -18,7 +18,7 @@ public class Main {
         municipalites[0] = new Municipalite("Paris", serviceParis,arbres);
         Association assoc = new Association("Association des arbres",municipalites[0]);
         serviceParis.addNotifier(assoc);
-        President membre = new President("NOURRY", "Emma", assoc, 1999, 1, 22, 2018, 2, 22, "add");
+        President membre = new President("test", "test", assoc, 1999, 1, 22, 2018, 2, 22, "add");
         Membre membre2 = new Membre("azerty", "dupont", assoc, 1999, 1, 22, 2018, 2, 22, "add");
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
