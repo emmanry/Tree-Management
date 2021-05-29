@@ -15,14 +15,13 @@ import java.util.List;
 public class Association implements Notifiable, Donateur, Demandeur {
 
     private Municipalite municipalite;
-    private ServiceMairie serviceMairie;
     private ExerciceBudgetaire exerciceBudgetaire;
-    private ArrayList<Membre> listeMembres = new ArrayList<>();
-    private List<Classification> listeClassifications = new ArrayList<>();
+    private final ArrayList<Membre> listeMembres = new ArrayList<>();
+    private final List<Classification> listeClassifications = new ArrayList<>();
     private HashMap<Arbre, Membre> dicoVisitesEnAttente = new HashMap<>();
     private List<String> notifications = new ArrayList<>();
-    private CompteBancaire compteBancaire;
-    private List<Donateur> donateurs;
+    private final CompteBancaire compteBancaire;
+    private final List<Donateur> listeDonateurs;
     private final double prixCotisation;
     private String nom;
     private final int nbDefraiementAutorise;
@@ -33,11 +32,13 @@ public class Association implements Notifiable, Donateur, Demandeur {
         this.municipalite = municipalite;
         compteBancaire = new CompteBancaire(soldeinitial);
         this.prixCotisation = prixCotisation;
-        donateurs = new ArrayList<>();
+        listeDonateurs = new ArrayList<>();
         this.nom = nom;
         this.nbDefraiementAutorise = nbDefraiementAutorise;
         this.montantDefraiement = montantDefraiement;
-        exerciceBudgetaire = new ExerciceBudgetaire(this);
+
+        Calendar cal = Calendar.getInstance();
+        exerciceBudgetaire = new ExerciceBudgetaire(this,cal.get(Calendar.YEAR));
     }
 
     public ArrayList<Membre> getListeMembres(){
@@ -69,7 +70,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
             if(membre instanceof President){
                 System.err.println("L'association a déjà un président");
             }
-            else if(membre instanceof Membre){
+            else if(membre != null){
                 this.listeMembres.add(membre);
             }
         }
@@ -93,7 +94,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
      * On vérifie que l'arbre est remarquable, qu'il n'a pas de visite de prévu et qu'il n'a pas dépassé le nombre de visites autorisées
      * @return boolean si la demande est autorisée ou non
      */
-    public boolean verificationVisite(Arbre arbre, Membre membre){
+    public boolean verificationVisite(Arbre arbre, Membre membre) {
         return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && arbre.getRemarquable() && (membre.getNbDefraiement() < this.nbDefraiementAutorise));
     }
 
@@ -128,8 +129,16 @@ public class Association implements Notifiable, Donateur, Demandeur {
                 }
             }
 
-            sb.append(arbreVisiteMin.getDateDerniereVisite() + " : " + " Arbre n° " + arbreVisiteMin.getIdArbre() + " visité par " +
-                    arbreVisiteMin.getMembreVisite().getNom() + " " + arbreVisiteMin.getMembreVisite().getPrenom() + "\n");
+            // On considère le cas où le Membre est désinscrit
+            if(arbreVisiteMin.getMembreVisite() == null){
+                sb.append(arbreVisiteMin.getDateDerniereVisite() + " : " + " Arbre n° " + arbreVisiteMin.getIdArbre()
+                        + " visité par une personne ayant quitté l'association"+ "\n");
+            }
+            else {
+                sb.append(arbreVisiteMin.getDateDerniereVisite() + " : " + " Arbre n° " + arbreVisiteMin.getIdArbre() + " visité par " +
+                        arbreVisiteMin.getMembreVisite().getNom() + " " + arbreVisiteMin.getMembreVisite().getPrenom() + "\n");
+            }
+
             dicoArbresVisitesCopie.remove(arbreVisiteMin);
 
         }
@@ -168,33 +177,41 @@ public class Association implements Notifiable, Donateur, Demandeur {
     }
 
     @Override
-    public void receiveDemandeDon(String message,Demandeur demandeur, double montant, RapportActivite rapport) {
+    public void receiveDemandeDon(String message, Demandeur demandeur, RapportActivite rapport) {
         //todo autre comportement ?
-        if(compteBancaire.retirer(montant)){
-            rapport.getAssociation().receiveDon(new Don(montant,this));
+        if(compteBancaire.retirer(50)){
+            rapport.getAssociation().receiveDon(new Don(50,this));
+        }
+        else{
+            System.err.println("Vous n'avez pas assez sur votre compte bancaire pour effectuer ce don : " + message);
         }
     }
 
     @Override
     public String getNom() {
-        return null;
+        return nom;
     }
 
     @Override
-    public void demandeDon(String message, double valeur){
-        for (Donateur donateur : donateurs) {
-            donateur.receiveDemandeDon(message,this, valeur, lastRapportActivite);
+    public void demandeDon(String message){
+        for (Donateur donateur : listeDonateurs) {
+            donateur.receiveDemandeDon(message,this, lastRapportActivite);
         }
     }
 
     @Override
     public void addDonateur(Donateur donateur) {
-        donateurs.add(donateur);
+        this.listeDonateurs.add(donateur);
     }
 
     @Override
     public void removeDonateur(Donateur donateur) {
-        donateurs.remove(donateur);
+        this.listeDonateurs.remove(donateur);
+    }
+
+    @Override
+    public ArrayList<Donateur> getDonateur() {
+        return (ArrayList<Donateur>) this.listeDonateurs;
     }
 
     @Override
@@ -216,22 +233,56 @@ public class Association implements Notifiable, Donateur, Demandeur {
             exerciceBudgetaire.addDepense(depense);
             return true;
         }else {
+            System.err.println("Vous n'avez pas assez sur votre compte bancaire pour effectuer le paiement d'un montant de : " + depense.getMontant() + " €.");
             return false;
         }
     }
 
-    public boolean demandeDefraiement(Membre membre) {
-        if(compteBancaire.retirer(montantDefraiement)){
-            exerciceBudgetaire.addDepense(new DefraiementVisite(montantDefraiement));
+    public boolean defraiement(Membre membre, Arbre a) {
+        if(compteBancaire.retirer(montantDefraiement)) {
+            exerciceBudgetaire.addDepense(new DefraiementVisite(montantDefraiement, a));
             return true;
-        }else{
+        }
+        else{
             return false;
         }
     }
 
-    public void desinscription(Membre membre){
+    /**
+     * Suppression des infos personnelles du membre supprimé, en conservant ses activités
+     */
+    public void gestionSuppressionMembre(Membre membre){
+        // On supprime les visites en attente du membre
+        if(this.dicoVisitesEnAttente.values().contains(membre)){
+            for (Arbre arbre : dicoVisitesEnAttente.keySet()) {
+                if(dicoVisitesEnAttente.get(arbre) == membre){
+                    dicoVisitesEnAttente.remove(arbre);
+                }
+            }
+        }
+        // On supprime le membre des comptes-rendus qu'il a édité
+        for (ArbreVisite arbreVisite : ArbreVisite.getDicoArbresVisites().keySet()) {
+            for (CompteRendu cr : arbreVisite.getListeCompteRendus()) {
+                if(cr.getMembreRapport() == membre){
+                    cr.removeMembreRapport();
+                }
+            }
+        }
+    }
+
+    public void removeMembre(Membre membre){
         listeMembres.removeIf(membre1 -> membre.getId() == membre1.getId());
-        //todo visite
+        gestionSuppressionMembre(membre);
+    }
+
+
+    public void removeMembreById(int id){
+        listeMembres.removeIf(membre -> id == membre.getId());
+        for (Membre membre : this.listeMembres) {
+            if(membre.getId() == id){
+                gestionSuppressionMembre(membre);
+            }
+        }
     }
 
     public void setExerciceBudgetaire(ExerciceBudgetaire exerciceBudgetaire) {
@@ -242,7 +293,6 @@ public class Association implements Notifiable, Donateur, Demandeur {
         compteBancaire.depot(prixCotisation);
     }
 
-    //todo temporaire
     public CompteBancaire getCompteBancaire() {
         return compteBancaire;
     }

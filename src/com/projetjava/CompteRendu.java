@@ -24,13 +24,24 @@ public class CompteRendu {
         return this.membreRapport;
     }
 
+    public void removeMembreRapport(){
+        this.membreRapport = null;
+    }
+
     public String toString(){
+        String membre;
+        if(this.membreRapport == null){
+            membre = "Personne ayant quitté l'association";
+        }
+        else {
+            membre = this.membreRapport.getNom() + " " + this.membreRapport.getPrenom();
+        }
         return "\n" +
                 "{ Compte Rendu..............."                             + "\n" +
                 "[ Contenu du Rapport........."   + this.rapport            + " ] \n" +
                 "[ Date du Rapport............"   + this.dateRapport        + " ] \n" +
                 "[ Association................"   + this.associationRapport + " ] \n" +
-                "[ Membre....................."   + this.membreRapport      + " ) ] \n}"
+                "[ Membre....................."   + membre                  + " ) ] \n}"
                 ;
     }
 

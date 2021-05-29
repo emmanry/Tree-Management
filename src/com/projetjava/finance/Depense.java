@@ -1,7 +1,7 @@
 package com.projetjava.finance;
 
 public class Depense {
-    private double montant;
+    protected double montant;
 
     public Depense(double montant) {
         this.montant = montant;
@@ -10,4 +10,5 @@ public class Depense {
     public double getMontant() {
         return montant;
     }
+
 }

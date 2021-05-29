@@ -1,8 +1,8 @@
 package com.projetjava.don;
 
 public class Don {
-    private double montant;
 
+    private double montant;
     private Donateur donateur;
 
     public Don(double montant,Donateur donateur){
@@ -17,4 +17,12 @@ public class Don {
     public Donateur getDonateur() {
         return donateur;
     }
+
+    public String toString(){
+        return "{ Don :"                             + " \n" +
+                "[ Donateur........." + this.donateur+ " ]\n" +
+                "[ Montant du don..." + this.montant + " ]\n}"
+                ;
+    }
+
 }

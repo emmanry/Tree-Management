@@ -15,10 +15,16 @@ public class ExerciceBudgetaire {
 
     private Association association;
 
-    public ExerciceBudgetaire(Association association){
+    private int annee;
 
+    public ExerciceBudgetaire(Association association,int annee){
+        this.annee = annee;
         rapportActivite = new RapportActivite(association);
         this.association = association;
+    }
+
+    public int getAnnee() {
+        return annee;
     }
 
     public void addDon(Don don){
@@ -33,26 +39,36 @@ public class ExerciceBudgetaire {
         return rapportActivite;
     }
 
-    public void fin(String messageDemandeDon){
+    public RapportActivite fin(String messageDemandeDon){
         //Révocation des membres
         //membre à supprimer
         List<Membre> membres = new ArrayList<>();
-        for(Membre membre:association.getListeMembres()){
-            if(!membre.hasCotiser()){
+        for(Membre membre : association.getListeMembres()){
+            if(!membre.hasCotiser(annee)){
                 membres.add(membre);
             }
         }
+
         //déinscription des membres
-        for(Membre membre:membres){
-            association.desinscription(membre);
+        for(Membre membre : membres){
+            association.removeMembre(membre);
         }
 
-        //todo classification
+        // Constitution et transmission de la liste proposée pour la classification en arbres remarquables
+        this.association.envoyerListeArbresNomines(this.annee);
 
-        //Rapport d'activité déjà calculé
-        association.setLastRapportActivite(rapportActivite);
+        // Rapport d'activité
+        RapportActivite last = this.rapportActivite;
+        association.setLastRapportActivite(this.rapportActivite);
+        // On crée un nouveau rapport d'activité pour l'année suivante
+        this.rapportActivite = new RapportActivite(association);
 
-        //envoi des demandes subventions/don et réception des sommes
-        association.demandeDon(messageDemandeDon, 50);
+
+        // Envoi des demandes subventions/don et réception des sommes
+        association.demandeDon(messageDemandeDon);
+
+
+        annee++;
+        return last;
     }
 }

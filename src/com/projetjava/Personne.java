@@ -6,17 +6,20 @@ import com.projetjava.don.Donateur;
 import com.projetjava.notification.Notifiable;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Personne implements Notifiable, Donateur {
 
-    protected String nom;
-    protected String prenom;
+    private String nom;
+    private String prenom;
+    private MyDate dateDeNaissance;
     private List<String> notifications = new ArrayList<>();
 
-    public Personne(String lastname, String firstname){
+    public Personne(String lastname, String firstname, int anneeNaissance, int moisNaissance, int jourNaissance){
         this.nom = lastname;
         this.prenom = firstname;
+        this.dateDeNaissance = new MyDate(anneeNaissance, moisNaissance, jourNaissance);
     }
 
     public String getNom(){
@@ -25,6 +28,14 @@ public class Personne implements Notifiable, Donateur {
 
     public String getPrenom(){
         return this.prenom;
+    }
+
+    public MyDate getDateDeNaissance(){
+        return this.dateDeNaissance;
+    }
+
+    public void inscription(Association association, int anneeInscription, int moisInscription, int jourInscription, String adresseMembre){
+        Membre membre = new Membre(this.nom, this.prenom , association, this.dateDeNaissance.getDate().get(Calendar.YEAR), this.dateDeNaissance.getDate().get(Calendar.MONTH), this.dateDeNaissance.getDate().get(Calendar.DAY_OF_MONTH), anneeInscription, moisInscription, jourInscription, adresseMembre);
     }
 
     @Override
@@ -43,9 +54,9 @@ public class Personne implements Notifiable, Donateur {
     }
 
     @Override
-    public void receiveDemandeDon(String message, Demandeur demandeur, double montant,RapportActivite rapport) {
+    public void receiveDemandeDon(String message, Demandeur demandeur,RapportActivite rapport) {
         //todo autre comportement ?
-        demandeur.receiveDon(new Don(montant,this));
+        demandeur.receiveDon(new Don(15,this));
     }
 
     public String toString(){

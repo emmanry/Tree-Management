@@ -38,8 +38,19 @@ public class ServiceMairie implements Notifieur, Donateur {
     }
 
     @Override
-    public void receiveDemandeDon(String message, Demandeur demandeur, double montant,RapportActivite rapport) {
+    public void receiveDemandeDon(String message, Demandeur demandeur,RapportActivite rapport) {
         //todo autre comportement ?
-        demandeur.receiveDon(new Don(montant,this));
+        demandeur.receiveDon(new Don(500,this));
+    }
+
+    public ArrayList<Association> getAssociation(){
+        ArrayList<Association> associations = new ArrayList<>();
+
+        for (Notifiable entity:listeEntite) {
+            if(entity instanceof Association){
+                associations.add((Association) entity);
+            }
+        }
+        return associations;
     }
 }

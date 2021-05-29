@@ -8,45 +8,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RapportActivite {
-    private List<Don> doneurs;
+    private List<Don> listeDons;
 
-    private List<Depense> depenses;
+    private List<Depense> listeDepenses;
 
     private final Association association;
 
     public RapportActivite(Association association){
-        doneurs = new ArrayList<>();
-        depenses = new ArrayList<>();
+        listeDons = new ArrayList<>();
+        listeDepenses = new ArrayList<>();
         this.association = association;
     }
 
     public void addDon(Don don){
-        doneurs.add(don);
+        listeDons.add(don);
     }
 
     public void addDepense(Depense depense){
-        depenses.add(depense);
+        listeDepenses.add(depense);
     }
 
     public Association getAssociation() {
         return association;
     }
 
-    //todo les tostring
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append("Rapport Activité : \n");
-        stringBuilder.append(association);
-        stringBuilder.append("\n");
-        stringBuilder.append("Dépenses : \n");
-        for (Depense depense:depenses) {
-            stringBuilder.append(depense);
+        stringBuilder.append("{ Rapport Activité : \n");
+        stringBuilder.append("[Association : " + association.getNom() + "\n");
+        stringBuilder.append("[Dépenses : \n");
+        for (Depense depense : listeDepenses) {
+            if(depense == listeDepenses.get(listeDepenses.size() - 1)){
+                stringBuilder.append(depense.getMontant());
+            }
+            stringBuilder.append(depense.getMontant() + " ; ");
         }
-        stringBuilder.append("Recette : \n");
-        for (Don don:doneurs) {
-            stringBuilder.append(don);
+        stringBuilder.append("\n[Recettes : \n");
+        for (Don don : listeDons) {
+            stringBuilder.append(don.toString());
         }
         stringBuilder.append(String.format("Cotisations : %f €",
                 association.getListeMembres().size() * association.getPrixCotisation()));

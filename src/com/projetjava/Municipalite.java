@@ -12,10 +12,10 @@ public class Municipalite {
     private ArrayList<Arbre> listeArbre;
     private HashMap<Integer, List<Arbre>> dicoArbresNominesParAn = new HashMap<Integer, List<Arbre>>();
 
-    public Municipalite(String name, ServiceMairie serviceEspaceVert){
-        this.listeArbre = new ArrayList<>();
+    public Municipalite(String name, ServiceMairie serviceEspaceVert, ArrayList<Arbre> arbres){
         this.nom = name;
         this.serviceMairie = serviceEspaceVert;
+        this.listeArbre = arbres;
     }
 
     public String getNom(){
@@ -43,7 +43,7 @@ public class Municipalite {
         this.serviceMairie.notifier(ActionArbre.PLANTATION,arbre);
     }
 
-    //todo classification
+    //todo classification || FAIT ?
     public void rendreRemarquable(Arbre arbre, int jour, int mois, int annee){
         if(arbre.getRemarquable()){
             System.err.println("Attention ! L'arbre " + arbre.getIdArbre() + " est déjà remarquable");
@@ -90,5 +90,4 @@ public class Municipalite {
                "[ a le service \"" + this.serviceMairie.getNom() + "\" ]\n}"
                 ;
     }
-
 }

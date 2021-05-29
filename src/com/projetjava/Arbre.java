@@ -98,11 +98,12 @@ public class Arbre {
      * A partir du path, cette méthode createArbre crée tous les arbres du fichier csv et
      * les ajoute dans la listeArbre de la Municipalité précisée
      */
-    public static void createArbre(String path, Municipalite municipalite) {
+    public static List<Arbre> createArbre(String path) {
         String idEmplacement, libelleFrancais, genre, espece, stadeDeDeveloppement;
         double circonference = 0, hauteur = 0;
         int idbase = 0;
         Point2D geoPoint2D = null;
+        List<Arbre> listeArbres = new ArrayList<>();
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
 
@@ -175,39 +176,39 @@ public class Arbre {
 
                 Arbre arbre = new Arbre(idbase, idEmplacement, libelleFrancais, genre, espece, circonference, hauteur, stadeDeDeveloppement, remarquable, null, geoPoint2D.getX(), geoPoint2D.getY());
 
-                municipalite.addArbre(arbre);
+                listeArbres.add(arbre);
 
             }
         }
         catch(IOException e){
             System.out.println(e);
         }
+        return listeArbres;
     }
 
-    public String toString(){
+    public String toString() {
         StringBuilder dateConnue = new StringBuilder();
-        if (this.remarquable){
+        if (this.remarquable) {
             dateConnue.append("[ Date remarquable...........");
-            if (this.dateRemarquable == null){
+            if (this.dateRemarquable == null) {
                 dateConnue.append("Pas connue");
-            }
-            else {
+            } else {
                 dateConnue.append(this.dateRemarquable.toString());
             }
             dateConnue.append(" ] \n");
         }
         return "\n" +
-               "{ Arbre d'ID unique.........."   + this.idArbre            + "\n" +
-               "[ ID d'emplacement..........."   + this.adresseAcces       + " ] \n" +
-               "[ Nom en français............"   + this.nomFrancais        + " ] \n" +
-               "[ Genre......................"   + this.genre              + " ] \n" +
-               "[ Espèce....................."   + this.espece             + " ] \n" +
-               "[ Circonférence en cm........"   + this.circonferenceEnCm  + " ] \n" +
-               "[ Hauteur en m..............."   + this.hauteurEnM         + " ] \n" +
-               "[ Stade de développement....."   + this.stadeDeveloppement + " ] \n" +
-               "[ Remarquable................"   + (this.remarquable ? "Oui" : "Non" ) + " ] \n" +
-               dateConnue.toString() +
-               "[ Coordonnées................( " + this.coordonnees.getX() + ", " + this.coordonnees.getY() + " ) ] \n}"
+                "{ Arbre d'ID unique.........." + this.idArbre + "\n" +
+                "[ ID d'emplacement..........." + this.adresseAcces + " ] \n" +
+                "[ Nom en français............" + this.nomFrancais + " ] \n" +
+                "[ Genre......................" + this.genre + " ] \n" +
+                "[ Espèce....................." + this.espece + " ] \n" +
+                "[ Circonférence en cm........" + this.circonferenceEnCm + " ] \n" +
+                "[ Hauteur en m..............." + this.hauteurEnM + " ] \n" +
+                "[ Stade de développement....." + this.stadeDeveloppement + " ] \n" +
+                "[ Remarquable................" + (this.remarquable ? "Oui" : "Non") + " ] \n" +
+                dateConnue.toString() +
+                "[ Coordonnées................( " + this.coordonnees.getX() + ", " + this.coordonnees.getY() + " ) ] \n}"
                 ;
     }
 

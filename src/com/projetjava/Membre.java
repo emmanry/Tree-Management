@@ -1,37 +1,28 @@
 package com.projetjava;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Membre extends Personne{
 
-    private MyDate dateDeNaissance, dateDerniereInscription;
+    private MyDate dateDerniereInscription;
     private String adresse;
     private Association association;
     private List<Arbre> listeArbresVotes = new ArrayList<>();
-    private boolean cotise;
     private int nbDefraiement;
+    private final HashMap<Integer,Double> cotisations;
     private int id;
     private static int indexId = 0;
 
     public Membre(String nom, String prenom, Association assoc, int anneeNaissance, int moisNaissance, int jourNaissance, int anneeInscription, int moisInscription, int jourInscription, String adresseMembre){
-        super(nom, prenom);
+        super(nom, prenom, anneeNaissance, moisNaissance, jourNaissance);
         this.association = assoc;
-        this.dateDeNaissance = new MyDate(anneeNaissance, moisNaissance, jourNaissance);
         this.dateDerniereInscription = new MyDate(anneeInscription, moisInscription, jourInscription);
         this.adresse = adresseMembre;
-
         this.association.addListeMembres(this);
-        this.cotise = false;
+        cotisations = new HashMap<>();
         this.nbDefraiement = 0;
         id = indexId;
         indexId++;
-    }
-
-    public MyDate getDateDeNaissance(){
-        return this.dateDeNaissance;
     }
 
     public MyDate getDateDerniereInscription(){
@@ -46,15 +37,9 @@ public class Membre extends Personne{
         return this.listeArbresVotes;
     }
 
-    public int getNbDefraiement() {
-        return nbDefraiement;
+    public void seDesinscrire(){
+        this.association.removeMembre(this);
     }
-
-    public int getId() {
-        return id;
-    }
-
-    // todo inscription et désinscription volontaire
 
     /**
      * || Première étape de la classification : les votes ||
@@ -89,6 +74,26 @@ public class Membre extends Personne{
         }
     }
 
+    public void cotiser(int year) {
+        if(cotisations.get(year) == null){
+            association.cotisationRecette();
+            cotisations.put(year,association.getPrixCotisation());
+        }
+    }
+
+    public boolean hasCotiser(int year){
+        return (cotisations.get(year) != null);
+    }
+
+    public int getNbDefraiement() {
+        return nbDefraiement;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+
     // todo exception pour la cohérence des dates
     /**
      *  || Dernière étape d'une visite : la visite ||
@@ -97,18 +102,18 @@ public class Membre extends Personne{
     public void visiteArbre(Arbre arbre, int annee, int mois, int jour, String contenu){
         // On vérifie que la demande a été programmée et acceptée
         if(this.association.getDicoVisitesEnAttente().get(arbre) == this){
-            if(this.association.demandeDefraiement(this)){
+            if(this.association.defraiement(this, arbre)) {
                 nbDefraiement++;
                 this.association.getDicoVisitesEnAttente().remove(arbre);
                 // Si l'arbre a déjà été visité, on met à jour son état
-                if(Arbre.getDicoArbre().get(arbre.getIdArbre()) instanceof ArbreVisite){
+                if (Arbre.getDicoArbre().get(arbre.getIdArbre()) instanceof ArbreVisite) {
                     ArbreVisite arbreVisite = (ArbreVisite) Arbre.getDicoArbre().get(arbre.getIdArbre());
                     MyDate dateDerniereVisite = new MyDate(annee, mois, jour);
                     ArbreVisite.getDicoArbresVisites().put(arbreVisite, dateDerniereVisite);
                     arbreVisite.ecrireCompteRendu(contenu, annee, mois, jour, this.association, this);
                 }
                 // Sinon on le rend visité
-                else{
+                else {
                     ArbreVisite arbreVisite = new ArbreVisite(arbre.getIdArbre(), arbre.getAdresseAcces(), arbre.getNomFrancais(), arbre.getGenre(), arbre.getEspece(),
                             arbre.getCirconferenceEnCm(), arbre.getHauteurEnM(), arbre.getStadeDeveloppement(), true, arbre.getDateRemarquable(),
                             arbre.getCoordonnees().getX(), arbre.getCoordonnees().getY(), contenu, annee, mois, jour, this.association, this);
@@ -123,21 +128,12 @@ public class Membre extends Personne{
         }
     }
 
-    public void cotiser() {
-        if(!cotise){
-            cotise = true;
-            association.cotisationRecette();
-        }
+    public HashMap<Integer, Double> getCotisations() {
+        return cotisations;
     }
 
-    public boolean hasCotiser(){
-        return cotise;
-    }
-
-    public void defraiement(){
-        if(association.demandeDefraiement(this)){
-            nbDefraiement++;
-        }
+    public Association getAssociation() {
+        return association;
     }
 
     @Override
@@ -157,15 +153,14 @@ public class Membre extends Personne{
         }
         return "\n" +
                 "{ Membre......................."   + this.id                      + "\n" +
-                "[ Nom.........................."   + this.nom                     + " ] \n" +
-                "[ Prénom......................."   + this.prenom                  + " ] \n" +
-                "[ Date de Naissance............"   + this.dateDeNaissance         + " ] \n" +
+                "[ Nom.........................."   + this.getNom()                + " ] \n" +
+                "[ Prénom......................."   + this.getPrenom()             + " ] \n" +
+                "[ Date de Naissance............"   + this.getDateDeNaissance()         + " ] \n" +
                 "[ Date de dernière inscription."   + this.dateDerniereInscription + " ] \n" +
                 "[ Adresse......................"   + this.adresse                 + " ] \n" +
                 idArbresVotes.toString() +
-                "[ Cotisation..................."   + this.cotise + " ] \n" +
+                "[ Cotisation..................."   + this.cotisations             + " ] \n" +
                 "[ Nombre de Défraiements......."   + this.nbDefraiement  + " ] \n} "
                 ;
     }
-
 }
