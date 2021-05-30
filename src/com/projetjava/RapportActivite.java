@@ -10,9 +10,9 @@ import java.util.List;
  * Rapport d'activité d'un exercice budgétaire
  */
 public class RapportActivite {
-    private List<Don> listeDons;
+    private final List<Don> listeDons;
 
-    private List<Depense> listeDepenses;
+    private final List<Depense> listeDepenses;
 
     private final Association association;
 
@@ -48,9 +48,9 @@ public class RapportActivite {
         for (Don don : listeDons) {
             stringBuilder.append(don.toString());
         }
-        stringBuilder.append(String.format("Cotisations : %f €",
+        stringBuilder.append(String.format("Cotisations : %f €\n",
                 association.getListeMembres().size() * association.getPrixCotisation()));
-
+        stringBuilder.append(String.format("Solde compte : %f €",association.getSolde()));
         return stringBuilder.toString();
     }
 }

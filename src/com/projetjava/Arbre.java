@@ -14,10 +14,10 @@ public class Arbre {
 
     private String genre, espece, nomFrancais, stadeDeveloppement, adresseAcces;
     private double circonferenceEnCm, hauteurEnM;
-    private int idArbre;
+    private final int idArbre;
     private boolean remarquable;
-    private Point2D coordonnees;
-    private static Map<Integer, Arbre> dicoArbre = new Hashtable<Integer,Arbre>();
+    private final Point2D coordonnees;
+    private static final Map<Integer, Arbre> dicoArbre = new Hashtable<Integer,Arbre>();
     private MyDate dateRemarquable;
 
     /**
@@ -115,6 +115,7 @@ public class Arbre {
 
             if (data.length != 17) {
                 System.out.println("[FileReader] Le fichier à " + path + " ne contient pas le bon nombre de colonnes.");
+                return null;
             }
 
             // Créer un Arbre pour chaque ligne du fichier
@@ -132,7 +133,8 @@ public class Arbre {
                     idbase = Integer.parseInt(data[0]);
                 }
                 catch(NumberFormatException e){
-                    System.out.println(data[0] + " n'est pas un entier");
+                    //System.out.println(data[0] + " n'est pas un entier");
+                    continue;
                 }
 
                 idEmplacement = data[7];
@@ -147,14 +149,16 @@ public class Arbre {
                     circonference = Double.parseDouble(data[12]);
                 }
                 catch(NumberFormatException e){
-                    System.out.println(data[12] + " n'est pas un double");
+                    //System.out.println(data[12] + " n'est pas un double");
+                    continue;
                 }
 
                 try {
                     hauteur = Double.parseDouble(data[13]);
                 }
                 catch(NumberFormatException e){
-                    System.out.println(data[13] + " n'est pas un double");
+                    //System.out.println(data[13] + " n'est pas un double");
+                    continue;
                 }
 
                 stadeDeDeveloppement = data[14];
@@ -171,7 +175,8 @@ public class Arbre {
                     geoPoint2D = new Point2D.Double(Double.parseDouble(dataCoord[0]), Double.parseDouble(dataCoord[1]));
                 }
                 catch(NumberFormatException e){
-                    System.out.println(dataCoord[0] = " ou " + dataCoord[1] + " n'est pas un double");
+                    //System.out.println(dataCoord[0] = " ou " + dataCoord[1] + " n'est pas un double");
+                    continue;
                 }
 
                 Arbre arbre = new Arbre(idbase, idEmplacement, libelleFrancais, genre, espece, circonference, hauteur, stadeDeDeveloppement, remarquable, null, geoPoint2D.getX(), geoPoint2D.getY());
@@ -182,6 +187,7 @@ public class Arbre {
         }
         catch(IOException e){
             System.out.println(e);
+            return null;
         }
         return listeArbres;
     }

@@ -7,11 +7,11 @@ public class Don {
     /**
      * Montant du don
      */
-    private double montant;
+    private final double montant;
     /**
      * Donateur du don
      */
-    private Donateur donateur;
+    private final Donateur donateur;
 
     public Don(double montant,Donateur donateur){
         this.montant = montant;

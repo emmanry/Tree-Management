@@ -6,6 +6,10 @@ import com.projetjava.finance.Depense;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Exercice Budgétaire d'une application
+ *
+ */
 public class ExerciceBudgetaire {
 
     /**

@@ -17,11 +17,11 @@ public class MunicipaliteConsole {
     /**
      * municipalite
      */
-    private Municipalite municipalite;
+    private final Municipalite municipalite;
     /**
      * Buffer qui lit sur la console
      */
-    private BufferedReader br;
+    private final BufferedReader br;
 
     public MunicipaliteConsole(Municipalite municipalite, BufferedReader br){
         this.municipalite = municipalite;
@@ -69,7 +69,7 @@ public class MunicipaliteConsole {
                     state = true;
                 }
             }catch (NumberFormatException e){
-                System.out.println("Veuillez rentrer un nombre");
+                System.out.println("Veuillez rentrer un nombre ou une commande bien écrite");
             }
         }
 

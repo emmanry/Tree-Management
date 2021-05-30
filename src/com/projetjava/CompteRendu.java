@@ -1,7 +1,5 @@
 package com.projetjava;
 
-import java.util.Date;
-
 public class CompteRendu {
 
     private String rapport;

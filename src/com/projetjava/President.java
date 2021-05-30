@@ -1,5 +1,8 @@
 package com.projetjava;
 
+/**
+ * président d'une association
+ */
 public class President extends Membre{
 
     public President(String nom, String prenom, Association assoc, int anneeNaissance, int moisNaissance, int jourNaissance, int anneeInscription, int moisInscription, int jourInscription, String adresseMembre){

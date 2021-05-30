@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Personne
+ * @see com.projetjava.notification.Notifiable
+ * @see com.projetjava.don.Donateur
+ */
 public class Personne implements Notifiable, Donateur {
 
     private String nom;

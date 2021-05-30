@@ -12,22 +12,37 @@ import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Association
+ * @see com.projetjava.don.Demandeur
+ * @see com.projetjava.don.Donateur
+ * @see com.projetjava.notification.Notifiable
+ */
 public class Association implements Notifiable, Donateur, Demandeur {
 
-    private Municipalite municipalite;
+    private final Municipalite municipalite;
     private ExerciceBudgetaire exerciceBudgetaire;
     private final ArrayList<Membre> listeMembres = new ArrayList<>();
     private final List<Classification> listeClassifications = new ArrayList<>();
-    private HashMap<Arbre, Membre> dicoVisitesEnAttente = new HashMap<>();
+    private final HashMap<Arbre, Membre> dicoVisitesEnAttente = new HashMap<>();
     private List<String> notifications = new ArrayList<>();
     private final CompteBancaire compteBancaire;
     private final List<Donateur> listeDonateurs;
     private final double prixCotisation;
-    private String nom;
+    private final String nom;
     private final int nbDefraiementAutorise;
     private final double montantDefraiement;
     RapportActivite lastRapportActivite;
 
+    /**
+     *
+     * @param nom
+     * @param municipalite
+     * @param soldeinitial
+     * @param prixCotisation
+     * @param nbDefraiementAutorise
+     * @param montantDefraiement
+     */
     public Association(String nom,Municipalite municipalite, double soldeinitial, double prixCotisation, int nbDefraiementAutorise, double montantDefraiement){
         this.municipalite = municipalite;
         compteBancaire = new CompteBancaire(soldeinitial);
@@ -41,14 +56,26 @@ public class Association implements Notifiable, Donateur, Demandeur {
         exerciceBudgetaire = new ExerciceBudgetaire(this,cal.get(Calendar.YEAR));
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Membre> getListeMembres(){
         return this.listeMembres;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Classification> getListeClassifications(){
         return this.listeClassifications;
     }
 
+    /**
+     *
+     * @return
+     */
     public HashMap<Arbre, Membre> getDicoVisitesEnAttente(){
         return this.dicoVisitesEnAttente;
     }
@@ -57,18 +84,18 @@ public class Association implements Notifiable, Donateur, Demandeur {
      * Le premier membre ajouté à la listeMembres doit être un Président et
      * les suivants doivent être des Membre
      */
-    public void addListeMembres(Membre membre){
+    public void addListeMembres(Membre membre) throws RuntimeException {
         if(this.listeMembres.isEmpty()){
             if(membre instanceof President){
                 this.listeMembres.add(membre);
             }
             else {
-                System.err.println("Le premier membre doit être le président");
+                throw new RuntimeException("Le premier membre inscrit doit être le président");
             }
         }
         else {
             if(membre instanceof President){
-                System.err.println("L'association a déjà un président");
+                throw new RuntimeException("L'association a déjà un président");
             }
             else if(membre != null){
                 this.listeMembres.add(membre);
@@ -76,6 +103,10 @@ public class Association implements Notifiable, Donateur, Demandeur {
         }
     }
 
+    /**
+     *
+     * @param classification
+     */
     public void addListeClassifications(Classification classification){
         this.listeClassifications.add(classification);
     }
@@ -95,9 +126,14 @@ public class Association implements Notifiable, Donateur, Demandeur {
      * @return boolean si la demande est autorisée ou non
      */
     public boolean verificationVisite(Arbre arbre, Membre membre) {
-        return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && !arbre.getRemarquable() && (membre.getNbDefraiement() < this.nbDefraiementAutorise));
+        return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && arbre.getRemarquable() && (membre.getNbDefraiement() < this.nbDefraiementAutorise));
     }
 
+    /**
+     *
+     * @param arbre
+     * @param membre
+     */
     public void addVisitesEnAttente(Arbre arbre, Membre membre){
         this.dicoVisitesEnAttente.put(arbre, membre);
     }
@@ -156,12 +192,14 @@ public class Association implements Notifiable, Donateur, Demandeur {
     @Override
     public void notifier(ActionArbre action, Arbre arbre) {
         this.notifications.add(action.toString() + arbre);
-        //todo retirer des listes de classification
-        switch (action){
-            case ABATTAGE:
-                break;
-            case CLASSIFICATION:
-                break;
+
+        if(action == ActionArbre.ABATTAGE || action == ActionArbre.CLASSIFICATION) {
+            Classification lastClassification = this.listeClassifications.get(this.listeClassifications.size() - 1);
+            for (Arbre a : lastClassification.getListeArbresNomines()) {
+                if (a.equals(arbre)) {
+                    lastClassification.getListeArbresNomines().remove(arbre);
+                }
+            }
         }
     }
 
@@ -218,20 +256,32 @@ public class Association implements Notifiable, Donateur, Demandeur {
         exerciceBudgetaire.addDon(don);
     }
 
+    /**
+     *
+     * @return
+     */
     public RapportActivite getLastRapportActivite() {
         return lastRapportActivite;
     }
 
+    /**
+     *
+     * @param lastRapportActivite
+     */
     public void setLastRapportActivite(RapportActivite lastRapportActivite) {
         this.lastRapportActivite = lastRapportActivite;
     }
 
+    /**
+     *
+     * @param depense
+     * @return si le paiement est réussi ou non
+     */
     public boolean paiement(Depense depense){
         if(compteBancaire.retirer(depense.getMontant())){
             exerciceBudgetaire.addDepense(depense);
             return true;
         }else {
-            System.err.println("Vous n'avez pas assez sur votre compte bancaire pour effectuer le paiement d'un montant de : " + depense.getMontant() + " €.");
             return false;
         }
     }
@@ -307,14 +357,22 @@ public class Association implements Notifiable, Donateur, Demandeur {
         compteBancaire.depot(prixCotisation);
     }
 
-    public CompteBancaire getCompteBancaire() {
-        return compteBancaire;
+    public double getSolde(){
+        return compteBancaire.getSolde();
     }
 
+    /**
+     *
+     * @return
+     */
     public ExerciceBudgetaire getExerciceBudgetaire() {
         return exerciceBudgetaire;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getPrixCotisation() {
         return prixCotisation;
     }

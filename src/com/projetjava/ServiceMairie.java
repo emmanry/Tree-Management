@@ -8,11 +8,17 @@ import com.projetjava.notification.Notifieur;
 
 import java.util.ArrayList;
 
+/**
+ * Service d'une Mairie
+ */
 public class ServiceMairie implements Notifieur, Donateur {
 
-    private String nom;
+    private final String nom;
 
-    private ArrayList<Notifiable> listeEntite;
+    /**
+     * Liste de tout ceux qui veulent être notifier d'une modification d'état d'un arbre
+     */
+    private final ArrayList<Notifiable> listeEntite;
 
     public ServiceMairie(String name){
         this.nom = name;

@@ -18,7 +18,7 @@ public class AssociationConsole {
     /**
      * Association
      */
-    private Association association;
+    private final Association association;
 
     /**
      * Buffer qui lit sur la console
@@ -27,8 +27,8 @@ public class AssociationConsole {
 
     /**
      *
-     * @param association
-     * @param br
+     * @param association les actions agirons sur cette association
+     * @param br reader sur la console
      */
     public AssociationConsole(Association association, BufferedReader br){
         this.association = association;
@@ -50,7 +50,8 @@ public class AssociationConsole {
             displayMembre();
             System.out.println("'ad' pour ajouter un membre, 'supr' pour supprimer un membre,\n" +
                     " 'not' lire notification, 'don' ajouter donateur, 'donSupr' supprimer un donateur,\n" +
-                    " 'fin' fin exercice budgétaire, 'paid' paiement facture, 'his' historique visite");
+                    " 'fin' fin exercice budgétaire, 'paid' paiement facture, 'his' historique visite \n" +
+                    " 's' solde compte");
             String s = br.readLine();
             try{
                 //add membre
@@ -58,6 +59,9 @@ public class AssociationConsole {
                     case "ad":
                         //on affiche une liste de potentiel membre
                         addMembre(association, br);
+                        break;
+                    case "s":
+                        System.out.println("Solde : " + association.getSolde());
                         break;
                     case "supr":
                         System.out.println("\nEntrer l'id du membre à désinscrire");

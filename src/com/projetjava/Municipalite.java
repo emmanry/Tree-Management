@@ -5,12 +5,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Municipalité d'une ville
+ */
 public class Municipalite {
 
-    private String nom;
-    private ServiceMairie serviceMairie;
-    private ArrayList<Arbre> listeArbre;
-    private HashMap<Integer, List<Arbre>> dicoArbresNominesParAn = new HashMap<Integer, List<Arbre>>();
+    private final String nom;
+    private final ServiceMairie serviceMairie;
+    private final ArrayList<Arbre> listeArbre;
+    private final HashMap<Integer, List<Arbre>> dicoArbresNominesParAn = new HashMap<Integer, List<Arbre>>();
 
     public Municipalite(String name, ServiceMairie serviceEspaceVert, ArrayList<Arbre> arbres){
         this.nom = name;
@@ -28,7 +31,7 @@ public class Municipalite {
 
     /**
      * Renvoie un clone de la liste des arbres présents sur une municipalité
-     * @return ArrayList<Arbre>
+     * @return ArrayList d'Arbre
      */
     public ArrayList<Arbre> getListeArbre(){
         return (ArrayList<Arbre>) this.listeArbre.clone();
@@ -44,10 +47,7 @@ public class Municipalite {
     }
 
     public void rendreRemarquable(Arbre arbre, int jour, int mois, int annee){
-        if(arbre.getRemarquable()){
-            System.err.println("Attention ! L'arbre " + arbre.getIdArbre() + " est déjà remarquable");
-        }
-        else{
+        if(!arbre.getRemarquable()) {
             arbre.setRemarquable(true);
             arbre.setDateRemarquable(jour, mois, annee);
             this.serviceMairie.notifier(ActionArbre.CLASSIFICATION, arbre);

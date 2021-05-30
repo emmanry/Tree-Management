@@ -1,7 +1,13 @@
 package com.projetjava;
 
+import com.projetjava.exception.SoldeNegatifException;
+
 import java.util.*;
 
+/**
+ * Membre d'une application
+ * @see Personne
+ */
 public class Membre extends Personne{
 
     private MyDate dateDerniereInscription;
@@ -44,33 +50,37 @@ public class Membre extends Personne{
     /**
      * || Première étape de la classification : les votes ||
      * Les membres votent pour 5 arbres maximums et tous différents
+     * @return Si le vote à réussi
      */
-    public void vote(Arbre...arbre){
+    public boolean vote(Arbre...arbre){
 
         for (Arbre a : arbre) {
             if (!this.listeArbresVotes.contains(a)){
                 this.listeArbresVotes.add(a);
             }
             else{
-                System.err.println("Vous avez déjà voté pour " + a.toString());
+                return false;
             }
         }
         // S'il y a plus de 5 arbres votés, on prend en compte seulement les 5 derniers
         if(this.listeArbresVotes.size() > 5){
             this.listeArbresVotes = this.listeArbresVotes.subList(this.listeArbresVotes.size() - 5, this.listeArbresVotes.size());
         }
+        return true;
     }
 
     /**
      * || Première étape d'une visite : demande l'autorisation ||
      * On fait appel à une vérification auprès de l'Association
+     * @return Si la demande est conforme
      */
-    public void demandeVisiteArbre(Arbre arbre){
+    public boolean demandeVisiteArbre(Arbre arbre){
         if(!this.association.verificationVisite(arbre, this)){
-            System.err.println("La visite n'est pas autorisée");
+            return false;
         }
         else{
             this.association.addVisitesEnAttente(arbre, this);
+            return true;
         }
     }
 
@@ -98,8 +108,9 @@ public class Membre extends Personne{
     /**
      *  || Dernière étape d'une visite : la visite ||
      *  S'en suit la création d'un compte rendu daté et d'un défraiement
+     * @return Si la visite à une autorisation
      */
-    public void visiteArbre(Arbre arbre, int annee, int mois, int jour, String contenu){
+    public boolean visiteArbre(Arbre arbre, int annee, int mois, int jour, String contenu) throws SoldeNegatifException {
         // On vérifie que la demande a été programmée et acceptée
         if(this.association.getDicoVisitesEnAttente().get(arbre) == this){
             if(this.association.defraiement(this, arbre)) {
@@ -118,14 +129,14 @@ public class Membre extends Personne{
                             arbre.getCirconferenceEnCm(), arbre.getHauteurEnM(), arbre.getStadeDeveloppement(), true, arbre.getDateRemarquable(),
                             arbre.getCoordonnees().getX(), arbre.getCoordonnees().getY(), contenu, annee, mois, jour, this.association, this);
                 }
+            } else {
+
+                throw new SoldeNegatifException(association);
             }
-            else {
-                System.err.println("L'association ne peut pas encore financer votre visite. Attendez quelques temps.");
-            }
+        }else{
+            return false;
         }
-        else{
-            System.err.println("Vous n'avez pas eu d'autorisation pour visiter cet arbre. Envoyez nous une demandeVisiteArbre.");
-        }
+        return true;
     }
 
     public HashMap<Integer, Double> getCotisations() {
