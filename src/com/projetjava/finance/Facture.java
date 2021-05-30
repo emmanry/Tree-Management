@@ -1,5 +1,8 @@
 package com.projetjava.finance;
 
+/**
+ * Facture
+ */
 public class Facture extends Depense {
 
     private String creancier;

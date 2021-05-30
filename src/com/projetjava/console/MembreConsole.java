@@ -7,17 +7,28 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Classe qui affiche sur la console l'interface pour gérer un membre
+ */
 public class MembreConsole {
-
+    /**
+     * Membre
+     */
     private Membre membre;
-
+    /**
+     * Buffer qui lit sur la console
+     */
     private BufferedReader br;
 
     public MembreConsole(Membre membre, BufferedReader br){
         this.membre = membre;
         this.br = br;
     }
-    
+
+    /**
+     * Menu des membres
+     * @throws IOException
+     */
     public void membreMenu() throws IOException {
         boolean state = false;
 
@@ -41,7 +52,12 @@ public class MembreConsole {
                         System.out.println("Taper l'id de l'arbre à visité : ");
                         s = br.readLine();
                         Arbre a = Arbre.getDicoArbre().get(Integer.parseInt(s));
-                        membre.demandeVisiteArbre(a);
+                        if(a != null){
+                            membre.demandeVisiteArbre(a);
+                            System.out.println("Demande envoyé");
+                        }else{
+                            System.out.println("Arbre n'existe pas");
+                        }
                         break;
                     case "vis":
                         System.out.println("Taper l'id de l'arbre à visité : ");

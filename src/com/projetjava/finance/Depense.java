@@ -1,5 +1,8 @@
 package com.projetjava.finance;
 
+/**
+ * Dépense d'une association
+ */
 public class Depense {
     protected double montant;
 

@@ -13,7 +13,7 @@ import java.util.Calendar;
 
 public class Main {
     public static void main(String[] args) {
-        ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
+        /*ServiceMairie serviceParis = new ServiceMairie("Service des espaces verts");
         Municipalite paris = new Municipalite("Paris", serviceParis, new ArrayList<>());
         Association assoc = new Association("asso", paris, 1000, 50, 5, 30);
         Arbre.createArbre("data/les-arbres.csv");
@@ -29,7 +29,7 @@ public class Main {
         /**
          * Test de la classification des arbres votés
          */
-        Arbre a = Arbre.getDicoArbre().get(2003166);// cir = 135
+        /*Arbre a = Arbre.getDicoArbre().get(2003166);// cir = 135
         Arbre b = Arbre.getDicoArbre().get(298184); // cir = 105
         Arbre c = Arbre.getDicoArbre().get(280753); // cir = 60 ; h = 6
         Arbre d = Arbre.getDicoArbre().get(214468); // cir = 60 ; h = 7
@@ -44,7 +44,7 @@ public class Main {
          */
 
 
-        assoc.envoyerListeArbresNomines(2020);
+        /*assoc.envoyerListeArbresNomines(2020);
         System.out.println(paris.getDicoArbresNominesParAn().toString());
 
 
@@ -85,18 +85,19 @@ public class Main {
         assoc.demandeDon("demande");
         System.out.println(assoc.getCompteBancaire().getSolde());
 
-/*
-        for (Membre m : assoc.getListeMembres()) {
-            System.out.println(m);
+
+        /*for (Membre m : assoc.getListeMembres()) {
+            System.out.println(m);*/
+
 
             ArrayList<Arbre> arbres = (ArrayList<Arbre>) Arbre.createArbre("data/les-arbres.csv");
             Municipalite[] municipalites = new Municipalite[1];
             ServiceMairie serviceParis2 = new ServiceMairie("Service des espaces verts");
             municipalites[0] = new Municipalite("Paris", serviceParis2, arbres);
             Association assoc2 = new Association("Association des arbres", municipalites[0], 1000, 50, 5, 30);
-            serviceParis.addNotifiable(assoc2);
-            President president = new President("test", "test", assoc, 1999, 1, 22, 2018, 2, 22, "add");
-            Membre membre1 = new Membre("azerty", "dupont", assoc, 1999, 1, 22, 2018, 2, 22, "add");
+            serviceParis2.addNotifiable(assoc2);
+            President president = new President("test", "test", assoc2, 1999, 1, 22, 2018, 2, 22, "add");
+            Membre membre1 = new Membre("azerty", "dupont", assoc2, 1999, 1, 22, 2018, 2, 22, "add");
 
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             //Municipalité choisi
@@ -110,7 +111,7 @@ public class Main {
                 System.out.println("Choississez la municipalité en tapant le numéro de la ville en question: ");
                 while (!state) {
                     for (int j = 0; j < municipalites.length; j++) {
-                        System.out.println(String.format("%d. %s : %s", i, municipalites[j].getNom(), serviceParis.getNom()));
+                        System.out.println(String.format("%d. %s : %s", j, municipalites[j].getNom(), serviceParis2.getNom()));
                     }
                     String s = br.readLine();
                     try {
@@ -137,8 +138,8 @@ public class Main {
             } catch (IOException exception) {
                 System.out.println("Erreur lecture console");
             }
-        }
-*/
+        //}
+
 
     }
 }

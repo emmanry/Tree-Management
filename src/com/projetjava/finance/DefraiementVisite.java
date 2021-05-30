@@ -1,23 +1,37 @@
 package com.projetjava.finance;
 
 import com.projetjava.Arbre;
-import com.projetjava.ArbreVisite;
 
+/**
+ * Defraiement d'une visite
+ */
 public class DefraiementVisite extends Depense {
+    /**
+     * Arbre de la visite
+     */
+    private final int idArbre;
+    /**
+     * Nom du membre qui a visité
+     */
+    private final String nomMembre;
 
-    private Arbre arbre;
-
-    //todo ajouter la visite
-    public DefraiementVisite(double montant, Arbre arbre) {
+    /**
+     * Create DefraiementVisite
+     * @param nomMembre
+     * @param idArbre
+     */
+    public DefraiementVisite(double montant,String nomMembre, int idArbre) {
         super(montant);
-        this.arbre = arbre;
+        this.idArbre = idArbre;
+        this.nomMembre = nomMembre;
     }
 
     @Override
     public String toString() {
         return "{ DefraiementVisite  "                         + " \n" +
                 "[ Montant........." + this.montant            + " ]\n" +
-                "[ Arbre..........." + this.arbre.getIdArbre() + " ]\n}"
+                "[ Nom membre......" + this.nomMembre + " ]\n" +
+                "[ Arbre..........." + this.idArbre + " ]\n}"
                 ;
     }
 

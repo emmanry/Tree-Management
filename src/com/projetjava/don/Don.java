@@ -1,8 +1,16 @@
 package com.projetjava.don;
 
+/**
+ * Don pour une association
+ */
 public class Don {
-
+    /**
+     * Montant du don
+     */
     private double montant;
+    /**
+     * Donateur du don
+     */
     private Donateur donateur;
 
     public Don(double montant,Donateur donateur){

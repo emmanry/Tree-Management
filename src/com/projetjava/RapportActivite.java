@@ -2,11 +2,13 @@ package com.projetjava;
 
 import com.projetjava.don.Don;
 import com.projetjava.finance.Depense;
-import com.projetjava.finance.Facture;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Rapport d'activité d'un exercice budgétaire
+ */
 public class RapportActivite {
     private List<Don> listeDons;
 
@@ -40,10 +42,7 @@ public class RapportActivite {
         stringBuilder.append("[Association : " + association.getNom() + "\n");
         stringBuilder.append("[Dépenses : \n");
         for (Depense depense : listeDepenses) {
-            if(depense == listeDepenses.get(listeDepenses.size() - 1)){
-                stringBuilder.append(depense.getMontant());
-            }
-            stringBuilder.append(depense.getMontant() + " ; ");
+            stringBuilder.append(depense);
         }
         stringBuilder.append("\n[Recettes : \n");
         for (Don don : listeDons) {

@@ -7,9 +7,22 @@ import com.projetjava.Arbre;
  * Notifie d'un changement d'état d'un arbre
  */
 public interface Notifieur {
-    public void notifier(ActionArbre actionArbre, Arbre arbre);
+    /**
+     * Notifie un changement d'état
+     * @param actionArbre
+     * @param arbre
+     */
+    void notifier(ActionArbre actionArbre, Arbre arbre);
 
-    public void addNotifiable(Notifiable notifiable);
+    /**
+     * Ajoute un objet qui veut être notifier d'un changement
+     * @param notifiable
+     */
+    void addNotifiable(Notifiable notifiable);
 
-    public void removeNotifiable(Notifiable notifiable);
+    /**
+     * Retire un notifiable
+     * @param notifiable
+     */
+    void removeNotifiable(Notifiable notifiable);
 }

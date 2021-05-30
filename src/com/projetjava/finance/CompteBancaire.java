@@ -1,5 +1,8 @@
 package com.projetjava.finance;
 
+/**
+ * Compte bancaire de l'association
+ */
 public class CompteBancaire {
 
     private double solde;

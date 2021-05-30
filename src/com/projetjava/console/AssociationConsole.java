@@ -1,7 +1,6 @@
 package com.projetjava.console;
 
 import com.projetjava.*;
-import com.projetjava.don.Don;
 import com.projetjava.don.Donateur;
 import com.projetjava.finance.Facture;
 
@@ -11,17 +10,36 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Classe qui affiche sur la console l'interface pour gérer une association
+ */
 public class AssociationConsole {
 
+    /**
+     * Association
+     */
     private Association association;
 
+    /**
+     * Buffer qui lit sur la console
+     */
     private BufferedReader br;
 
+    /**
+     *
+     * @param association
+     * @param br
+     */
     public AssociationConsole(Association association, BufferedReader br){
         this.association = association;
         this.br = br;
     }
 
+    /**
+     * Menu de l'association
+     * @return
+     * @throws IOException
+     */
     public Membre associationMenu() throws IOException {
         boolean state = false;
         ArrayList<Membre> membres = association.getListeMembres();
@@ -32,7 +50,7 @@ public class AssociationConsole {
             displayMembre();
             System.out.println("'ad' pour ajouter un membre, 'supr' pour supprimer un membre,\n" +
                     " 'not' lire notification, 'don' ajouter donateur, 'donSupr' supprimer un donateur,\n" +
-                    " 'fin' fin exercice budgétaire, 'paid' paiement facture");
+                    " 'fin' fin exercice budgétaire, 'paid' paiement facture, 'his' historique visite");
             String s = br.readLine();
             try{
                 //add membre
@@ -49,7 +67,7 @@ public class AssociationConsole {
                         break;
                     case "don":
                         //Ajoute donnateur
-                        System.out.println("Donateur suggéré");
+                        System.out.println("Donateur suggéré (entrer l'index) :");
                         ArrayList<Donateur> donateurs = generateDonateur();
                         for (int i = 0; i < donateurs.size(); i++) {
                             System.out.println(i + " : " + donateurs.get(i).getNom());
@@ -65,6 +83,9 @@ public class AssociationConsole {
                         }
                         s = br.readLine();
                         association.removeDonateur(association.getDonateur().get(Integer.parseInt(s)));
+                        break;
+                    case "his":
+                        System.out.println(association.getHistoriqueArbresVisites());
                         break;
                     case "fin":
                         RapportActivite activite = association.getExerciceBudgetaire().fin("Bonjour don svp");
@@ -103,7 +124,7 @@ public class AssociationConsole {
     private void displayMembre(){
         ArrayList<Membre> membres = association.getListeMembres();
         for (int i = 0; i < membres.size(); i++) {
-            System.out.println(String.format("id : %d, nom : %s ",membres.get(i).getId(),membres.get(i).getNom()));
+            System.out.println(String.format("index : %d, nom : %s ",i,membres.get(i).getNom()));
         }
     }
 

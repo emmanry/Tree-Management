@@ -9,10 +9,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Classe qui affiche sur la console l'interface pour gérer une municipalité
+ */
 public class MunicipaliteConsole {
 
+    /**
+     * municipalite
+     */
     private Municipalite municipalite;
-
+    /**
+     * Buffer qui lit sur la console
+     */
     private BufferedReader br;
 
     public MunicipaliteConsole(Municipalite municipalite, BufferedReader br){
@@ -20,6 +28,10 @@ public class MunicipaliteConsole {
         this.br = br;
     }
 
+    /**
+     * Menu des municipalités
+     * @throws IOException
+     */
     public Association chooseAssociation() throws IOException{
         Association association = null;
         //on part du principe qu'il n'y qu'un seul service

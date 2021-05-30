@@ -43,7 +43,6 @@ public class Municipalite {
         this.serviceMairie.notifier(ActionArbre.PLANTATION,arbre);
     }
 
-    //todo classification || FAIT ?
     public void rendreRemarquable(Arbre arbre, int jour, int mois, int annee){
         if(arbre.getRemarquable()){
             System.err.println("Attention ! L'arbre " + arbre.getIdArbre() + " est déjà remarquable");

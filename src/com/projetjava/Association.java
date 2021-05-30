@@ -95,7 +95,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
      * @return boolean si la demande est autorisée ou non
      */
     public boolean verificationVisite(Arbre arbre, Membre membre) {
-        return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && arbre.getRemarquable() && (membre.getNbDefraiement() < this.nbDefraiementAutorise));
+        return (!(this.dicoVisitesEnAttente.containsKey(arbre)) && !arbre.getRemarquable() && (membre.getNbDefraiement() < this.nbDefraiementAutorise));
     }
 
     public void addVisitesEnAttente(Arbre arbre, Membre membre){
@@ -165,9 +165,8 @@ public class Association implements Notifiable, Donateur, Demandeur {
         }
     }
 
-    // todo utilisée quand ?
     /**
-     *
+     * Retourne les notifications et les supprime
      * @return liste des notifications
      */
     public List<String> alertNotifications(){
@@ -178,7 +177,6 @@ public class Association implements Notifiable, Donateur, Demandeur {
 
     @Override
     public void receiveDemandeDon(String message, Demandeur demandeur, RapportActivite rapport) {
-        //todo autre comportement ?
         if(compteBancaire.retirer(50)){
             rapport.getAssociation().receiveDon(new Don(50,this));
         }
@@ -238,9 +236,15 @@ public class Association implements Notifiable, Donateur, Demandeur {
         }
     }
 
+    /**
+     * Défraiement d'une visite
+     * @param membre
+     * @param a
+     * @return
+     */
     public boolean defraiement(Membre membre, Arbre a) {
         if(compteBancaire.retirer(montantDefraiement)) {
-            exerciceBudgetaire.addDepense(new DefraiementVisite(montantDefraiement, a));
+            exerciceBudgetaire.addDepense(new DefraiementVisite(montantDefraiement,membre.getNom(), a.getIdArbre()));
             return true;
         }
         else{
@@ -270,12 +274,19 @@ public class Association implements Notifiable, Donateur, Demandeur {
         }
     }
 
+    /**
+     * Désinscrit un membre
+     * @param membre
+     */
     public void removeMembre(Membre membre){
         listeMembres.removeIf(membre1 -> membre.getId() == membre1.getId());
         gestionSuppressionMembre(membre);
     }
 
-
+    /**
+     * Déinscrit un membre en fonction de son id
+     * @param id
+     */
     public void removeMembreById(int id){
         listeMembres.removeIf(membre -> id == membre.getId());
         for (Membre membre : this.listeMembres) {
@@ -289,6 +300,9 @@ public class Association implements Notifiable, Donateur, Demandeur {
         this.exerciceBudgetaire = exerciceBudgetaire;
     }
 
+    /**
+     * Prend en compte une cotisation
+     */
     public void cotisationRecette(){
         compteBancaire.depot(prixCotisation);
     }

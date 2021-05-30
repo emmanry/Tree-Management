@@ -39,7 +39,6 @@ public class ServiceMairie implements Notifieur, Donateur {
 
     @Override
     public void receiveDemandeDon(String message, Demandeur demandeur,RapportActivite rapport) {
-        //todo autre comportement ?
         demandeur.receiveDon(new Don(500,this));
     }
 
