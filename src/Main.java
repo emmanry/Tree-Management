@@ -2,6 +2,7 @@ import com.projetjava.*;
 import com.projetjava.console.AssociationConsole;
 import com.projetjava.console.MembreConsole;
 import com.projetjava.console.MunicipaliteConsole;
+import com.projetjava.exception.DateException;
 import com.projetjava.finance.Facture;
 
 import java.io.BufferedReader;
@@ -14,8 +15,7 @@ import java.util.Calendar;
  * Main
  */
 public class Main {
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws DateException {
         System.out.println(args[0]);
         ArrayList<Arbre> arbres = (ArrayList<Arbre>) Arbre.createArbre(args[0]);
         if (arbres == null) {
@@ -29,7 +29,7 @@ public class Main {
         municipalite[0] = new Municipalite("Paris", serviceParis, arbres);
         Association association = new Association("Association des arbres", municipalite[0], 1000, 50, 5, 30);
         serviceParis.addNotifiable(association);
-        President president = new President("NOURRY", "Emma", association, 2000, 12, 28, 2020, 3, 18, "Paris sud, 91000");
+        President president = new President("NOURRY", "Emma", association, 2000, 11, 28, 2020, 3, 18, "Paris sud, 91000");
         Membre membre = new Membre("SENECAT", "Loïc", association, 2000, 10, 4, 2020, 5, 22, "Paris Centre, 75000");
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -73,11 +73,8 @@ public class Main {
 
                 membreConsole.membreMenu();
             } catch(IOException exception){
-                System.out.println("Erreur lecture console");
+                System.err.println("Erreur lecture console");
             }
         }
-        //}
-
-
     }
 }

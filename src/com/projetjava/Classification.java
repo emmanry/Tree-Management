@@ -54,9 +54,12 @@ public class Classification {
             listeVote = membre.getListeArbresVotes();
 
             for (Arbre arbre : listeVote) {
-                this.dicoVotes.putIfAbsent(arbre, 0); // si un arbre n'a jamais été voté alors on l'ajoute dans le dico
-                nbVotes = this.dicoVotes.get(arbre);
-                this.dicoVotes.put(arbre, nbVotes + 1);
+                // On vérifie que l'arbre n'a pas été abattu ou classifié comme remarquable depuis le vote
+                if(!arbre.getRemarquable() && association.getMunicipalite().getListeArbre().contains(arbre)){
+                    this.dicoVotes.putIfAbsent(arbre, 0); // si un arbre n'a jamais été voté alors on l'ajoute dans le dico
+                    nbVotes = this.dicoVotes.get(arbre);
+                    this.dicoVotes.put(arbre, nbVotes + 1);
+                }
             }
         }
 

@@ -3,6 +3,7 @@ package com.projetjava;
 import com.projetjava.don.Demandeur;
 import com.projetjava.don.Don;
 import com.projetjava.don.Donateur;
+import com.projetjava.exception.DateException;
 import com.projetjava.finance.CompteBancaire;
 import com.projetjava.finance.DefraiementVisite;
 import com.projetjava.finance.Depense;
@@ -79,6 +80,10 @@ public class Association implements Notifiable, Donateur, Demandeur {
         return this.dicoVisitesEnAttente;
     }
 
+    public Municipalite getMunicipalite(){
+        return this.municipalite;
+    }
+
     /**
      * Le premier membre ajouté à la listeMembres doit être un Président et
      * les suivants doivent être des Membre
@@ -145,7 +150,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
     /**
      * @return l'historique des ArbreVisite de la plus ancienne visite à la plus récente
      */
-    public String getHistoriqueArbresVisites(){
+    public String getHistoriqueArbresVisites() throws DateException {
         StringBuilder sb = new StringBuilder();
         String s;
         sb.append("Enumération des arbres remarquables par ancienneté de leur dernière visite : \n");
@@ -195,15 +200,6 @@ public class Association implements Notifiable, Donateur, Demandeur {
     @Override
     public void notifier(ActionArbre action, Arbre arbre) {
         this.notifications.add(action.toString() + arbre);
-
-        if(action == ActionArbre.ABATTAGE || action == ActionArbre.CLASSIFICATION) {
-            Classification lastClassification = this.listeClassifications.get(this.listeClassifications.size() - 1);
-            for (Arbre a : lastClassification.getListeArbresNomines()) {
-                if (a.equals(arbre)) {
-                    lastClassification.getListeArbresNomines().remove(arbre);
-                }
-            }
-        }
     }
 
     /**

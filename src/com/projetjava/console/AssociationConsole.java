@@ -2,6 +2,7 @@ package com.projetjava.console;
 
 import com.projetjava.*;
 import com.projetjava.don.Donateur;
+import com.projetjava.exception.DateException;
 import com.projetjava.finance.Facture;
 
 import java.io.BufferedReader;
@@ -51,7 +52,7 @@ public class AssociationConsole {
             System.out.println("'ad' pour ajouter un membre, 'supr' pour supprimer un membre,\n" +
                     " 'not' lire notification, 'don' ajouter donateur, 'donSupr' supprimer un donateur,\n" +
                     " 'fin' fin exercice budgétaire, 'paid' paiement facture, 'his' historique visites \n" +
-                    " 's' solde compte");
+                    " 's' solde compte, 'r' return");
             String s = br.readLine();
             try{
                 //add membre
@@ -117,9 +118,14 @@ public class AssociationConsole {
                         membre = membres.get(index);
                         state = true;
                         break;
+                    case "r":
+                        state = true;
+                        break;
                 }
             }catch (NumberFormatException e){
-                System.out.println("Veuillez rentrer un nombre");
+                System.err.println("Veuillez rentrer un nombre");
+            } catch (DateException e) {
+                System.err.println(e.getMessageErreur());
             }
         }
         return membre;
@@ -132,7 +138,7 @@ public class AssociationConsole {
         }
     }
 
-    private ArrayList<Donateur> generateDonateur(){
+    private ArrayList<Donateur> generateDonateur() throws DateException {
         ArrayList<Donateur> donateur = new ArrayList<>();
 
         donateur.add(new Personne("p","p", 2000, 11, 27));
@@ -141,7 +147,7 @@ public class AssociationConsole {
         return donateur;
     }
 
-    private void addMembre(Association association, BufferedReader br) throws IOException{
+    private void addMembre(Association association, BufferedReader br) throws IOException, DateException {
         String nom;
         String prenom;
         String adresse;
@@ -164,6 +170,6 @@ public class AssociationConsole {
         Calendar cal = Calendar.getInstance();
 
         new Membre(nom, prenom,association, annee, mois, jour,
-                cal.get(Calendar.YEAR),cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), adresse);
+                cal.get(Calendar.YEAR),cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), adresse);
     }
 }

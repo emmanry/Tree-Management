@@ -44,7 +44,7 @@ public class MunicipaliteConsole {
             for (int i = 0; i < associations.size(); i++) {
                 System.out.println(String.format("%d. %s ",i,associations.get(i).getNom()));
             }
-            System.out.println("'A' pour abattre un arbre");
+            System.out.println("'A' pour abattre un arbre, 'listVote' pour obtenir la liste des recommandations de classification");
             String s = br.readLine();
             try{
                 //suppresion d'un arbre
@@ -59,7 +59,12 @@ public class MunicipaliteConsole {
                     s = br.readLine();
                     municipalite.removeArbreById(Integer.parseInt(s));
                     System.out.println("Arbre numéro " + s + " abattu");
-                }else{
+                }else if(s.equals("listVote")){
+                    System.out.println("Entrer l'année de la classification : ");
+                    s = br.readLine();
+                    System.out.println(municipalite.getDicoArbresNominesParAn().get(Integer.parseInt(s)));
+                }
+                else{
                     int index = Integer.parseInt(s);
                     if(index >= associations.size()){
                         System.out.println("Ce numéro n'existe pas");
@@ -69,7 +74,7 @@ public class MunicipaliteConsole {
                     state = true;
                 }
             }catch (NumberFormatException e){
-                System.out.println("Veuillez rentrer un nombre ou une commande bien écrite");
+                System.err.println("Veuillez rentrer un nombre ou une commande bien écrite");
             }
         }
 

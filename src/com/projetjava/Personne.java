@@ -3,6 +3,7 @@ package com.projetjava;
 import com.projetjava.don.Demandeur;
 import com.projetjava.don.Don;
 import com.projetjava.don.Donateur;
+import com.projetjava.exception.DateException;
 import com.projetjava.notification.Notifiable;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class Personne implements Notifiable, Donateur {
     private MyDate dateDeNaissance;
     private List<String> notifications = new ArrayList<>();
 
-    public Personne(String lastname, String firstname, int anneeNaissance, int moisNaissance, int jourNaissance){
+    public Personne(String lastname, String firstname, int anneeNaissance, int moisNaissance, int jourNaissance) throws DateException {
         this.nom = lastname;
         this.prenom = firstname;
         this.dateDeNaissance = new MyDate(anneeNaissance, moisNaissance, jourNaissance);
@@ -47,7 +48,7 @@ public class Personne implements Notifiable, Donateur {
      * @param jourInscription
      * @param adresseMembre
      */
-    public void inscription(Association association, int anneeInscription, int moisInscription, int jourInscription, String adresseMembre){
+    public void inscription(Association association, int anneeInscription, int moisInscription, int jourInscription, String adresseMembre) throws DateException {
         Membre membre = new Membre(this.nom, this.prenom , association, this.dateDeNaissance.getDate().get(Calendar.YEAR), this.dateDeNaissance.getDate().get(Calendar.MONTH), this.dateDeNaissance.getDate().get(Calendar.DAY_OF_MONTH), anneeInscription, moisInscription, jourInscription, adresseMembre);
     }
 

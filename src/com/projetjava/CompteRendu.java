@@ -1,5 +1,7 @@
 package com.projetjava;
 
+import com.projetjava.exception.DateException;
+
 /**
  * CompteRendu : construit après chaque visite
  */
@@ -11,7 +13,7 @@ public class CompteRendu {
     private Association associationRapport;
     private Membre membreRapport;
 
-    public CompteRendu(String contenu, int annee, int mois, int jour, Association association, Membre membre){
+    public CompteRendu(String contenu, int annee, int mois, int jour, Association association, Membre membre) throws DateException {
         this.rapport = contenu;
         this.dateRapport = new MyDate(annee, mois, jour);
         this.associationRapport = association;

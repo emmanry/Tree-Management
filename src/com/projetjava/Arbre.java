@@ -1,5 +1,7 @@
 package com.projetjava;
 
+import com.projetjava.exception.DateException;
+
 import java.awt.geom.Point2D;
 import java.io.FileReader;
 import java.util.*;
@@ -86,7 +88,7 @@ public class Arbre {
         return this.coordonnees;
     }
 
-    public void setDateRemarquable(int jour, int mois, int annee){
+    public void setDateRemarquable(int jour, int mois, int annee) throws DateException {
         this.dateRemarquable = new MyDate(annee, mois, jour);
     }
 

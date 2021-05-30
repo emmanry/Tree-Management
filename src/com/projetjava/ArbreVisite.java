@@ -1,5 +1,7 @@
 package com.projetjava;
 
+import com.projetjava.exception.DateException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,7 +24,7 @@ public class ArbreVisite extends Arbre{
      */
     private static HashMap<ArbreVisite, MyDate> dicoArbresVisites = new HashMap<>();
 
-    public ArbreVisite(int idBase, String idAdresse, String nomFr, String genreA, String especeA, double circonference, double hauteur, String stadeDev, boolean remarquableA, MyDate dateRemarquable, double x, double y, String contenu, int annee, int mois, int jour, Association association, Membre membre){
+    public ArbreVisite(int idBase, String idAdresse, String nomFr, String genreA, String especeA, double circonference, double hauteur, String stadeDev, boolean remarquableA, MyDate dateRemarquable, double x, double y, String contenu, int annee, int mois, int jour, Association association, Membre membre) throws DateException {
         super( idBase, idAdresse, nomFr, genreA, especeA, circonference, hauteur, stadeDev, remarquableA, dateRemarquable, x, y);
         this.ecrireCompteRendu(contenu, annee, mois, jour, association, membre);
         dicoArbresVisites.put(this, this.listeCompteRendus.get(0).getDateRapport());
@@ -45,7 +47,7 @@ public class ArbreVisite extends Arbre{
         return this.listeCompteRendus.get(this.listeCompteRendus.size() - 1).getDateRapport();
     }
 
-    public void ecrireCompteRendu(String contenu, int annee, int mois, int jour, Association association, Membre membre){
+    public void ecrireCompteRendu(String contenu, int annee, int mois, int jour, Association association, Membre membre) throws DateException {
         CompteRendu compteRendu = new CompteRendu(contenu, annee, mois, jour, association, membre);
         this.listeCompteRendus.add(compteRendu);
     }

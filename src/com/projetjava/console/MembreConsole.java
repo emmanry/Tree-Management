@@ -2,6 +2,7 @@ package com.projetjava.console;
 
 import com.projetjava.Arbre;
 import com.projetjava.Membre;
+import com.projetjava.exception.DateException;
 import com.projetjava.exception.SoldeNegatifException;
 
 import java.io.BufferedReader;
@@ -91,6 +92,8 @@ public class MembreConsole {
                             }
                         }catch (SoldeNegatifException e){
                             System.err.println("L'association ne peut pas encore financer votre visite. Attendez quelques temps.");
+                        } catch (DateException e) {
+                            System.err.println(e.getMessageErreur());
                         }
 
                         break;
@@ -101,7 +104,7 @@ public class MembreConsole {
                         if(membre.vote(a)){
                             System.out.println("Voté !");
                         }else{
-                            System.err.println("Vous avez déjà voté pour " + a.toString());
+                            System.err.println("Vous ne pouvez pas voter (ou revoter) pour " + a.toString());
                         }
                         break;
                     case "not":
@@ -125,7 +128,9 @@ public class MembreConsole {
                 }
                 System.out.println();
             }catch (NumberFormatException e){
-                System.out.println("Veuillez rentrer un nombre");
+                System.err.println("Veuillez rentrer un nombre");
+            } catch (DateException e){
+                System.err.println(e.getMessageErreur());
             }
         }
     }

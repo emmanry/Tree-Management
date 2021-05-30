@@ -1,5 +1,7 @@
 package com.projetjava;
 
+import com.projetjava.exception.DateException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,7 +48,7 @@ public class Municipalite {
         this.serviceMairie.notifier(ActionArbre.PLANTATION,arbre);
     }
 
-    public void rendreRemarquable(Arbre arbre, int jour, int mois, int annee){
+    public void rendreRemarquable(Arbre arbre, int jour, int mois, int annee) throws DateException {
         if(!arbre.getRemarquable()) {
             arbre.setRemarquable(true);
             arbre.setDateRemarquable(jour, mois, annee);

@@ -1,5 +1,6 @@
 package com.projetjava;
 
+import com.projetjava.exception.DateException;
 import com.projetjava.exception.SoldeNegatifException;
 
 import java.util.*;
@@ -22,7 +23,7 @@ public class Membre extends Personne{
     private int id;
     private static int indexId = 0;
 
-    public Membre(String nom, String prenom, Association assoc, int anneeNaissance, int moisNaissance, int jourNaissance, int anneeInscription, int moisInscription, int jourInscription, String adresseMembre){
+    public Membre(String nom, String prenom, Association assoc, int anneeNaissance, int moisNaissance, int jourNaissance, int anneeInscription, int moisInscription, int jourInscription, String adresseMembre) throws DateException {
         super(nom, prenom, anneeNaissance, moisNaissance, jourNaissance);
         this.association = assoc;
         this.dateDerniereInscription = new MyDate(anneeInscription, moisInscription, jourInscription);
@@ -59,7 +60,7 @@ public class Membre extends Personne{
     public boolean vote(Arbre...arbre){
 
         for (Arbre a : arbre) {
-            if (!this.listeArbresVotes.contains(a)){
+            if (!this.listeArbresVotes.contains(a) && !a.getRemarquable()){
                 this.listeArbresVotes.add(a);
             }
             else{
@@ -118,7 +119,7 @@ public class Membre extends Personne{
      * @param contenu
      * @return Si la visite à une autorisation
      */
-    public boolean visiteArbre(Arbre arbre, int annee, int mois, int jour, String contenu) throws SoldeNegatifException {
+    public boolean visiteArbre(Arbre arbre, int annee, int mois, int jour, String contenu) throws SoldeNegatifException, DateException {
         // On vérifie que la demande a été programmée et acceptée
         if(this.association.getDicoVisitesEnAttente().get(arbre) == this){
             if(this.association.defraiement(this, arbre)) {
@@ -138,7 +139,6 @@ public class Membre extends Personne{
                             arbre.getCoordonnees().getX(), arbre.getCoordonnees().getY(), contenu, annee, mois, jour, this.association, this);
                 }
             } else {
-
                 throw new SoldeNegatifException(association);
             }
         }else{
