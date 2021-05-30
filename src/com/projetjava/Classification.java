@@ -4,11 +4,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Classification : permet la gestion des votes
+ */
+
 public class Classification {
 
     private Association association;
     private int annee;
+    /**
+     * Associe un nombre de vote à chaque Arbre
+     */
     private HashMap<Arbre, Integer> dicoVotes = new HashMap<>();
+    /**
+     * Liste finale des 5 (ou moins) arbres nominés par les membres de l'association
+     */
     private List<Arbre> listeArbresNomines = new ArrayList<>();
 
     public Classification(Association assoc, int annee){

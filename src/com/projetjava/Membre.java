@@ -10,6 +10,9 @@ import java.util.*;
  */
 public class Membre extends Personne{
 
+    /**
+     * Date de l'inscription (date d'aujourd'hui)
+     */
     private MyDate dateDerniereInscription;
     private String adresse;
     private Association association;
@@ -50,6 +53,7 @@ public class Membre extends Personne{
     /**
      * || Première étape de la classification : les votes ||
      * Les membres votent pour 5 arbres maximums et tous différents
+     * @param arbre
      * @return Si le vote à réussi
      */
     public boolean vote(Arbre...arbre){
@@ -72,6 +76,7 @@ public class Membre extends Personne{
     /**
      * || Première étape d'une visite : demande l'autorisation ||
      * On fait appel à une vérification auprès de l'Association
+     * @param arbre
      * @return Si la demande est conforme
      */
     public boolean demandeVisiteArbre(Arbre arbre){
@@ -103,11 +108,14 @@ public class Membre extends Personne{
         return id;
     }
 
-
-    // todo exception pour la cohérence des dates
     /**
      *  || Dernière étape d'une visite : la visite ||
      *  S'en suit la création d'un compte rendu daté et d'un défraiement
+     * @param arbre
+     * @param annee
+     * @param mois
+     * @param jour
+     * @param contenu
      * @return Si la visite à une autorisation
      */
     public boolean visiteArbre(Arbre arbre, int annee, int mois, int jour, String contenu) throws SoldeNegatifException {
@@ -147,6 +155,10 @@ public class Membre extends Personne{
         return association;
     }
 
+    /**
+     * Redéfinition de toString de Personne
+     * @return String
+     */
     @Override
     public String toString() {
         StringBuilder idArbresVotes = new StringBuilder();

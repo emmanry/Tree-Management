@@ -70,11 +70,17 @@ public class Municipalite {
     /**
      * Méthode appelée dans envoyerListeArbresNomines(int annee) d'Association
      * On remplit le dicoArbresNominesParAn afin d'avoir un historique des arbres nominés par an
+     * @param annee
+     * @param listeArbresNomines
      */
     public void recevoirListeArbresNomines(int annee, List<Arbre> listeArbresNomines){
         dicoArbresNominesParAn.put(annee, listeArbresNomines);
     }
 
+    /**
+     * Permet de ne pas surcharger le toString
+     * @return String
+     */
     public String afficheListeArbre(){
         StringBuilder sb = new StringBuilder();
         for(Arbre arbre : this.listeArbre){
@@ -83,6 +89,10 @@ public class Municipalite {
         return sb.toString();
     }
 
+    /**
+     * Méthode toString
+     * @return String
+     */
     public String toString(){
         return "{ La municipalité de " + this.nom + " :\n" +
                "[ contient " + this.listeArbre.size() + " arbres ]\n" +

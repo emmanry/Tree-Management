@@ -40,7 +40,7 @@ public class MunicipaliteConsole {
         boolean state = false;
         while(!state){
             System.out.println(municipalite.getServiceMairie().getNom() +
-                    " Choississez l'association associé en tapant le numéro de l'association en question: ");
+                    " Choississez l'association associée en tapant le numéro de l'association en question: ");
             for (int i = 0; i < associations.size(); i++) {
                 System.out.println(String.format("%d. %s ",i,associations.get(i).getNom()));
             }
@@ -58,7 +58,7 @@ public class MunicipaliteConsole {
                     System.out.println("\nEntrer l'id de l'arbre à abattre");
                     s = br.readLine();
                     municipalite.removeArbreById(Integer.parseInt(s));
-                    System.out.println("Arbre numéro " + s + " abattue");
+                    System.out.println("Arbre numéro " + s + " abattu");
                 }else{
                     int index = Integer.parseInt(s);
                     if(index >= associations.size()){

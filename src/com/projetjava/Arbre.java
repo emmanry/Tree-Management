@@ -95,8 +95,9 @@ public class Arbre {
     }
 
     /**
-     * A partir du path, cette méthode createArbre crée tous les arbres du fichier csv et
-     * les ajoute dans la listeArbre de la Municipalité précisée
+     * A partir du path, cette méthode createArbre crée tous les arbres du fichier csv
+     * @param path
+     * @return Liste des arbres créés
      */
     public static List<Arbre> createArbre(String path) {
         String idEmplacement, libelleFrancais, genre, espece, stadeDeDeveloppement;
@@ -192,6 +193,10 @@ public class Arbre {
         return listeArbres;
     }
 
+    /**
+     * Méthode toString
+     * @return String
+     */
     public String toString() {
         StringBuilder dateConnue = new StringBuilder();
         if (this.remarquable) {

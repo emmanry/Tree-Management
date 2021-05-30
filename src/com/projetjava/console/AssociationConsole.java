@@ -50,14 +50,14 @@ public class AssociationConsole {
             displayMembre();
             System.out.println("'ad' pour ajouter un membre, 'supr' pour supprimer un membre,\n" +
                     " 'not' lire notification, 'don' ajouter donateur, 'donSupr' supprimer un donateur,\n" +
-                    " 'fin' fin exercice budgétaire, 'paid' paiement facture, 'his' historique visite \n" +
+                    " 'fin' fin exercice budgétaire, 'paid' paiement facture, 'his' historique visites \n" +
                     " 's' solde compte");
             String s = br.readLine();
             try{
                 //add membre
                 switch (s) {
                     case "ad":
-                        //on affiche une liste de potentiel membre
+                        //on affiche une liste de potentiels membres
                         addMembre(association, br);
                         break;
                     case "s":
@@ -67,7 +67,7 @@ public class AssociationConsole {
                         System.out.println("\nEntrer l'id du membre à désinscrire");
                         s = br.readLine();
                         association.removeMembreById(Integer.parseInt(s));
-                        System.out.println("Membre numéro " + s + " abattue");
+                        System.out.println("Membre numéro " + s + " désinscrit");
                         break;
                     case "don":
                         //Ajoute donnateur
@@ -81,7 +81,7 @@ public class AssociationConsole {
 
                         break;
                     case "donSupr":
-                        System.out.println("Entrée l'id pour supprimer un ");
+                        System.out.println("Entrer l'id pour supprimer un donateur");
                         for (int i = 0; i < association.getDonateur().size(); i++) {
                             System.out.println(i + " : " + association.getDonateur().get(i).getNom());
                         }
@@ -161,11 +161,9 @@ public class AssociationConsole {
         jour = Integer.parseInt(br.readLine());
         System.out.println("Adresse : ");
         adresse = br.readLine();
-        Date date = new Date(System.currentTimeMillis());
         Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
 
         new Membre(nom, prenom,association, annee, mois, jour,
-                cal.get(Calendar.YEAR),cal.get(Calendar.MONTH) , cal.get(Calendar.DAY_OF_MONTH), adresse);
+                cal.get(Calendar.YEAR),cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), adresse);
     }
 }

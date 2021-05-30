@@ -3,7 +3,7 @@ package com.projetjava;
 import java.util.Calendar;
 
 /**
- * Classe MyDate nous permet de créer des dates plus simplement
+ * MyDate nous permet de créer des dates plus simplement
  */
 
 public class MyDate {

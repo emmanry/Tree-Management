@@ -58,7 +58,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
 
     /**
      *
-     * @return
+     * @return Liste des membres
      */
     public ArrayList<Membre> getListeMembres(){
         return this.listeMembres;
@@ -66,15 +66,14 @@ public class Association implements Notifiable, Donateur, Demandeur {
 
     /**
      *
-     * @return
+     * @return Liste des classifications
      */
     public List<Classification> getListeClassifications(){
         return this.listeClassifications;
     }
 
     /**
-     *
-     * @return
+     * @return Map
      */
     public HashMap<Arbre, Membre> getDicoVisitesEnAttente(){
         return this.dicoVisitesEnAttente;
@@ -83,6 +82,8 @@ public class Association implements Notifiable, Donateur, Demandeur {
     /**
      * Le premier membre ajouté à la listeMembres doit être un Président et
      * les suivants doivent être des Membre
+     * @param membre
+     * @throws RuntimeException
      */
     public void addListeMembres(Membre membre) throws RuntimeException {
         if(this.listeMembres.isEmpty()){
@@ -113,6 +114,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
 
     /**
      * || Dernière étape de la classification : Transmission de la ListeArbresNomines à la municipalité ||
+     * @param annee
      */
     public void envoyerListeArbresNomines(int annee){
         Classification classification = new Classification(this, annee);
@@ -123,6 +125,8 @@ public class Association implements Notifiable, Donateur, Demandeur {
 
     /**
      * On vérifie que l'arbre est remarquable, qu'il n'a pas de visite de prévu et qu'il n'a pas dépassé le nombre de visites autorisées
+     * @param arbre
+     * @param membre
      * @return boolean si la demande est autorisée ou non
      */
     public boolean verificationVisite(Arbre arbre, Membre membre) {
@@ -138,7 +142,6 @@ public class Association implements Notifiable, Donateur, Demandeur {
         this.dicoVisitesEnAttente.put(arbre, membre);
     }
 
-    // todo ajouter les arbres jamais visités (mais remarquables)
     /**
      * @return l'historique des ArbreVisite de la plus ancienne visite à la plus récente
      */
@@ -258,7 +261,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
 
     /**
      *
-     * @return
+     * @return Rapport d'activités
      */
     public RapportActivite getLastRapportActivite() {
         return lastRapportActivite;
@@ -357,13 +360,17 @@ public class Association implements Notifiable, Donateur, Demandeur {
         compteBancaire.depot(prixCotisation);
     }
 
+    /**
+     *
+     * @return solde actuel du CB
+     */
     public double getSolde(){
         return compteBancaire.getSolde();
     }
 
     /**
      *
-     * @return
+     * @return Exercice Budgétaire
      */
     public ExerciceBudgetaire getExerciceBudgetaire() {
         return exerciceBudgetaire;
@@ -371,7 +378,7 @@ public class Association implements Notifiable, Donateur, Demandeur {
 
     /**
      *
-     * @return
+     * @return prix de la cotisation
      */
     public double getPrixCotisation() {
         return prixCotisation;

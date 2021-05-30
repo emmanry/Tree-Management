@@ -38,7 +38,7 @@ public class MembreConsole {
         while(!state){
             System.out.println(membre);
 
-            System.out.println("Action possible : \n'p' payer la cotisation, 'd' demande visite, 'vis' visite d'arbre remarquable,\n" +
+            System.out.println("Actions possibles : \n'p' payer la cotisation, 'd' demander visite, 'vis' visiter arbre remarquable,\n" +
                     "'vote' voter pour un arbre remarquable, 'not' lire notification, 'r' return \n" +
                     "'cot' historique cotisation ");
             String s = br.readLine();
@@ -52,14 +52,14 @@ public class MembreConsole {
                         break;
                     case "d":
                         System.out.println(membre.getAssociation().getHistoriqueArbresVisites());
-                        System.out.println("Taper l'id de l'arbre à visité : ");
+                        System.out.println("Taper l'id de l'arbre à visiter : ");
                         s = br.readLine();
                         Arbre a = Arbre.getDicoArbre().get(Integer.parseInt(s));
                         if(a != null){
                             if(membre.demandeVisiteArbre(a)){
-                                System.out.println("Demande envoyé");
+                                System.out.println("Demande acceptée");
                             }else{
-                                System.err.println("La visite n'est pas autorisée");
+                                System.err.println("Demande refusée");
                             }
 
                         }else{
@@ -67,14 +67,14 @@ public class MembreConsole {
                         }
                         break;
                     case "vis":
-                        System.out.println("Taper l'id de l'arbre à visité : ");
+                        System.out.println("Taper l'id de l'arbre à visiter : ");
                         s = br.readLine();
                         a = Arbre.getDicoArbre().get(Integer.parseInt(s));
                         String contenu;
                         int annee;
                         int jour;
                         int mois;
-                        System.out.println("Compte rendu écrit : ");
+                        System.out.println("Contenu du compte-rendu : ");
                         contenu = br.readLine();
                         System.out.println("Année visite : ");
                         annee = Integer.parseInt(br.readLine());
@@ -85,7 +85,7 @@ public class MembreConsole {
 
                         try{
                             if(membre.visiteArbre(a, annee, mois, jour, contenu)){
-                                System.out.println("Visite réussite");
+                                System.out.println("Visite réussie");
                             }else{
                                 System.err.println("Vous n'avez pas eu d'autorisation pour visiter cet arbre. Envoyez nous une demandeVisiteArbre.");
                             }
@@ -99,7 +99,7 @@ public class MembreConsole {
                         s = br.readLine();
                         a = Arbre.getDicoArbre().get(Integer.parseInt(s));
                         if(membre.vote(a)){
-                            System.out.println("voté !");
+                            System.out.println("Voté !");
                         }else{
                             System.err.println("Vous avez déjà voté pour " + a.toString());
                         }
@@ -116,7 +116,7 @@ public class MembreConsole {
                         break;
                     case "cot":
                         for(Map.Entry<Integer,Double> cotisation :membre.getCotisations().entrySet()){
-                            System.out.println("annee " + cotisation.getKey() + " montant " + cotisation.getValue());
+                            System.out.println("Année " + cotisation.getKey() + " ; Montant " + cotisation.getValue() + " €");
                         }
                         break;
                     case "r":

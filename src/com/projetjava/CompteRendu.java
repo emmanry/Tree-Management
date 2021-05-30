@@ -1,5 +1,9 @@
 package com.projetjava;
 
+/**
+ * CompteRendu : construit après chaque visite
+ */
+
 public class CompteRendu {
 
     private String rapport;
@@ -26,6 +30,10 @@ public class CompteRendu {
         this.membreRapport = null;
     }
 
+    /**
+     * Méthode toString
+     * @return String
+     */
     public String toString(){
         String membre;
         if(this.membreRapport == null){

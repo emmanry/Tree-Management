@@ -43,6 +43,11 @@ public class ExerciceBudgetaire {
         return rapportActivite;
     }
 
+    /**
+     * Fin d'un exercice budgétaire
+     * @param messageDemandeDon
+     * @return Rapport d'activité
+     */
     public RapportActivite fin(String messageDemandeDon){
         //Révocation des membres
         //membre à supprimer

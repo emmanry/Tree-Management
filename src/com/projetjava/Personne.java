@@ -39,6 +39,14 @@ public class Personne implements Notifiable, Donateur {
         return this.dateDeNaissance;
     }
 
+    /**
+     * Une personne s'inscrit à une Association et en devient Membre
+     * @param association
+     * @param anneeInscription
+     * @param moisInscription
+     * @param jourInscription
+     * @param adresseMembre
+     */
     public void inscription(Association association, int anneeInscription, int moisInscription, int jourInscription, String adresseMembre){
         Membre membre = new Membre(this.nom, this.prenom , association, this.dateDeNaissance.getDate().get(Calendar.YEAR), this.dateDeNaissance.getDate().get(Calendar.MONTH), this.dateDeNaissance.getDate().get(Calendar.DAY_OF_MONTH), anneeInscription, moisInscription, jourInscription, adresseMembre);
     }
@@ -63,6 +71,10 @@ public class Personne implements Notifiable, Donateur {
         demandeur.receiveDon(new Don(15,this));
     }
 
+    /**
+     * Méthode toString
+     * @return String
+     */
     public String toString(){
         return "\n" +
                 "{ Personne.........."                    + "\n" +

@@ -5,13 +5,23 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Un ArbreVisite se forme suite à une visite
+ * @see Arbre
+ * @see CompteRendu
+ */
+
 public class ArbreVisite extends Arbre{
 
+    /**
+     * Liste des comptes-rendus d'un ArbreVisite
+     */
     private List<CompteRendu> listeCompteRendus = new ArrayList<>();
-
+    /**
+     * Chaque ArbreVisite est associé à sa date de dernière visite qui est la date du dernier compte-rendu
+     */
     private static HashMap<ArbreVisite, MyDate> dicoArbresVisites = new HashMap<>();
 
-    // todo un arbre visité doit etre remarquable
     public ArbreVisite(int idBase, String idAdresse, String nomFr, String genreA, String especeA, double circonference, double hauteur, String stadeDev, boolean remarquableA, MyDate dateRemarquable, double x, double y, String contenu, int annee, int mois, int jour, Association association, Membre membre){
         super( idBase, idAdresse, nomFr, genreA, especeA, circonference, hauteur, stadeDev, remarquableA, dateRemarquable, x, y);
         this.ecrireCompteRendu(contenu, annee, mois, jour, association, membre);
@@ -40,6 +50,10 @@ public class ArbreVisite extends Arbre{
         this.listeCompteRendus.add(compteRendu);
     }
 
+    /**
+     * Redéfinition du toString d'Arbre
+     * @return String
+     */
     @Override
     public String toString(){
         StringBuilder dateConnue = new StringBuilder();

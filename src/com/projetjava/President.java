@@ -1,7 +1,8 @@
 package com.projetjava;
 
 /**
- * président d'une association
+ * Président d'une association
+ * @see Membre
  */
 public class President extends Membre{
 
