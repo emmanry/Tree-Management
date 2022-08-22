@@ -26,7 +26,9 @@ https://www.data.gouv.fr/fr/datasets/les-arbres-paris/
 
 ## Sujet, fonctionnalités et contraintes
 
-![final](https://user-images.githubusercontent.com/82103105/185995590-03b1fbb7-6f19-49f7-92cf-81b062f7ba3d.png/style=centerme)
+<p align="center">
+![final](https://user-images.githubusercontent.com/82103105/185995590-03b1fbb7-6f19-49f7-92cf-81b062f7ba3d.png)
+</p>
 
 ## Résultats
 
