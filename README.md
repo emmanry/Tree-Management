@@ -13,7 +13,7 @@
 
 Une association d’amateurs d’arbres souhaite se doter d’un logiciel permettant de l’aider dans sa
 gestion. La mission principale de l’association est la protection d’arbres remarquables et l’information
-aupr`es du public. Un fonctionnement interne à l’association permet de proposer chaque ann´ee aux autorit´es comp´etentes un classement
+auprès du public. Un fonctionnement interne à l’association permet de proposer chaque ann´ee aux autorit´es comp´etentes un classement
 d’arbres candidats à la classification en tant qu’arbres remarquables.
 Par ailleurs, l’association assure des visites des arbres remarquables donnant lieu à des comptes-rendus.
 Comme toute association, celle-ci gère un budget dont les entrées sont composées de dons et subventions
@@ -27,7 +27,7 @@ https://www.data.gouv.fr/fr/datasets/les-arbres-paris/
 ## Sujet, fonctionnalités et contraintes
 
 <p align="center">
-![final](https://user-images.githubusercontent.com/82103105/185995590-03b1fbb7-6f19-49f7-92cf-81b062f7ba3d.png)
+  <img src="https://user-images.githubusercontent.com/82103105/185995590-03b1fbb7-6f19-49f7-92cf-81b062f7ba3d.png" />
 </p>
 
 ## Résultats
